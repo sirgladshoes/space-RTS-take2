@@ -1,0 +1,24 @@
+[gd_scene load_steps=5 format=3 uid="uid://blyhemo55akcw"]
+
+[ext_resource type="Script" uid="uid://bovpo7seytbqv" path="res://scripts/units/mining_ship.gd" id="1_vo50n"]
+[ext_resource type="Script" uid="uid://bd24p5rucivqh" path="res://scripts/command_logic/selectable.gd" id="2_f46tj"]
+[ext_resource type="Texture2D" uid="uid://c4h08cmpl6ahr" path="res://icon.svg" id="3_ckyon"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_x55ac"]
+size = Vector2(64, 64)
+
+[node name="mining_ship" type="Node2D"]
+script = ExtResource("1_vo50n")
+
+[node name="Icon" type="Sprite2D" parent="."]
+scale = Vector2(0.5, 0.5)
+texture = ExtResource("3_ckyon")
+
+[node name="selectable" type="Area2D" parent="."]
+script = ExtResource("2_f46tj")
+metadata/_custom_type_script = "uid://bd24p5rucivqh"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="selectable"]
+shape = SubResource("RectangleShape2D_x55ac")
+
+[connection signal="on_command_given" from="selectable" to="." method="selectable_on_command_given"]

@@ -1,0 +1,2 @@
+simple state machine, theres a file in scripts
+start networking
