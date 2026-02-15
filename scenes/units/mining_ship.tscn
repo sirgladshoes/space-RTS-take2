@@ -1,6 +1,6 @@
 [gd_scene load_steps=5 format=3 uid="uid://blyhemo55akcw"]
 
-[ext_resource type="Script" uid="uid://bovpo7seytbqv" path="res://scripts/units/mining_ship.gd" id="1_vo50n"]
+[ext_resource type="Script" uid="uid://bovpo7seytbqv" path="res://scripts/units/mining_ship/mining_ship.gd" id="1_vo50n"]
 [ext_resource type="Script" uid="uid://bd24p5rucivqh" path="res://scripts/command_logic/selectable.gd" id="2_f46tj"]
 [ext_resource type="Texture2D" uid="uid://c4h08cmpl6ahr" path="res://icon.svg" id="3_ckyon"]
 

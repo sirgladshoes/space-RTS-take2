@@ -3,6 +3,7 @@ extends Node
 var PORT = 18293
 @onready var byte_buffer = StreamPeerBuffer.new()
 
+@export var test: object_networking_data
 
 func _on_join_pressed() -> void:
 	connect_to_host("127.0.0.1", PORT)
@@ -35,26 +36,25 @@ func destroy_connection():
 
 
 #packet managment
-func construct_test_packet(payload: Dictionary) -> PackedByteArray:
+func construct_test_packet() -> PackedByteArray:
 	byte_buffer.clear()
 	
-	for item in payload:
-		byte_buffer.put_string(item)
-		byte_buffer.put_16(payload[item])
+	var data = {"y": 90,  "name": "doidy", "x": 390}
+	test.encode_data(data, byte_buffer)
 	
 	return byte_buffer.data_array
 
+#prolly move this to world sync node or whatever
 func decode_test_packet(packet:PackedByteArray):
 	byte_buffer.data_array = packet
 	
-	while byte_buffer.get_size() > byte_buffer.get_position():
-		print(byte_buffer.get_string())
-		print(byte_buffer.get_16())
+	print(test.decode_data(byte_buffer))
+
 
 #signals
 func client_connected(id: int):
 	print(str(id) + " connected")
-	recv_test.rpc_id(id, construct_test_packet({"test": 5, "test2": 10}))
+	recv_test.rpc_id(id, construct_test_packet())
 
 func client_disconnected(id: int):
 	print(str(id) + " disconnected")

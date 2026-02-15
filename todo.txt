@@ -1,5 +1,4 @@
 goals for tommorow:
-figure out unit recources decoding their own packet data
 make server keep track of world state using dict (units need to add themselves to this on creation)
 make server send worls state 
 
