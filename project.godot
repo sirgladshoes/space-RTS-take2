@@ -15,6 +15,10 @@ run/main_scene="uid://cxew7m7a508m0"
 config/features=PackedStringArray("4.5", "Forward Plus")
 config/icon="res://icon.svg"
 
+[autoload]
+
+Network="*res://scripts/networking/network.gd"
+
 [input]
 
 select={

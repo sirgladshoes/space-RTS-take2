@@ -1,6 +1,11 @@
 goals for tommorow:
-make server keep track of world state using dict (units need to add themselves to this on creation)
-make server send worls state 
+currently using names of units to send commands, 
+we gotta figure out how to get the id from the state sync node to pass to the network.
+
+Prob fix how calling give_command works: currently client calls on unit, but server calls on selectable.
 
 back burner:
 simple state machine, theres a file in scripts
+
+Notes:
+if you sync player views and selctions, just make a player node and sync thoes

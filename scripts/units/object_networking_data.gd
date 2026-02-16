@@ -1,5 +1,9 @@
 class_name object_networking_data extends Resource
 
+enum networked_ids {
+	MINING_SHIP
+}
+
 enum data_types {
 	INT_8,
 	INT_16,
@@ -10,7 +14,9 @@ enum data_types {
 	STRING
 }
 
+@export var networked_id = networked_ids.MINING_SHIP
 @export var networked_data: Dictionary[String, data_types]
+@export var object_scene: PackedScene = null
 
 func decode_data(buffer: StreamPeerBuffer) -> Dictionary:
 	var conversion_functions: Dictionary[int, Callable] = {data_types.INT_8: buffer.get_8, 

@@ -25,7 +25,7 @@ func _physics_process(delta: float) -> void:
 		global_position = global_position.move_toward(target_position, move_speed*delta)
 
 
-func selectable_on_command_given(command: Variant, args: Variant) -> void:
+func command_given(command: Variant, args: Variant) -> void:
 	target_position = Vector2.ZERO
 	target_mineable = null
 	match command:

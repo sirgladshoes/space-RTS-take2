@@ -54,9 +54,8 @@ metadata/_custom_type_script = "uid://doikskm31bjhj"
 position = Vector2(-0.5, 0)
 shape = SubResource("RectangleShape2D_tbgi4")
 
-[node name="game_host" type="Node2D" parent="." node_paths=PackedStringArray("command_giver", "test_ship")]
+[node name="game_host" type="Node2D" parent="." node_paths=PackedStringArray("test_ship")]
 script = ExtResource("6_tefeu")
-command_giver = NodePath("../command_manager")
 test_ship = NodePath("../mining_ship")
 
 [node name="mining_ship" parent="." instance=ExtResource("4_jyhfs")]

@@ -1,6 +1,7 @@
-[gd_resource type="Resource" script_class="object_networking_data" load_steps=2 format=3 uid="uid://vlu5nm25y07f"]
+[gd_resource type="Resource" script_class="object_networking_data" load_steps=3 format=3 uid="uid://vlu5nm25y07f"]
 
 [ext_resource type="Script" uid="uid://dp4cwtptbq3ka" path="res://scripts/units/object_networking_data.gd" id="1_4cp8k"]
+[ext_resource type="PackedScene" uid="uid://blyhemo55akcw" path="res://scenes/units/mining_ship.tscn" id="1_xbp10"]
 
 [resource]
 script = ExtResource("1_4cp8k")
@@ -9,4 +10,5 @@ networked_data = Dictionary[String, int]({
 "x": 4,
 "y": 4
 })
+object_scene = ExtResource("1_xbp10")
 metadata/_custom_type_script = "uid://dp4cwtptbq3ka"

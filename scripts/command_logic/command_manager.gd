@@ -17,12 +17,18 @@ func _input(event: InputEvent) -> void:
 	if event.is_action_pressed("select"):
 		select_origin = get_global_mouse_position()
 	elif event.is_action_released("select"):
-		select_units()
+		select_units(select_origin, get_global_mouse_position())
 	elif event.is_action_pressed("command"):
 		if selected_units:
 			command_origin = get_global_mouse_position()
 	elif event.is_action_released("command"):
-		give_command()
+		#only gives command if there is a selection origin
+		if command_origin:
+			if multiplayer.is_server():
+				give_command(command_origin, get_global_mouse_position(), selected_units)
+			else:
+				Network.send_client_command(command_origin, get_global_mouse_position(), selected_units)
+			command_origin = null
 
 func _process(_delta: float) -> void:
 	queue_redraw()
@@ -55,14 +61,10 @@ func rect_cast(size: Vector2, center: Vector2, mask: int) -> Array:
 	
 	return result
 
-func select_units():
-	if not select_origin:
-		return
-	
-	var mouse_pos = get_global_mouse_position()
-	var size = (mouse_pos-select_origin).abs()
-	var center = select_origin+(mouse_pos-select_origin)/2
-	var result = rect_cast(size, center, 1)
+func select_units(from: Vector2, to: Vector2):
+	var size = (to-from).abs()
+	var command_center = from+(to-from)/2
+	var result = rect_cast(size, command_center, 1)
 	
 	select_origin = null
 	
@@ -74,28 +76,22 @@ func select_units():
 			if unit is selectable:
 				unit.selected()
 
-func give_command():
-	if not command_origin:
-		return
-	
-	var mouse_pos = get_global_mouse_position()
-	var size = (mouse_pos-command_origin).abs()
-	var command_center = command_origin+(mouse_pos-command_origin)/2
+func give_command(from: Vector2, to: Vector2, units: Array): 
+	var size = (to-from).abs()
+	var command_center = from+(to-from)/2
 	var result = rect_cast(size, command_center, 2)
 	
-	command_origin = null
-	
 	#begin command logic
-	var context = commands.MOVE
+	var command = commands.MOVE
 	if result and result[0].collider is command_context:
-		context = result[0].collider.context
+		command = result[0].collider.context
 	
 	var args = []
-	match context:
+	match command:
 		commands.MOVE:
 			args.append(command_center)
 		commands.MINE:
 			args.append(result[0].collider)
 	
-	for unit in selected_units:
-			unit.command_given(context, args)
+	for item in units:
+		item.command_given(command, args)

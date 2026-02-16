@@ -3,16 +3,17 @@ extends Node
 var PORT = 18293
 @onready var byte_buffer = StreamPeerBuffer.new()
 
-@export var test: object_networking_data
+var object_data: Array[object_networking_data] = []
 
-func _on_join_pressed() -> void:
-	connect_to_host("127.0.0.1", PORT)
-
-func _on_host_pressed() -> void:
-	start_hosting(PORT, 2)
+signal recieved_game_state(state:Dictionary)
+signal recieved_client_command(from: Vector2, to: Vector2, units: Array[int])
 
 
-#methods to call
+func _ready() -> void:
+	#add all networked object reasources to object_data
+	object_data.append(load("res://scripts/units/mining_ship/mining_ship_networking_data.tres"))
+
+
 func connect_to_host(ip: String, port: int):
 	var peer = ENetMultiplayerPeer.new()
 	peer.create_client(ip, port)
@@ -35,26 +36,44 @@ func destroy_connection():
 	multiplayer.set_multiplayer_peer(peer)
 
 
-#packet managment
-func construct_test_packet() -> PackedByteArray:
+
+func data_from_networked_id(id:int) -> object_networking_data:
+	for item in object_data:
+		if item.networked_id == id:
+			return item
+	return null
+
+#server methods
+func send_game_state(state: Dictionary):
 	byte_buffer.clear()
 	
-	var data = {"y": 90,  "name": "doidy", "x": 390}
-	test.encode_data(data, byte_buffer)
+	for object_id in state:
+		var networked_id = state[object_id][0]
+		var data = state[object_id][1]
+		byte_buffer.put_8(networked_id)
+		byte_buffer.put_32(object_id)
+		data_from_networked_id(networked_id).encode_data(data, byte_buffer)
 	
-	return byte_buffer.data_array
+	recv_world_state.rpc(byte_buffer.data_array)
 
-#prolly move this to world sync node or whatever
-func decode_test_packet(packet:PackedByteArray):
-	byte_buffer.data_array = packet
+#client methods
+
+#maybe find a fix for using names in place of finding actual network ids
+func send_client_command(from: Vector2, to: Vector2, units: Array):
+	byte_buffer.clear()
 	
-	print(test.decode_data(byte_buffer))
-
+	byte_buffer.put_float(from.x)
+	byte_buffer.put_float(from.y)
+	byte_buffer.put_float(to.x)
+	byte_buffer.put_float(to.y)
+	for item in units:
+		byte_buffer.put_32(int(item.name))
+	
+	recv_client_command.rpc_id(1, byte_buffer.data_array)
 
 #signals
 func client_connected(id: int):
 	print(str(id) + " connected")
-	recv_test.rpc_id(id, construct_test_packet())
 
 func client_disconnected(id: int):
 	print(str(id) + " disconnected")
@@ -71,5 +90,37 @@ func host_disconnected():
 
 #client rpcs
 @rpc
-func recv_test(data: PackedByteArray):
-	decode_test_packet(data)
+func recv_world_state(data: PackedByteArray):
+	byte_buffer.data_array = data
+	
+	var state = {}
+	
+	while byte_buffer.get_position() < byte_buffer.get_size():
+		var networked_id = byte_buffer.get_8()
+		var object_id = byte_buffer.get_32()
+		var object_state = data_from_networked_id(object_id).decode_data(byte_buffer)
+		state[object_id] = [networked_id, object_state]
+	
+	recieved_game_state.emit(state)
+
+#server rpcs
+@rpc("any_peer", "reliable")
+func recv_client_command(data: PackedByteArray):
+	if !multiplayer.is_server():
+		return
+	
+	byte_buffer.data_array = data
+	
+	var from: Vector2
+	var to:Vector2
+	var units: Array[int]
+	
+	from.x = byte_buffer.get_float()
+	from.y = byte_buffer.get_float()
+	to.x = byte_buffer.get_float()
+	to.y = byte_buffer.get_float()
+	
+	while byte_buffer.get_position() < byte_buffer.get_size():
+		units.append(byte_buffer.get_32())
+	
+	recieved_client_command.emit(from, to, units)

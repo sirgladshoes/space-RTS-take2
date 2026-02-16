@@ -1,4 +1,11 @@
-class_name unit extends Node
+class_name unit extends CharacterBody2D
+
+enum teams {
+	BLUE,
+	RED
+}
+
+var team: int = teams.BLUE
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:

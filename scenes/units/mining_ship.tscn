@@ -21,4 +21,4 @@ metadata/_custom_type_script = "uid://bd24p5rucivqh"
 [node name="CollisionShape2D" type="CollisionShape2D" parent="selectable"]
 shape = SubResource("RectangleShape2D_x55ac")
 
-[connection signal="on_command_given" from="selectable" to="." method="selectable_on_command_given"]
+[connection signal="on_command_given" from="selectable" to="." method="command_given"]
