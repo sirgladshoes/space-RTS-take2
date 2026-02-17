@@ -13,6 +13,8 @@ enum commands{
 	ATTACK
 }
 
+signal command_given_raw(from: Vector2, to: Vector2, units: Array)
+
 func _input(event: InputEvent) -> void:
 	if event.is_action_pressed("select"):
 		select_origin = get_global_mouse_position()
@@ -24,10 +26,9 @@ func _input(event: InputEvent) -> void:
 	elif event.is_action_released("command"):
 		#only gives command if there is a selection origin
 		if command_origin:
+			command_given_raw.emit(command_origin, get_global_mouse_position(), selected_units)
 			if multiplayer.is_server():
 				give_command(command_origin, get_global_mouse_position(), selected_units)
-			else:
-				Network.send_client_command(command_origin, get_global_mouse_position(), selected_units)
 			command_origin = null
 
 func _process(_delta: float) -> void:

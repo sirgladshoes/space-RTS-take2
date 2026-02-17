@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=3 uid="uid://cxew7m7a508m0"]
+[gd_scene load_steps=10 format=3 uid="uid://cxew7m7a508m0"]
 
 [ext_resource type="Script" uid="uid://drk72iaypq6j3" path="res://scripts/command_logic/command_manager.gd" id="1_o5qli"]
 [ext_resource type="Script" uid="uid://cdys14pg8r1cx" path="res://scripts/UI/host.gd" id="1_tefeu"]
@@ -7,6 +7,7 @@
 [ext_resource type="PackedScene" uid="uid://blyhemo55akcw" path="res://scenes/units/mining_ship.tscn" id="4_jyhfs"]
 [ext_resource type="Script" uid="uid://doikskm31bjhj" path="res://scripts/command_logic/command_context.gd" id="5_tbgi4"]
 [ext_resource type="Script" uid="uid://5lponkkbtih4" path="res://scripts/networking/host.gd" id="6_tefeu"]
+[ext_resource type="Script" uid="uid://bwaownusaip5p" path="res://scripts/networking/client.gd" id="7_tipki"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_tbgi4"]
 size = Vector2(127, 128)
@@ -59,8 +60,15 @@ script = ExtResource("6_tefeu")
 command_giver = NodePath("../command_manager")
 test_ship = NodePath("../mining_ship")
 
+[node name="game_client" type="Node2D" parent="." node_paths=PackedStringArray("command_giver", "test_ship")]
+script = ExtResource("7_tipki")
+command_giver = NodePath("../command_manager")
+test_ship = NodePath("../mining_ship")
+
 [node name="mining_ship" parent="." instance=ExtResource("4_jyhfs")]
 position = Vector2(426, 433)
 
 [connection signal="pressed" from="Control/host" to="Control/host" method="_on_pressed"]
+[connection signal="pressed" from="Control/host" to="game_client" method="_on_host_pressed"]
 [connection signal="pressed" from="Control/join" to="Control/join" method="_on_pressed"]
+[connection signal="pressed" from="Control/join" to="game_host" method="_on_join_pressed"]

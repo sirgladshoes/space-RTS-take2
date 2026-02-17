@@ -1,8 +1,7 @@
 goals for tommorow:
-currently using names of units to send commands, 
-we gotta figure out how to get the id from the state sync node to pass to the network.
-
-Prob fix how calling give_command works: currently client calls on unit, but server calls on selectable.
+add node/class for syncing an objects network state, name it like "networked_object" or something.
+Have it read from the reasource we made and set properites from their, 
+that way we can just slap it on each networked object and have it take carte of itself.
 
 back burner:
 simple state machine, theres a file in scripts

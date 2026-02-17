@@ -1,14 +1,31 @@
-[gd_resource type="Resource" script_class="object_networking_data" load_steps=3 format=3 uid="uid://vlu5nm25y07f"]
+[gd_resource type="Resource" script_class="networked_type" load_steps=7 format=3 uid="uid://vlu5nm25y07f"]
 
-[ext_resource type="Script" uid="uid://dp4cwtptbq3ka" path="res://scripts/units/object_networking_data.gd" id="1_4cp8k"]
+[ext_resource type="Script" uid="uid://n3gda14hxidi" path="res://scripts/networking/networked_variable.gd" id="1_egb8j"]
 [ext_resource type="PackedScene" uid="uid://blyhemo55akcw" path="res://scenes/units/mining_ship.tscn" id="1_xbp10"]
+[ext_resource type="Script" uid="uid://dp4cwtptbq3ka" path="res://scripts/networking/networked_type.gd" id="3_4gp28"]
+
+[sub_resource type="Resource" id="Resource_8tfps"]
+script = ExtResource("1_egb8j")
+name = "health"
+data_type = 1
+metadata/_custom_type_script = "uid://n3gda14hxidi"
+
+[sub_resource type="Resource" id="Resource_egb8j"]
+script = ExtResource("1_egb8j")
+name = "x"
+data_type = 4
+is_interpolated = true
+metadata/_custom_type_script = "uid://n3gda14hxidi"
+
+[sub_resource type="Resource" id="Resource_4gp28"]
+script = ExtResource("1_egb8j")
+name = "y"
+data_type = 4
+is_interpolated = true
+metadata/_custom_type_script = "uid://n3gda14hxidi"
 
 [resource]
-script = ExtResource("1_4cp8k")
-networked_data = Dictionary[String, int]({
-"name": 6,
-"x": 4,
-"y": 4
-})
+script = ExtResource("3_4gp28")
+networked_data = Array[ExtResource("1_egb8j")]([SubResource("Resource_8tfps"), SubResource("Resource_egb8j"), SubResource("Resource_4gp28")])
 object_scene = ExtResource("1_xbp10")
 metadata/_custom_type_script = "uid://dp4cwtptbq3ka"

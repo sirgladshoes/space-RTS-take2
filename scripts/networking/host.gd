@@ -11,8 +11,8 @@ var timer = Timer.new()
 @export var test_ship: Node
 
 func _ready() -> void:
-	var networked_id = object_networking_data.networked_ids.MINING_SHIP
-	test_ship.name = "0"
+	#temparary
+	var networked_id = networked_type.networked_ids.MINING_SHIP
 	add_networked_object(networked_id, test_ship)
 	
 	timer.autostart = true
@@ -21,8 +21,6 @@ func _ready() -> void:
 	add_child(timer)
 	
 	Network.recieved_client_command.connect(give_client_command)
-	#temperary
-	Network.recieved_game_state.connect(construct_game_state)
 
 func send_game_state():
 	#temperary
@@ -41,10 +39,10 @@ func object_state_from_id(object_id: int) -> Dictionary:
 	var node =  networked_objects[object_id][1]
 	
 	match networked_id:
-		object_networking_data.networked_ids.MINING_SHIP:
+		networked_type.networked_ids.MINING_SHIP:
 			state["x"] = node.global_position.x
 			state["y"] = node.global_position.y
-			state["name"] = "test"
+			state["health"] = 18
 	
 	return state
 
@@ -54,20 +52,13 @@ func add_networked_object(networked_id: int, object: Node) -> int:
 	object_id_counter+=1
 	return object_id
 
-
 func give_client_command(from, to, unit_ids):
-	
 	var units = []
 	for unit_id in unit_ids:
 		units.append(networked_objects[unit_id][1])
 	command_giver.give_command(from, to, units)
 
 
-#move to client
-func construct_game_state(state: Dictionary):
-	for object_id in state:
-		var networked_id = state[object_id][0]
-		var object_state = state[object_id][1]
-		var object = networked_objects[object_id][1]
-		object.global_position.x = object_state.x
-		object.global_position.y = object_state.y
+#remove later
+func _on_join_pressed() -> void:
+	queue_free()
