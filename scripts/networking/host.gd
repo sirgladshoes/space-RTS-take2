@@ -12,7 +12,7 @@ var timer = Timer.new()
 
 func _ready() -> void:
 	#temparary
-	var networked_id = networked_type.networked_ids.MINING_SHIP
+	var networked_id = networked_object_data.networked_ids.MINING_SHIP
 	add_networked_object(networked_id, test_ship)
 	
 	timer.autostart = true
@@ -35,20 +35,20 @@ func send_game_state():
 
 func object_state_from_id(object_id: int) -> Dictionary:
 	var state = {}
-	var networked_id = networked_objects[object_id][0]
+	var class_id = networked_objects[object_id][0]
 	var node =  networked_objects[object_id][1]
 	
-	match networked_id:
-		networked_type.networked_ids.MINING_SHIP:
+	match class_id:
+		networked_object_data.class_ids.MINING_SHIP:
 			state["x"] = node.global_position.x
 			state["y"] = node.global_position.y
 			state["health"] = 18
 	
 	return state
 
-func add_networked_object(networked_id: int, object: Node) -> int:
+func add_networked_object(class_id: int, object: Node) -> int:
 	var object_id = object_id_counter
-	networked_objects[object_id] = [networked_id, object]
+	networked_objects[object_id] = [class_id, object]
 	object_id_counter+=1
 	return object_id
 

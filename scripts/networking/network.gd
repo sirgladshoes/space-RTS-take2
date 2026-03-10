@@ -3,7 +3,7 @@ extends Node
 var PORT = 18293
 @onready var byte_buffer = StreamPeerBuffer.new()
 
-var object_data: Array[networked_type] = []
+var object_data: Array[networked_object_data] = []
 
 signal recieved_game_state(state:Dictionary)
 signal recieved_client_command(from: Vector2, to: Vector2, units: Array[int])
@@ -37,7 +37,7 @@ func destroy_connection():
 
 
 
-func data_from_networked_id(id:int) -> networked_type:
+func data_from_networked_id(id:int) -> networked_object_data:
 	for item in object_data:
 		if item.networked_id == id:
 			return item

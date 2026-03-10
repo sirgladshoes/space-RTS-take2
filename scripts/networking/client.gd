@@ -8,7 +8,7 @@ var networked_objects = {}
 
 func _ready() -> void:
 	#temperary
-	var networked_id = networked_type.networked_ids.MINING_SHIP
+	var networked_id = networked_object_data.networked_ids.MINING_SHIP
 	networked_objects[0] = [networked_id, test_ship]
 	
 	Network.recieved_game_state.connect(construct_game_state)
@@ -22,6 +22,7 @@ func object_id_from_object(object:Node) -> int:
 
 func construct_game_state(state: Dictionary):
 	for object_id in state:
+		#TEMP
 		var networked_id = state[object_id][0]
 		var object_state = state[object_id][1]
 		var object = networked_objects[object_id][1]
