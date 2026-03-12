@@ -28,7 +28,8 @@ func send_game_state():
 func give_client_command(from, to, unit_ids):
 	var units = []
 	for unit_id in unit_ids:
-		units.append(networked_objects[unit_id][1])
+		var networked_obj = Network.networked_objects[unit_id]
+		units.append(networked_obj.get_related_node("unit"))
 	command_giver.give_command(from, to, units)
 
 

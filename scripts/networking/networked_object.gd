@@ -2,11 +2,16 @@ class_name networked_object extends Node
 
 @export var networking_data: networked_object_data
 
+#uses metadata to access other surrounding nodes
+@export var related_nodes: Dictionary[String, NodePath]
+
 #only set by server
 var object_id: int
 
 func _ready() -> void:
 	Network.create_networked_object(self)
+	for path in related_nodes.values():
+		get_node(path).set_meta("networked_object", self)
 
 func encode_data(buffer: StreamPeerBuffer) -> void:
 	
@@ -42,3 +47,6 @@ func update_data(buffer: StreamPeerBuffer) -> void:
 			property_node.get(variable.setter).call(value)
 		else:
 			property_node.set_indexed(variable.property, value)
+
+func get_related_node(key: String) -> Node:
+	return get_node(related_nodes[key])
