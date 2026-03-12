@@ -3,15 +3,20 @@ extends Node
 var PORT = 18293
 @onready var byte_buffer = StreamPeerBuffer.new()
 
-var object_data: Array[networked_object_data] = []
+#tells the network how to encode and decode data
+var networking_data: Array[networked_object_data] = []
 
-signal recieved_game_state(state:Dictionary)
 signal recieved_client_command(from: Vector2, to: Vector2, units: Array[int])
 
+var networked_objects: Dictionary[int,networked_object] = {}
+var object_id_counter = 0
 
 func _ready() -> void:
-	#add all networked object reasources to object_data
-	object_data.append(load("res://scripts/units/mining_ship/mining_ship_networking_data.tres"))
+	#add all networked object resources to networking_data
+	var networked_res_path = "res://scripts/networking/networked_object_data/"
+	var files = DirAccess.get_files_at(networked_res_path)
+	for file in files:
+		networking_data.append(load(networked_res_path + file))
 
 
 func connect_to_host(ip: String, port: int):
@@ -37,22 +42,27 @@ func destroy_connection():
 
 
 
-func data_from_networked_id(id:int) -> networked_object_data:
-	for item in object_data:
-		if item.networked_id == id:
-			return item
-	return null
 
 #server methods
-func send_game_state(state: Dictionary):
+func create_networked_object(object: networked_object) -> int:
+	object_id_counter+=1
+	var id = object_id_counter
+	
+	networked_objects[id] = object
+	object.object_id = id
+	
+	return id
+
+func send_game_state():
 	byte_buffer.clear()
 	
-	for object_id in state:
-		var networked_id = state[object_id][0]
-		var data = state[object_id][1]
-		byte_buffer.put_8(networked_id)
-		byte_buffer.put_u32(object_id)
-		data_from_networked_id(networked_id).encode_data(data, byte_buffer)
+	for id in networked_objects:
+		var object = networked_objects[id]
+		var networking_type_indx = networking_data.find(object.networking_data)
+		byte_buffer.put_8(networking_type_indx)
+		byte_buffer.put_u32(id)
+		
+		object.encode_data(byte_buffer)
 	
 	recv_world_state.rpc(byte_buffer.data_array)
 
@@ -92,15 +102,14 @@ func host_disconnected():
 func recv_world_state(data: PackedByteArray):
 	byte_buffer.data_array = data
 	
-	var state = {}
-	
 	while byte_buffer.get_position() < byte_buffer.get_size():
-		var networked_id = byte_buffer.get_8()
+		var object_data_indx = byte_buffer.get_8()
+		
 		var object_id = byte_buffer.get_u32()
-		var object_state = data_from_networked_id(object_id).decode_data(byte_buffer)
-		state[object_id] = [networked_id, object_state]
-	
-	recieved_game_state.emit(state)
+		if !networked_objects.has(object_id):
+			print("create object")
+		networked_objects[object_id].update_data(byte_buffer)
+
 
 #server rpcs
 @rpc("any_peer", "reliable")

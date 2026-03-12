@@ -1,7 +1,12 @@
 goals for tommorow:
 add node/class for syncing an objects network state, name it like "networked_object" or something.
-Have it read from the reasource we made and set properites from their, 
-that way we can just slap it on each networked object and have it take carte of itself.
+
+NETWORKING REWORK NOTES:
+
+disgard ids for networked "classes" have the networked object added to a list and have it's index act as an "id"
+essentialy treat each class less like a class and more of just a specific set of variables to sync 
+
+add resource for networked classes to keep stuff easier to manage?
 
 back burner:
 simple state machine, theres a file in scripts

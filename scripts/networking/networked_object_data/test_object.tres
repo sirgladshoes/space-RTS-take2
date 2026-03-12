@@ -1,0 +1,25 @@
+[gd_resource type="Resource" script_class="networked_object_data" load_steps=5 format=3 uid="uid://d1bly1gx57jfy"]
+
+[ext_resource type="Script" uid="uid://n3gda14hxidi" path="res://scripts/networking/networked_variable.gd" id="1_mlkc2"]
+[ext_resource type="Script" uid="uid://5ymvd21fld5t" path="res://scripts/networking/networked_object_data.gd" id="2_cp6er"]
+
+[sub_resource type="Resource" id="Resource_mlkc2"]
+script = ExtResource("1_mlkc2")
+propery_path = NodePath(".")
+property = "global_position:x"
+data_type = 1
+is_interpolated = true
+metadata/_custom_type_script = "uid://n3gda14hxidi"
+
+[sub_resource type="Resource" id="Resource_cp6er"]
+script = ExtResource("1_mlkc2")
+propery_path = NodePath(".")
+property = "global_position:y"
+data_type = 1
+is_interpolated = true
+metadata/_custom_type_script = "uid://n3gda14hxidi"
+
+[resource]
+script = ExtResource("2_cp6er")
+synced_vars = Array[ExtResource("1_mlkc2")]([SubResource("Resource_mlkc2"), SubResource("Resource_cp6er")])
+metadata/_custom_type_script = "uid://5ymvd21fld5t"

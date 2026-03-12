@@ -33,3 +33,7 @@ func command_given(command: Variant, args: Variant) -> void:
 			target_position = args[0]
 		command_manager.commands.MINE:
 			target_mineable = args[0]
+
+func set_pos_x(pos):
+	print("im the goat")
+	global_position.x = pos

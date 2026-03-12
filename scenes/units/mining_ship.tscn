@@ -1,9 +1,10 @@
-[gd_scene load_steps=6 format=3 uid="uid://blyhemo55akcw"]
+[gd_scene load_steps=7 format=3 uid="uid://blyhemo55akcw"]
 
 [ext_resource type="Script" uid="uid://bovpo7seytbqv" path="res://scripts/units/mining_ship/mining_ship.gd" id="1_vo50n"]
 [ext_resource type="Script" uid="uid://bd24p5rucivqh" path="res://scripts/command_logic/selectable.gd" id="2_f46tj"]
 [ext_resource type="Texture2D" uid="uid://c4h08cmpl6ahr" path="res://icon.svg" id="3_ckyon"]
 [ext_resource type="Script" uid="uid://iqtkbiyfhpt2" path="res://scripts/networking/networked_object.gd" id="4_x55ac"]
+[ext_resource type="Resource" uid="uid://d1bly1gx57jfy" path="res://scripts/networking/networked_object_data/test_object.tres" id="5_832wd"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_x55ac"]
 size = Vector2(64, 64)
@@ -24,6 +25,7 @@ shape = SubResource("RectangleShape2D_x55ac")
 
 [node name="networked_object" type="Node" parent="."]
 script = ExtResource("4_x55ac")
+networking_data = ExtResource("5_832wd")
 metadata/_custom_type_script = "uid://iqtkbiyfhpt2"
 
 [connection signal="on_command_given" from="selectable" to="." method="command_given"]

@@ -1,22 +1,16 @@
 extends Node2D
 
-var networked_objects = {}
-var object_id_counter = 0
+var networked_objects = []
 
 var timer = Timer.new()
 
 @export var command_giver: command_manager
 
-#temporary
-@export var test_ship: Node
 
 func _ready() -> void:
-	#temparary
-	var networked_id = networked_object_data.networked_ids.MINING_SHIP
-	add_networked_object(networked_id, test_ship)
-	
+
 	timer.autostart = true
-	timer.wait_time = 0.05
+	timer.wait_time = 0.1
 	timer.timeout.connect(send_game_state)
 	add_child(timer)
 	
@@ -27,30 +21,9 @@ func send_game_state():
 	if !multiplayer.get_peers() or !multiplayer.is_server():
 		return
 	
-	var state = {}
-	for object_id in networked_objects:
-		state[object_id] = [networked_objects[object_id][0] , object_state_from_id(object_id)]
-	
-	Network.send_game_state(state)
+	Network.send_game_state()
 
-func object_state_from_id(object_id: int) -> Dictionary:
-	var state = {}
-	var class_id = networked_objects[object_id][0]
-	var node =  networked_objects[object_id][1]
-	
-	match class_id:
-		networked_object_data.class_ids.MINING_SHIP:
-			state["x"] = node.global_position.x
-			state["y"] = node.global_position.y
-			state["health"] = 18
-	
-	return state
 
-func add_networked_object(class_id: int, object: Node) -> int:
-	var object_id = object_id_counter
-	networked_objects[object_id] = [class_id, object]
-	object_id_counter+=1
-	return object_id
 
 func give_client_command(from, to, unit_ids):
 	var units = []
@@ -62,3 +35,7 @@ func give_client_command(from, to, unit_ids):
 #remove later
 func _on_join_pressed() -> void:
 	queue_free()
+
+
+func _on_host_pressed() -> void:
+	Network.start_hosting(Network.PORT, 2)
