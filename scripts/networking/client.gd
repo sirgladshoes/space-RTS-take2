@@ -17,7 +17,6 @@ func send_command(from: Vector2, to:Vector2, units:Array):
 		var networked_obj = item.get_meta("networked_object")
 		if networked_obj:
 			object_ids.append(networked_obj.object_id)
-
 	
 	Network.send_client_command(from, to, object_ids)
 

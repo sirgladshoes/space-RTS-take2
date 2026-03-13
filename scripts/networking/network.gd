@@ -11,6 +11,9 @@ signal recieved_client_command(from: Vector2, to: Vector2, units: Array[int])
 var networked_objects: Dictionary[int,networked_object] = {}
 var object_id_counter = 0
 
+var time: Dictionary[String, int] = {"host_sync_time":0, "client_sync_time":0}
+var render_delay = 0.2
+
 func _ready() -> void:
 	#add all networked object resources to networking_data
 	var networked_res_path = "res://scripts/networking/networked_object_data/"
@@ -56,10 +59,11 @@ func create_networked_object(object: networked_object) -> int:
 func send_game_state():
 	byte_buffer.clear()
 	
+	byte_buffer.put_u32(Time.get_ticks_msec())
 	for id in networked_objects:
 		var object = networked_objects[id]
 		var networking_type_indx = networking_data.find(object.networking_data)
-		byte_buffer.put_8(networking_type_indx)
+		byte_buffer.put_u8(networking_type_indx)
 		byte_buffer.put_u32(id)
 		
 		object.encode_data(byte_buffer)
@@ -67,6 +71,8 @@ func send_game_state():
 	recv_world_state.rpc(byte_buffer.data_array)
 
 #client methods
+func get_time_secs() -> float:
+	return float(Time.get_ticks_msec() - time.client_sync_time + time.host_sync_time)/1000
 
 func send_client_command(from: Vector2, to: Vector2, units: Array):
 	byte_buffer.clear()
@@ -88,7 +94,8 @@ func client_disconnected(id: int):
 	print(str(id) + " disconnected")
 
 func connected_to_host():
-	print("connected")
+	print("connected to host")
+	recv_client_clocksync.rpc(Time.get_ticks_msec())
 
 func connect_to_host_failed():
 	print("connection failed")
@@ -102,14 +109,21 @@ func host_disconnected():
 func recv_world_state(data: PackedByteArray):
 	byte_buffer.data_array = data
 	
+	var timestamp = float(byte_buffer.get_u32())/1000
 	while byte_buffer.get_position() < byte_buffer.get_size():
-		var object_data_indx = byte_buffer.get_8()
+		var object_data_indx = byte_buffer.get_u8()
 		
 		var object_id = byte_buffer.get_u32()
 		if !networked_objects.has(object_id):
 			print("create object")
-		networked_objects[object_id].update_data(byte_buffer)
+		networked_objects[object_id].update_data(byte_buffer, timestamp)
 
+@rpc 
+func recv_host_clocksync(host_time: int, client_start_time: int):
+	var curr_time = Time.get_ticks_msec()
+	@warning_ignore("integer_division")
+	time.host_sync_time = host_time + (curr_time-client_start_time)/2
+	time.client_sync_time = curr_time
 
 #server rpcs
 @rpc("any_peer", "reliable")
@@ -132,3 +146,8 @@ func recv_client_command(data: PackedByteArray):
 		units.append(byte_buffer.get_u32())
 	
 	recieved_client_command.emit(from, to, units)
+
+@rpc("any_peer", "reliable")
+func recv_client_clocksync(client_time: int):
+	var id = multiplayer.get_remote_sender_id()
+	recv_host_clocksync.rpc_id(id, Time.get_ticks_msec(), client_time)
