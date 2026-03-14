@@ -11,23 +11,25 @@ func _ready() -> void:
 
 	timer.autostart = true
 	timer.wait_time = 0.1
-	timer.timeout.connect(send_game_state)
+	timer.timeout.connect(send_world_state)
 	add_child(timer)
 	
 	Network.recieved_client_command.connect(give_client_command)
 
-func send_game_state():
+func send_world_state():
 	#temperary
 	if !multiplayer.get_peers() or !multiplayer.is_server():
 		return
 	
-	Network.send_game_state()
+	Network.send_world_state()
 
 
 
 func give_client_command(from, to, unit_ids):
 	var units = []
 	for unit_id in unit_ids:
+		if !Network.networked_objects.has(unit_id):
+			continue
 		var networked_obj = Network.networked_objects[unit_id]
 		units.append(networked_obj.get_related_node("unit"))
 	command_giver.give_command(from, to, units)

@@ -7,23 +7,31 @@ var target_position: Vector2
 var target_mineable: Node
 
 var inventory = {"temp": 0}
+@onready var sm = $state_machine
 
-
+func _ready() -> void:
+	sm.set_transition_func(state_transitions)
 
 func _physics_process(delta: float) -> void:
-	#given mine command
-	if target_mineable:
-		var target_pos = target_mineable.global_position
-		
-		if global_position.distance_to(target_pos) > target_range:
-			global_position = global_position.move_toward(target_pos, move_speed*delta)
-		else:
+	match sm.current_state:
+		"travel":
+			global_position = global_position.move_toward(target_position, move_speed*delta)
+		"travel_mine":
+			global_position = global_position.move_toward(target_mineable.global_position, move_speed*delta)
+		"mine":
 			inventory.temp += delta
-	
-	#given move command
-	if target_position:
-		global_position = global_position.move_toward(target_position, move_speed*delta)
 
+func state_transitions(current: String):
+	match current:
+		"travel_mine":
+			var target_pos = target_mineable.global_position
+			if global_position.distance_to(target_pos) <= target_range:
+				return "mine"
+		"mine":
+			var target_pos = target_mineable.global_position
+			if global_position.distance_to(target_pos) > target_range:
+				return "travel_mine"
+			
 
 func command_given(command: Variant, args: Variant) -> void:
 	target_position = Vector2.ZERO
@@ -31,9 +39,7 @@ func command_given(command: Variant, args: Variant) -> void:
 	match command:
 		command_manager.commands.MOVE:
 			target_position = args[0]
+			sm.switch_state("travel")
 		command_manager.commands.MINE:
 			target_mineable = args[0]
-
-func set_pos_x(pos):
-	print("im the goat")
-	global_position.x = pos
+			sm.switch_state("travel_mine")

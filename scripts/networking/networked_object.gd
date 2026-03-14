@@ -10,13 +10,25 @@ var object_id: int
 
 var interpolated_data: Array[Dictionary] = []
 
+signal destroy_object()
+
+func _init() -> void:
+	Network.add_object_to_network.connect(add_to_network)
+
+#called when network creates object
+func add_to_network(id: int):
+	object_id = id
+	Network.add_object_to_network.disconnect(add_to_network)
+
 func _ready() -> void:
-	Network.create_networked_object(self)
+	if Network.add_object_to_network.is_connected(add_to_network):
+		Network.add_object_to_network.disconnect(add_to_network)
+	Network.add_networked_object(self)
 	for path in related_nodes.values():
+		print(path)
 		get_node(path).set_meta("networked_object", self)
 
 func encode_data(buffer: StreamPeerBuffer) -> void:
-	
 	var conversion_functions: Dictionary[int, Callable] = {networked_variable.data_types.INT_8: buffer.put_8, 
 	networked_variable.data_types.INT_16: buffer.put_16, networked_variable.data_types.INT_32: buffer.put_32, 
 	networked_variable.data_types.INT_64: buffer.put_64, networked_variable.data_types.FLOAT: buffer.put_float, 
@@ -50,6 +62,8 @@ func update_data(buffer: StreamPeerBuffer, timestamp: float) -> void:
 			apply_variable(variable, value)
 		else:
 			interpolated_snapshot[variable] = value
+			if interpolated_data.size() == 0:
+				apply_variable(variable, value)
 	interpolated_data.append(interpolated_snapshot)
 
 func apply_variable(variable: networked_variable, value) -> void:
@@ -58,6 +72,10 @@ func apply_variable(variable: networked_variable, value) -> void:
 			property_node.get(variable.setter).call(value)
 		else:
 			property_node.set_indexed(variable.property, value)
+
+func destroy():
+	destroy_object.emit()
+	queue_free()
 
 func get_related_node(key: String) -> Node:
 	return get_node(related_nodes[key])
@@ -89,3 +107,6 @@ func _process(_delta: float) -> void:
 		
 		var interpolated_value = lerp(value1, value2, lerp_weight)
 		apply_variable(variable, interpolated_value)
+
+func _exit_tree() -> void:
+	Network.remove_networked_object(object_id)

@@ -22,4 +22,5 @@ metadata/_custom_type_script = "uid://n3gda14hxidi"
 [resource]
 script = ExtResource("2_cp6er")
 synced_vars = Array[ExtResource("1_mlkc2")]([SubResource("Resource_mlkc2"), SubResource("Resource_cp6er")])
+object_scene_path = "res://scenes/units/mining_ship.tscn"
 metadata/_custom_type_script = "uid://5ymvd21fld5t"

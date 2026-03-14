@@ -6,6 +6,7 @@ extends Node2D
 func _ready() -> void:
 	#temperary
 	command_giver.command_given_raw.connect(send_command)
+	Network.create_object.connect(create_networked_object)
 
 
 func send_command(from: Vector2, to:Vector2, units:Array):
@@ -19,6 +20,9 @@ func send_command(from: Vector2, to:Vector2, units:Array):
 			object_ids.append(networked_obj.object_id)
 	
 	Network.send_client_command(from, to, object_ids)
+
+func create_networked_object(object: Node):
+	owner.add_child(object)
 
 #remove later
 func _on_host_pressed() -> void:

@@ -27,8 +27,7 @@ func _input(event: InputEvent) -> void:
 		#only gives command if there is a selection origin
 		if command_origin:
 			command_given_raw.emit(command_origin, get_global_mouse_position(), selected_units)
-			if multiplayer.is_server():
-				give_command(command_origin, get_global_mouse_position(), selected_units)
+			give_command(command_origin, get_global_mouse_position(), selected_units)
 			command_origin = null
 
 func _process(_delta: float) -> void:
@@ -72,10 +71,10 @@ func select_units(from: Vector2, to: Vector2):
 	selected_units = []
 	if result:
 		for item in result:
-			var unit = item.collider
-			selected_units.append(unit)
-			if unit is selectable:
-				unit.selected()
+			var unit_ = item.collider
+			selected_units.append(unit_)
+			if unit_ is selectable:
+				unit_.selected()
 
 func give_command(from: Vector2, to: Vector2, units: Array): 
 	var size = (to-from).abs()

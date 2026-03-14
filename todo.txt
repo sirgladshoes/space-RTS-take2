@@ -1,15 +1,14 @@
 goals for tommorow:
-add node/class for syncing an objects network state, name it like "networked_object" or something.
+simple state machine, theres a file in scripts
 
 NETWORKING REWORK NOTES:
 
-disgard ids for networked "classes" have the networked object added to a list and have it's index act as an "id"
-essentialy treat each class less like a class and more of just a specific set of variables to sync 
+Network autoload contains methods for sending and syncing state using
+a network of Networked_Objects that act as state syncers. 
+Client/server calls these methods suck as "send_world_state".
+Networked_Object node can be referenced by nearby related nodes if added to the objects
+"related nodes" list.
 
-add resource for networked classes to keep stuff easier to manage?
-
-back burner:
-simple state machine, theres a file in scripts
 
 Notes:
 if you sync player views and selctions, just make a player node and sync thoes
