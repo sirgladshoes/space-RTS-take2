@@ -6,11 +6,13 @@ var select_origin = null
 var selected_units = []
 
 var command_origin = null
+var team: selectable.teams = selectable.teams.BLUE
 
 enum commands{
 	MOVE,
+	ATTACK,
 	MINE, 
-	ATTACK
+	TRANSFER_INVENTORY
 }
 
 signal command_given_raw(from: Vector2, to: Vector2, units: Array)
@@ -25,9 +27,10 @@ func _input(event: InputEvent) -> void:
 			command_origin = get_global_mouse_position()
 	elif event.is_action_released("command"):
 		#only gives command if there is a selection origin
-		if command_origin:
+		if command_origin: 
 			command_given_raw.emit(command_origin, get_global_mouse_position(), selected_units)
-			give_command(command_origin, get_global_mouse_position(), selected_units)
+			if Network.is_hosting:
+				give_command(command_origin, get_global_mouse_position(), selected_units, team)
 			command_origin = null
 
 func _process(_delta: float) -> void:
@@ -72,26 +75,51 @@ func select_units(from: Vector2, to: Vector2):
 	if result:
 		for item in result:
 			var unit_ = item.collider
-			selected_units.append(unit_)
-			if unit_ is selectable:
+			if unit_ is selectable and unit_.team == team:
+				selected_units.append(unit_)
 				unit_.selected()
 
-func give_command(from: Vector2, to: Vector2, units: Array): 
+func give_command(from: Vector2, to: Vector2, units: Array, commander_team:int): 
 	var size = (to-from).abs()
 	var command_center = from+(to-from)/2
 	var result = rect_cast(size, command_center, 2)
 	
 	#begin command logic
 	var command = commands.MOVE
-	if result and result[0].collider is command_context:
-		command = result[0].collider.context
+	var context_objs: Array[command_context] = []
+	var contexts: Array[commands] = []
+	if result:
+		for item in result:
+			if item.collider is command_context:
+				if item.collider.context == commands.ATTACK and item.collider.owner.team == commander_team:
+					continue
+				if item.collider.context == commands.TRANSFER_INVENTORY and item.collider.owner.team != commander_team:
+					continue
+				
+				context_objs.append(item.collider)
+				contexts.append(item.collider.context)
+	
+	for num in commands.values():
+		if num in contexts:
+			command = num
 	
 	var args = []
 	match command:
 		commands.MOVE:
 			args.append(command_center)
 		commands.MINE:
-			args.append(result[0].collider)
+			for object in context_objs:
+				if object.context == commands.MINE:
+					args=[object]
+		commands.ATTACK:
+			for object in context_objs:
+				if object.context == commands.ATTACK:
+					args.append(object)
+		commands.TRANSFER_INVENTORY:
+			for object in context_objs:
+				if object.context == commands.TRANSFER_INVENTORY:
+					args=[object]
+	
 	
 	for item in units:
 		item.command_given(command, args)

@@ -1,0 +1,44 @@
+[gd_scene load_steps=8 format=3 uid="uid://dptctlc55hu0r"]
+
+[ext_resource type="Script" uid="uid://d3c5j8ggb46fr" path="res://scripts/units/maker_ship.gd" id="1_ecua4"]
+[ext_resource type="Texture2D" uid="uid://c4h08cmpl6ahr" path="res://icon.svg" id="3_hclxu"]
+[ext_resource type="Script" uid="uid://doikskm31bjhj" path="res://scripts/command_logic/command_context.gd" id="4_hclxu"]
+[ext_resource type="Script" uid="uid://iqtkbiyfhpt2" path="res://scripts/networking/networked_object.gd" id="4_v1xk4"]
+[ext_resource type="Resource" uid="uid://dfwv5u6cqpgc8" path="res://scripts/networking/networked_object_data/maker_ship.tres" id="5_v1xk4"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_hclxu"]
+size = Vector2(64, 65)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_dkhoe"]
+size = Vector2(64, 65)
+
+[node name="maker_ship" type="Node2D"]
+script = ExtResource("1_ecua4")
+
+[node name="sprite" type="Sprite2D" parent="."]
+modulate = Color(0.28627452, 0.9411765, 0.9411765, 1)
+scale = Vector2(0.5, 0.5)
+texture = ExtResource("3_hclxu")
+
+[node name="command_context" type="Area2D" parent="."]
+script = ExtResource("4_hclxu")
+context = 1
+metadata/_custom_type_script = "uid://doikskm31bjhj"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="command_context"]
+position = Vector2(0, -0.5)
+shape = SubResource("RectangleShape2D_hclxu")
+
+[node name="command_context2" type="Area2D" parent="."]
+script = ExtResource("4_hclxu")
+context = 3
+metadata/_custom_type_script = "uid://doikskm31bjhj"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="command_context2"]
+position = Vector2(0, -0.5)
+shape = SubResource("RectangleShape2D_dkhoe")
+
+[node name="networked_object" type="Node" parent="."]
+script = ExtResource("4_v1xk4")
+networking_data = ExtResource("5_v1xk4")
+metadata/_custom_type_script = "uid://iqtkbiyfhpt2"

@@ -6,16 +6,32 @@ var PORT = 18293
 #tells the network how to encode and decode data
 var networking_data: Array[networked_object_data] = []
 
-signal recieved_client_command(from: Vector2, to: Vector2, units: Array[int])
-#for creating objects client side.
-signal create_object(scene: Node)
-signal add_object_to_network(id: int)
-
 var networked_objects: Dictionary[int,networked_object] = {}
 var object_id_counter = 0
 
 var time: Dictionary[String, int] = {"host_sync_time":0, "client_sync_time":0}
 var render_delay = 0.2
+var is_hosting = false
+
+signal started_hosting()
+signal client_connected_(id: int)
+signal client_disconnected_(id: int)
+
+signal connected_to_host_()
+signal connect_to_host_failed_()
+signal host_disconnected_()
+
+#for creating objects client side.
+signal create_object(scene: Node)
+signal add_object_to_network(id: int)
+
+#implementation specific
+#host
+
+signal recieved_client_command(from: Vector2, to: Vector2, units: Array[int])
+#client
+signal assigned_team(team: int)
+
 
 func _ready() -> void:
 	#add all networked object resources to networking_data
@@ -25,7 +41,7 @@ func _ready() -> void:
 		networking_data.append(load(networked_res_path + file))
 
 
-func connect_to_host(ip: String, port: int):
+func connect_to_host(ip: String, port: int) -> void:
 	var peer = ENetMultiplayerPeer.new()
 	peer.create_client(ip, port)
 	multiplayer.set_multiplayer_peer(peer)
@@ -34,19 +50,22 @@ func connect_to_host(ip: String, port: int):
 	multiplayer.connection_failed.connect(connect_to_host_failed)
 	multiplayer.server_disconnected.connect(host_disconnected)
 
-func start_hosting(port: int, max_connections: int):
+func start_hosting(port: int, max_connections: int) -> void:
 	var peer = ENetMultiplayerPeer.new()
 	peer.create_server(port, max_connections)
 	multiplayer.set_multiplayer_peer(peer)
+	is_hosting = true
 	
 	multiplayer.peer_connected.connect(client_connected)
 	multiplayer.peer_disconnected.connect(client_disconnected)
+	started_hosting.emit()
 
-func destroy_connection():
+func destroy_connection() -> void:
 	var peer = OfflineMultiplayerPeer.new()
 	multiplayer.set_multiplayer_peer(peer)
+	is_hosting = false
 
-func add_networked_object(object: networked_object):
+func add_networked_object(object: networked_object) -> void:
 	if object.object_id:
 		if networked_objects.has(object.object_id):
 			printerr("object with that id already exists")
@@ -60,11 +79,11 @@ func add_networked_object(object: networked_object):
 	networked_objects[id] = object
 	object.object_id = id
 
-func remove_networked_object(object_id: int):
+func remove_networked_object(object_id: int) -> void:
 	networked_objects.erase(object_id)
 
 #server methods
-func send_world_state():
+func send_world_state() -> void:
 	byte_buffer.clear()
 	
 	byte_buffer.put_u32(Time.get_ticks_msec())
@@ -78,11 +97,21 @@ func send_world_state():
 	
 	recv_world_state.rpc(byte_buffer.data_array)
 
+#implementation specific server
+func assign_team(client_id: int, team: int) -> void:
+	recv_team_assignment.rpc_id(client_id, team)
+
 #client methods
 func get_time_secs() -> float:
 	return float(Time.get_ticks_msec() - time.client_sync_time + time.host_sync_time)/1000
 
-func skip_object_data(networked_data: networked_object_data, buffer: StreamPeerBuffer):
+func create_networked_object(object_id: int, object_data_indx) -> void:
+	var scene = load(networking_data[object_data_indx].object_scene_path)
+	var node = scene.instantiate()
+	add_object_to_network.emit(object_id)
+	create_object.emit(node)
+
+func skip_object_data(networked_data: networked_object_data, buffer: StreamPeerBuffer) -> void:
 	var conversion_functions: Dictionary[int, Callable] = {networked_variable.data_types.INT_8: buffer.get_8, 
 	networked_variable.data_types.INT_16: buffer.get_16, networked_variable.data_types.INT_32: buffer.get_32, 
 	networked_variable.data_types.INT_64: buffer.get_64, networked_variable.data_types.FLOAT: buffer.get_float, 
@@ -92,7 +121,7 @@ func skip_object_data(networked_data: networked_object_data, buffer: StreamPeerB
 		conversion_functions[variable.data_type].call()
 
 #implementation specific client
-func send_client_command(from: Vector2, to: Vector2, units: Array):
+func send_client_command(from: Vector2, to: Vector2, units: Array) -> void:
 	byte_buffer.clear()
 	
 	byte_buffer.put_float(from.x)
@@ -106,26 +135,31 @@ func send_client_command(from: Vector2, to: Vector2, units: Array):
 
 
 #signals
-func client_connected(id: int):
+func client_connected(id: int) -> void:
+	client_connected_.emit(id)
 	print(str(id) + " connected")
 
-func client_disconnected(id: int):
+func client_disconnected(id: int) -> void:
+	client_disconnected_.emit(id)
 	print(str(id) + " disconnected")
 
-func connected_to_host():
+func connected_to_host() -> void:
+	connected_to_host_.emit()
 	print("connected to host")
 	recv_client_clocksync.rpc(Time.get_ticks_msec())
 
-func connect_to_host_failed():
+func connect_to_host_failed() -> void:
+	connect_to_host_failed_.emit()
 	print("connection failed")
 
-func host_disconnected():
+func host_disconnected() -> void:
+	host_disconnected_.emit()
 	print("host disconnected")
 
 
 #client rpcs
-@rpc
-func recv_world_state(data: PackedByteArray):
+@rpc("unreliable")
+func recv_world_state(data: PackedByteArray) -> void:
 	byte_buffer.data_array = data
 	
 	var recieved_objects = []
@@ -137,12 +171,12 @@ func recv_world_state(data: PackedByteArray):
 		recieved_objects.append(object_id)
 		
 		if !networked_objects.has(object_id):
-			var scene = load(networking_data[object_data_indx].object_scene_path)
-			var node = scene.instantiate()
-			add_object_to_network.emit(object_id)
-			create_object.emit(node)
+			create_networked_object(object_id, object_data_indx)
 		
 		if networked_objects.has(object_id):
+			if networked_objects[object_id].networking_data != networking_data[object_data_indx]:
+				networked_objects[object_id].destroy()
+				create_networked_object(object_id, object_data_indx)
 			networked_objects[object_id].update_data(byte_buffer, timestamp)
 		else:
 			skip_object_data(networking_data[object_data_indx], byte_buffer)
@@ -151,22 +185,27 @@ func recv_world_state(data: PackedByteArray):
 		if !recieved_objects.has(object_id):
 			networked_objects[object_id].destroy()
 
-@rpc 
-func recv_host_clocksync(host_time: int, client_start_time: int):
+@rpc("reliable") 
+func recv_host_clocksync(host_time: int, client_start_time: int) -> void:
 	var curr_time = Time.get_ticks_msec()
 	@warning_ignore("integer_division")
 	time.host_sync_time = host_time + (curr_time-client_start_time)/2
 	time.client_sync_time = curr_time
 
+#implementation specific client rpcs
+@rpc("reliable")
+func recv_team_assignment(team: int) -> void:
+	assigned_team.emit(team)
+
 #server rpcs
 @rpc("any_peer", "reliable")
-func recv_client_clocksync(client_time: int):
+func recv_client_clocksync(client_time: int) -> void:
 	var id = multiplayer.get_remote_sender_id()
 	recv_host_clocksync.rpc_id(id, Time.get_ticks_msec(), client_time)
 
 #implementation specific server rpcs
 @rpc("any_peer", "reliable")
-func recv_client_command(data: PackedByteArray):
+func recv_client_command(data: PackedByteArray) -> void:
 	if !multiplayer.is_server():
 		return
 	
@@ -184,4 +223,6 @@ func recv_client_command(data: PackedByteArray):
 	while byte_buffer.get_position() < byte_buffer.get_size():
 		units.append(byte_buffer.get_u32())
 	
-	recieved_client_command.emit(from, to, units)
+	var sender = multiplayer.get_remote_sender_id()
+	
+	recieved_client_command.emit(from, to, units, sender)

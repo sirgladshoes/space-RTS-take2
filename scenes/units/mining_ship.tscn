@@ -1,13 +1,17 @@
-[gd_scene load_steps=8 format=3 uid="uid://blyhemo55akcw"]
+[gd_scene load_steps=10 format=3 uid="uid://blyhemo55akcw"]
 
 [ext_resource type="Script" uid="uid://bovpo7seytbqv" path="res://scripts/units/mining_ship/mining_ship.gd" id="1_vo50n"]
 [ext_resource type="Script" uid="uid://bd24p5rucivqh" path="res://scripts/command_logic/selectable.gd" id="2_f46tj"]
 [ext_resource type="Texture2D" uid="uid://c4h08cmpl6ahr" path="res://icon.svg" id="3_ckyon"]
 [ext_resource type="Script" uid="uid://iqtkbiyfhpt2" path="res://scripts/networking/networked_object.gd" id="4_x55ac"]
-[ext_resource type="Resource" uid="uid://d1bly1gx57jfy" path="res://scripts/networking/networked_object_data/test_object.tres" id="5_832wd"]
+[ext_resource type="Resource" uid="uid://d1bly1gx57jfy" path="res://scripts/networking/networked_object_data/mining_ship.tres" id="5_832wd"]
 [ext_resource type="Script" uid="uid://b8bdy4fqgimix" path="res://scripts/state_machine.gd" id="6_5wrer"]
+[ext_resource type="Script" uid="uid://doikskm31bjhj" path="res://scripts/command_logic/command_context.gd" id="7_3g0ik"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_x55ac"]
+size = Vector2(64, 64)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_jbimc"]
 size = Vector2(64, 64)
 
 [node name="mining_ship" type="Node2D"]
@@ -23,6 +27,14 @@ metadata/_custom_type_script = "uid://bd24p5rucivqh"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="selectable"]
 shape = SubResource("RectangleShape2D_x55ac")
+
+[node name="command_context" type="Area2D" parent="."]
+script = ExtResource("7_3g0ik")
+context = 1
+metadata/_custom_type_script = "uid://doikskm31bjhj"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="command_context"]
+shape = SubResource("RectangleShape2D_jbimc")
 
 [node name="networked_object" type="Node" parent="."]
 script = ExtResource("4_x55ac")

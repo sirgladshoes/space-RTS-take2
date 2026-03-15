@@ -1,0 +1,23 @@
+[gd_resource type="Resource" script_class="networked_object_data" load_steps=5 format=3 uid="uid://dfwv5u6cqpgc8"]
+
+[ext_resource type="Script" uid="uid://5ymvd21fld5t" path="res://scripts/networking/networked_object_data.gd" id="1_et36s"]
+[ext_resource type="Script" uid="uid://n3gda14hxidi" path="res://scripts/networking/networked_variable.gd" id="2_fq76u"]
+
+[sub_resource type="Resource" id="Resource_et36s"]
+script = ExtResource("2_fq76u")
+propery_path = NodePath("..")
+property = "inventory:temp"
+data_type = 4
+metadata/_custom_type_script = "uid://n3gda14hxidi"
+
+[sub_resource type="Resource" id="Resource_fq76u"]
+script = ExtResource("2_fq76u")
+propery_path = NodePath("..")
+property = "team"
+metadata/_custom_type_script = "uid://n3gda14hxidi"
+
+[resource]
+script = ExtResource("1_et36s")
+synced_vars = Array[ExtResource("2_fq76u")]([SubResource("Resource_et36s"), SubResource("Resource_fq76u")])
+object_scene_path = "res://scenes/units/maker_ship.tscn"
+metadata/_custom_type_script = "uid://5ymvd21fld5t"

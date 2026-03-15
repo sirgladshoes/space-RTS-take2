@@ -35,8 +35,7 @@ func encode_data(buffer: StreamPeerBuffer) -> void:
 	networked_variable.data_types.DOUBLE: buffer.put_double, networked_variable.data_types.STRING: buffer.put_string}
 	
 	for variable in networking_data.synced_vars:
-		var property_node = owner.get_node(variable.propery_path)
-		
+		var property_node = get_node(variable.propery_path)
 		var value
 		if variable.getter:
 			value = property_node.get(variable.getter).call()
@@ -67,7 +66,7 @@ func update_data(buffer: StreamPeerBuffer, timestamp: float) -> void:
 	interpolated_data.append(interpolated_snapshot)
 
 func apply_variable(variable: networked_variable, value) -> void:
-		var property_node = owner.get_node(variable.propery_path)
+		var property_node = get_node(variable.propery_path)
 		if variable.setter:
 			property_node.get(variable.setter).call(value)
 		else:
@@ -75,7 +74,7 @@ func apply_variable(variable: networked_variable, value) -> void:
 
 func destroy():
 	destroy_object.emit()
-	queue_free()
+	free()
 
 func get_related_node(key: String) -> Node:
 	return get_node(related_nodes[key])
