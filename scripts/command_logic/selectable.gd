@@ -6,9 +6,10 @@ enum teams {
 }
 
 @export var team: teams = teams.BLUE
+@export var connected_nodes: Dictionary[StringName, Node]
 
 signal on_selected()
-signal on_command_given(command, args)
+signal command_given(command: int, args: Array)
 
 func _ready() -> void:
 	monitoring = false
@@ -18,5 +19,5 @@ func _ready() -> void:
 func selected():
 	on_selected.emit()
 
-func command_given(command: int, args: Array):
-	on_command_given.emit(command, args)
+func give_command(command: int, args: Array):
+	command_given.emit(command, args)

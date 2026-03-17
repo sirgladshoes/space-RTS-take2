@@ -25,7 +25,6 @@ func _ready() -> void:
 		Network.add_object_to_network.disconnect(add_to_network)
 	Network.add_networked_object(self)
 	for path in related_nodes.values():
-		print(path)
 		get_node(path).set_meta("networked_object", self)
 
 func encode_data(buffer: StreamPeerBuffer) -> void:
@@ -74,7 +73,8 @@ func apply_variable(variable: networked_variable, value) -> void:
 
 func destroy():
 	destroy_object.emit()
-	free()
+	Network.remove_networked_object(object_id)
+	queue_free()
 
 func get_related_node(key: String) -> Node:
 	return get_node(related_nodes[key])
@@ -108,4 +108,4 @@ func _process(_delta: float) -> void:
 		apply_variable(variable, interpolated_value)
 
 func _exit_tree() -> void:
-	Network.remove_networked_object(object_id)
+	destroy()

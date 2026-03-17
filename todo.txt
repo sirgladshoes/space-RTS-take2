@@ -1,5 +1,5 @@
 goals for tommorow:
-simple state machine, theres a file in scripts
+add angle interpolation for networked objects
 
 NETWORKING REWORK NOTES:
 

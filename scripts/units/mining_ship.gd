@@ -7,9 +7,9 @@ extends Node2D
 var target_position: Vector2
 var target_mineable: Node
 
-var inventory = {"temp": 0}
 @onready var sm = $state_machine
 @onready var my_selectable = $selectable
+@onready var my_inventory = $inventory
 
 func _ready() -> void:
 	sm.set_transition_func(state_transitions)
@@ -22,7 +22,7 @@ func _physics_process(delta: float) -> void:
 		"travel_mine":
 			global_position = global_position.move_toward(target_mineable.global_position, move_speed*delta)
 		"mine":
-			inventory.temp += delta
+			my_inventory.add_resource(inventory.resource_types.TEMP, 1)
 
 func state_transitions(current: String):
 	match current:
@@ -44,7 +44,6 @@ func command_given(command: Variant, args: Variant) -> void:
 			target_mineable = args[0]
 			sm.switch_state("travel_mine")
 		command_manager.commands.TRANSFER_INVENTORY:
-			var reciever = args[0].owner
-			for type in inventory:
-				reciever.inventory[type] += inventory[type]
-				inventory[type] = 0
+			var reciever = args[0]
+			for type in inventory.resource_types.values():
+				reciever.add_resource(type, my_inventory.remove_all_resource(type))

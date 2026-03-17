@@ -34,7 +34,7 @@ func give_client_command(from, to, unit_ids, sender):
 		if !Network.networked_objects.has(unit_id):
 			continue
 		var networked_obj = Network.networked_objects[unit_id]
-		var unit = networked_obj.get_related_node("unit")
+		var unit = networked_obj.get_related_node("selectable")
 		if unit.team != teams[sender]:
 			print("potential cheater")
 			continue

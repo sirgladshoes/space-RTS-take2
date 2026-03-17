@@ -61,15 +61,16 @@ command_giver = NodePath("../command_manager")
 position = Vector2(237, 484)
 team = 1
 
-[node name="mining_ship" parent="." instance=ExtResource("4_jyhfs")]
-position = Vector2(426, 433)
-
 [node name="game_client" type="Node2D" parent="." node_paths=PackedStringArray("command_giver")]
 script = ExtResource("7_tipki")
 command_giver = NodePath("../command_manager")
 
+[node name="mining_ship" parent="game_client" instance=ExtResource("4_jyhfs")]
+position = Vector2(426, 433)
+
 [node name="maker_ship" parent="." instance=ExtResource("7_o6xl0")]
 position = Vector2(197, 280)
+team = 1
 
 [connection signal="pressed" from="Control/host" to="game_host" method="_on_host_pressed"]
 [connection signal="pressed" from="Control/host" to="game_client" method="_on_host_pressed"]

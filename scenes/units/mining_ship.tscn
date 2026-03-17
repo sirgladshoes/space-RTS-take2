@@ -1,12 +1,13 @@
-[gd_scene load_steps=10 format=3 uid="uid://blyhemo55akcw"]
+[gd_scene load_steps=11 format=3 uid="uid://blyhemo55akcw"]
 
-[ext_resource type="Script" uid="uid://bovpo7seytbqv" path="res://scripts/units/mining_ship/mining_ship.gd" id="1_vo50n"]
+[ext_resource type="Script" uid="uid://bovpo7seytbqv" path="res://scripts/units/mining_ship.gd" id="1_vo50n"]
 [ext_resource type="Script" uid="uid://bd24p5rucivqh" path="res://scripts/command_logic/selectable.gd" id="2_f46tj"]
 [ext_resource type="Texture2D" uid="uid://c4h08cmpl6ahr" path="res://icon.svg" id="3_ckyon"]
 [ext_resource type="Script" uid="uid://iqtkbiyfhpt2" path="res://scripts/networking/networked_object.gd" id="4_x55ac"]
 [ext_resource type="Resource" uid="uid://d1bly1gx57jfy" path="res://scripts/networking/networked_object_data/mining_ship.tres" id="5_832wd"]
 [ext_resource type="Script" uid="uid://b8bdy4fqgimix" path="res://scripts/state_machine.gd" id="6_5wrer"]
 [ext_resource type="Script" uid="uid://doikskm31bjhj" path="res://scripts/command_logic/command_context.gd" id="7_3g0ik"]
+[ext_resource type="Script" uid="uid://bb7h6rlhbmne" path="res://scripts/inventory/inventory.gd" id="8_jbimc"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_x55ac"]
 size = Vector2(64, 64)
@@ -40,7 +41,7 @@ shape = SubResource("RectangleShape2D_jbimc")
 script = ExtResource("4_x55ac")
 networking_data = ExtResource("5_832wd")
 related_nodes = Dictionary[String, NodePath]({
-"unit": NodePath("../selectable")
+"selectable": NodePath("../selectable")
 })
 metadata/_custom_type_script = "uid://iqtkbiyfhpt2"
 
@@ -48,5 +49,9 @@ metadata/_custom_type_script = "uid://iqtkbiyfhpt2"
 script = ExtResource("6_5wrer")
 metadata/_custom_type_script = "uid://b8bdy4fqgimix"
 
-[connection signal="on_command_given" from="selectable" to="." method="command_given"]
+[node name="inventory" type="Node" parent="."]
+script = ExtResource("8_jbimc")
+metadata/_custom_type_script = "uid://bb7h6rlhbmne"
+
+[connection signal="command_given" from="selectable" to="." method="command_given"]
 [connection signal="destroy_object" from="networked_object" to="." method="queue_free"]

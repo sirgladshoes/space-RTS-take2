@@ -90,14 +90,15 @@ func give_command(from: Vector2, to: Vector2, units: Array, commander_team:int):
 	var contexts: Array[commands] = []
 	if result:
 		for item in result:
-			if item.collider is command_context:
-				if item.collider.context == commands.ATTACK and item.collider.owner.team == commander_team:
+			var object = item.collider
+			if object is command_context:
+				if object.context == commands.ATTACK and object.connected_nodes.selectable.team == commander_team:
 					continue
-				if item.collider.context == commands.TRANSFER_INVENTORY and item.collider.owner.team != commander_team:
+				if object.context == commands.TRANSFER_INVENTORY and object.connected_nodes.selectable.team != commander_team:
 					continue
 				
-				context_objs.append(item.collider)
-				contexts.append(item.collider.context)
+				context_objs.append(object)
+				contexts.append(object.context)
 	
 	for num in commands.values():
 		if num in contexts:
@@ -118,8 +119,8 @@ func give_command(from: Vector2, to: Vector2, units: Array, commander_team:int):
 		commands.TRANSFER_INVENTORY:
 			for object in context_objs:
 				if object.context == commands.TRANSFER_INVENTORY:
-					args=[object]
+					args=[object.connected_nodes.inventory]
 	
 	
 	for item in units:
-		item.command_given(command, args)
+		item.give_command(command, args)
