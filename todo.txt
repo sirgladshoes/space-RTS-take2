@@ -1,5 +1,5 @@
 goals for tommorow:
-add angle interpolation for networked objects
+
 
 NETWORKING REWORK NOTES:
 

@@ -27,6 +27,10 @@ texture = ExtResource("3_hclxu")
 
 [node name="selectable" type="Area2D" parent="."]
 script = ExtResource("3_6aq4t")
+display_data = Dictionary[StringName, Variant]({
+&"inventory": NodePath("../inventory"),
+&"name": "maker ship"
+})
 metadata/_custom_type_script = "uid://bd24p5rucivqh"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="selectable"]

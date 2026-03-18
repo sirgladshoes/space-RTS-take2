@@ -103,8 +103,11 @@ func _process(_delta: float) -> void:
 			continue
 		var value1 = snapshot1[variable]
 		var value2 = snapshot2[variable]
-		
-		var interpolated_value = lerp(value1, value2, lerp_weight)
+		var interpolated_value
+		if variable.angle_interpolation:
+			interpolated_value = lerp_angle(value1, value2, lerp_weight)
+		else:
+			interpolated_value = lerp(value1, value2, lerp_weight)
 		apply_variable(variable, interpolated_value)
 
 func _exit_tree() -> void:

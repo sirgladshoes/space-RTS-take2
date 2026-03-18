@@ -1,7 +1,8 @@
 class_name inventory extends Node
 
 enum resource_types{
-	TEMP
+	TEMP,
+	TEMP2
 }
 
 var my_inventory: Dictionary[String, int]
@@ -12,7 +13,6 @@ func _ready() -> void:
 
 func add_resource(type: resource_types, amount: int) -> void:
 	my_inventory[str(type)] += amount
-	print(my_inventory)
 
 func remove_resource(type: resource_types, attempted_amount: int) -> int:
 	if my_inventory[str(type)] - attempted_amount >= 0:
@@ -29,3 +29,6 @@ func remove_all_resource(type: resource_types) -> int:
 
 func get_resource_amount(type: resource_types) -> int:
 	return my_inventory[str(type)]
+
+func get_all_resources() -> Dictionary[String, int]:
+	return my_inventory

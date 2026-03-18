@@ -3,7 +3,7 @@ class_name command_manager extends Node2D
 @export var selection_width: int = 1
 
 var select_origin = null
-var selected_units = []
+var selected_units: Array[selectable] = []
 
 var command_origin = null
 var team: selectable.teams = selectable.teams.BLUE
@@ -16,6 +16,7 @@ enum commands{
 }
 
 signal command_given_raw(from: Vector2, to: Vector2, units: Array)
+signal units_selected(units: Array)
 
 func _input(event: InputEvent) -> void:
 	if event.is_action_pressed("select"):
@@ -74,10 +75,11 @@ func select_units(from: Vector2, to: Vector2):
 	selected_units = []
 	if result:
 		for item in result:
-			var unit_ = item.collider
-			if unit_ is selectable and unit_.team == team:
-				selected_units.append(unit_)
-				unit_.selected()
+			var unit = item.collider
+			if unit is selectable and unit.team == team:
+				selected_units.append(unit)
+				unit.selected()
+	units_selected.emit(selected_units)
 
 func give_command(from: Vector2, to: Vector2, units: Array, commander_team:int): 
 	var size = (to-from).abs()

@@ -16,3 +16,4 @@ enum data_types {
 @export var setter: String
 @export var data_type: data_types
 @export var is_interpolated: bool
+@export var angle_interpolation: bool
