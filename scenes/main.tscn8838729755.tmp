@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=3 uid="uid://cxew7m7a508m0"]
+[gd_scene load_steps=9 format=3 uid="uid://cxew7m7a508m0"]
 
 [ext_resource type="Script" uid="uid://drk72iaypq6j3" path="res://scripts/command_logic/command_manager.gd" id="1_o5qli"]
 [ext_resource type="Texture2D" uid="uid://c4h08cmpl6ahr" path="res://icon.svg" id="2_0wfyh"]
@@ -7,7 +7,6 @@
 [ext_resource type="Script" uid="uid://5lponkkbtih4" path="res://scripts/networking/host.gd" id="6_tefeu"]
 [ext_resource type="PackedScene" uid="uid://dptctlc55hu0r" path="res://scenes/units/maker_ship.tscn" id="7_o6xl0"]
 [ext_resource type="Script" uid="uid://bwaownusaip5p" path="res://scripts/networking/client.gd" id="7_tipki"]
-[ext_resource type="PackedScene" uid="uid://blyhemo55akcw" path="res://scenes/units/mining_ship.tscn" id="8_tipki"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_tbgi4"]
 size = Vector2(127, 128)
@@ -19,28 +18,10 @@ z_index = 80
 script = ExtResource("1_o5qli")
 selection_width = 3
 
-[node name="command_ui" type="Control" parent="command_manager"]
-layout_mode = 3
-anchors_preset = 0
-offset_right = 161.0
-offset_bottom = 118.0
+[node name="command_ui" type="Panel" parent="command_manager"]
+offset_right = 343.0
+offset_bottom = 648.0
 script = ExtResource("2_tipki")
-
-[node name="Panel" type="Panel" parent="command_manager/command_ui"]
-layout_mode = 0
-offset_right = 263.0
-offset_bottom = 471.0
-
-[node name="selected_units" type="ScrollContainer" parent="command_manager/command_ui"]
-layout_mode = 0
-offset_right = 262.0
-offset_bottom = 468.0
-
-[node name="VBoxContainer" type="VBoxContainer" parent="command_manager/command_ui/selected_units"]
-clip_contents = true
-layout_mode = 2
-size_flags_horizontal = 3
-size_flags_vertical = 3
 
 [node name="asteroid" type="Node2D" parent="."]
 position = Vector2(415, 293)
@@ -71,8 +52,7 @@ command_giver = NodePath("../command_manager")
 [node name="Control" type="Control" parent="."]
 layout_mode = 3
 anchors_preset = 0
-offset_left = 260.0
-offset_right = 300.0
+offset_right = 40.0
 offset_bottom = 40.0
 
 [node name="host" type="Button" parent="Control"]
@@ -88,9 +68,6 @@ offset_right = 110.0
 offset_bottom = 31.0
 text = "join
 "
-
-[node name="mining_ship" parent="." instance=ExtResource("8_tipki")]
-position = Vector2(683, 387)
 
 [connection signal="units_selected" from="command_manager" to="command_manager/command_ui" method="show_selected"]
 [connection signal="pressed" from="Control/host" to="game_host" method="_on_host_pressed"]

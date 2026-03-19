@@ -6,7 +6,6 @@ enum teams {
 }
 
 @export var team: teams = teams.BLUE
-@export var connected_nodes: Dictionary[StringName, Node]
 @export var display_data: Dictionary[StringName, Variant] = {"name":"default name"}
 
 signal on_selected()

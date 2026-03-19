@@ -26,6 +26,7 @@ texture = ExtResource("3_ckyon")
 script = ExtResource("2_f46tj")
 display_data = Dictionary[StringName, Variant]({
 &"inventory": NodePath("../inventory"),
+&"maker_flag": PackedStringArray("mining ship"),
 &"name": "mining ship"
 })
 metadata/_custom_type_script = "uid://bd24p5rucivqh"
@@ -57,5 +58,12 @@ metadata/_custom_type_script = "uid://b8bdy4fqgimix"
 script = ExtResource("8_jbimc")
 metadata/_custom_type_script = "uid://bb7h6rlhbmne"
 
+[node name="Label" type="Label" parent="."]
+offset_left = -19.0
+offset_top = -56.0
+offset_right = 21.0
+offset_bottom = -33.0
+
 [connection signal="command_given" from="selectable" to="." method="command_given"]
 [connection signal="destroy_object" from="networked_object" to="." method="queue_free"]
+[connection signal="state_switched" from="state_machine" to="." method="_on_state_machine_state_switched"]

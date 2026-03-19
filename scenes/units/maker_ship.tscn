@@ -14,7 +14,7 @@ size = Vector2(64, 65)
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_hclxu"]
 size = Vector2(64, 65)
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_dkhoe"]
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_6fc0x"]
 size = Vector2(64, 65)
 
 [node name="maker_ship" type="Node2D"]
@@ -29,7 +29,7 @@ texture = ExtResource("3_hclxu")
 script = ExtResource("3_6aq4t")
 display_data = Dictionary[StringName, Variant]({
 &"inventory": NodePath("../inventory"),
-&"name": "maker ship"
+&"name": "fabricator ship"
 })
 metadata/_custom_type_script = "uid://bd24p5rucivqh"
 
@@ -60,7 +60,7 @@ metadata/_custom_type_script = "uid://doikskm31bjhj"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="transferable"]
 position = Vector2(0, -0.5)
-shape = SubResource("RectangleShape2D_dkhoe")
+shape = SubResource("RectangleShape2D_6fc0x")
 
 [node name="networked_object" type="Node" parent="."]
 script = ExtResource("4_v1xk4")

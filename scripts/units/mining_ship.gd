@@ -5,7 +5,7 @@ extends Node2D
 @export var team: selectable.teams
 
 var target_position: Vector2
-var target_mineable: Node
+var target_object: Node
 
 @onready var sm = $state_machine
 @onready var my_selectable = $selectable
@@ -14,26 +14,37 @@ var target_mineable: Node
 func _ready() -> void:
 	sm.set_transition_func(state_transitions)
 	my_selectable.team = team
+	sm.switch_state("idle")
 
 func _physics_process(delta: float) -> void:
+	$Label.text = sm.current_state
 	match sm.current_state:
 		"travel":
 			global_position = global_position.move_toward(target_position, move_speed*delta)
 		"travel_mine":
-			global_position = global_position.move_toward(target_mineable.global_position, move_speed*delta)
+			global_position = global_position.move_toward(target_object.global_position, move_speed*delta)
 		"mine":
 			my_inventory.add_resource(inventory.resource_types.TEMP, 1)
+		"travel_transfer":
+			global_position = global_position.move_toward(target_object.global_position, move_speed*delta)
 
 func state_transitions(current: String):
 	match current:
+		"travel":
+			if global_position.distance_to(target_position) <= 10:
+				return "idle"
 		"travel_mine":
-			var target_pos = target_mineable.global_position
+			var target_pos = target_object.global_position
 			if global_position.distance_to(target_pos) <= target_range:
 				return "mine"
 		"mine":
-			var target_pos = target_mineable.global_position
+			var target_pos = target_object.global_position
 			if global_position.distance_to(target_pos) > target_range:
 				return "travel_mine"
+		"travel_transfer":
+			var target_pos = target_object.global_position
+			if global_position.distance_to(target_pos) <= target_range:
+				return "idle"
 
 func command_given(command: Variant, args: Variant) -> void:
 	match command:
@@ -41,9 +52,15 @@ func command_given(command: Variant, args: Variant) -> void:
 			target_position = args[0]
 			sm.switch_state("travel")
 		command_manager.commands.MINE:
-			target_mineable = args[0]
+			target_object = args[0]
 			sm.switch_state("travel_mine")
 		command_manager.commands.TRANSFER_INVENTORY:
-			var reciever = args[0]
-			for type in inventory.resource_types.values():
-				reciever.add_resource(type, my_inventory.remove_all_resource(type))
+			target_object = args[0] 
+			sm.switch_state("travel_transfer")
+
+
+func _on_state_machine_state_switched(current: String, previous: String) -> void:
+	if current == "idle" and previous == "travel_transfer":
+		var target = target_object.connected_nodes.inventory
+		for resource in inventory.resource_types.values():
+			target.add_resource(resource, my_inventory.remove_all_resource(resource))

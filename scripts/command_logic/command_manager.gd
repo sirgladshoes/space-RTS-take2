@@ -18,7 +18,7 @@ enum commands{
 signal command_given_raw(from: Vector2, to: Vector2, units: Array)
 signal units_selected(units: Array)
 
-func _input(event: InputEvent) -> void:
+func _unhandled_input(event: InputEvent) -> void:
 	if event.is_action_pressed("select"):
 		select_origin = get_global_mouse_position()
 	elif event.is_action_released("select"):
@@ -81,6 +81,15 @@ func select_units(from: Vector2, to: Vector2):
 				unit.selected()
 	units_selected.emit(selected_units)
 
+func focus_unit(unit: selectable):
+	selected_units = [unit]
+	unit.selected()
+	units_selected.emit(selected_units)
+
+func deselect_unit(unit: selectable):
+	selected_units.erase(unit)
+	units_selected.emit(selected_units)
+
 func give_command(from: Vector2, to: Vector2, units: Array, commander_team:int): 
 	var size = (to-from).abs()
 	var command_center = from+(to-from)/2
@@ -121,8 +130,10 @@ func give_command(from: Vector2, to: Vector2, units: Array, commander_team:int):
 		commands.TRANSFER_INVENTORY:
 			for object in context_objs:
 				if object.context == commands.TRANSFER_INVENTORY:
-					args=[object.connected_nodes.inventory]
-	
+					args=[object]
 	
 	for item in units:
 		item.give_command(command, args)
+
+func give_ui_command(unit: selectable, command: int, args: Array):
+	pass
