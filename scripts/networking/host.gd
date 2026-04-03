@@ -8,6 +8,8 @@ var timer = Timer.new()
 
 var teams = {}
 
+@export var master_template: master_unit_template
+
 func _ready() -> void:
 	timer.autostart = true
 	timer.wait_time = 0.1
@@ -15,6 +17,7 @@ func _ready() -> void:
 	add_child(timer)
 	
 	Network.recieved_client_command.connect(give_client_command)
+	Network.make_unit.connect(make_unit)
 	Network.client_connected_.connect(client_connected)
 
 func send_world_state():
@@ -41,6 +44,8 @@ func give_client_command(from, to, unit_ids, sender):
 		units.append(unit)
 	command_giver.give_command(from, to, units, teams[sender])
 
+func make_unit(template_indx: int, maker_id: int):
+	Network.networked_objects[maker_id].owner.make_unit(template_indx)
 
 #remove later
 func _on_join_pressed() -> void:

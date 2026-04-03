@@ -1,12 +1,16 @@
-[gd_scene load_steps=11 format=3 uid="uid://dptctlc55hu0r"]
+[gd_scene load_steps=15 format=3 uid="uid://dptctlc55hu0r"]
 
 [ext_resource type="Script" uid="uid://d3c5j8ggb46fr" path="res://scripts/units/maker_ship.gd" id="1_ecua4"]
-[ext_resource type="Script" uid="uid://bd24p5rucivqh" path="res://scripts/command_logic/selectable.gd" id="3_6aq4t"]
+[ext_resource type="Resource" uid="uid://b2jjvm0ale64q" path="res://scenes/units/master_template.tres" id="2_sd0mv"]
 [ext_resource type="Texture2D" uid="uid://c4h08cmpl6ahr" path="res://icon.svg" id="3_hclxu"]
+[ext_resource type="Script" uid="uid://bd24p5rucivqh" path="res://scripts/command_logic/selectable.gd" id="4_3uykk"]
 [ext_resource type="Script" uid="uid://doikskm31bjhj" path="res://scripts/command_logic/command_context.gd" id="4_hclxu"]
 [ext_resource type="Script" uid="uid://iqtkbiyfhpt2" path="res://scripts/networking/networked_object.gd" id="4_v1xk4"]
 [ext_resource type="Resource" uid="uid://dfwv5u6cqpgc8" path="res://scripts/networking/networked_object_data/maker_ship.tres" id="5_v1xk4"]
 [ext_resource type="Script" uid="uid://bb7h6rlhbmne" path="res://scripts/inventory/inventory.gd" id="6_dkhoe"]
+[ext_resource type="PackedScene" uid="uid://crkwtc436uiav" path="res://scenes/command_ui/selected_popups/inventory_display.tscn" id="8_6fc0x"]
+[ext_resource type="Script" uid="uid://cdmr00xlptfhd" path="res://scripts/UI/selected_ui.gd" id="8_au60n"]
+[ext_resource type="PackedScene" uid="uid://cts1brmfcvlac" path="res://scenes/command_ui/selected_popups/maker_menu.tscn" id="10_sd0mv"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_6aq4t"]
 size = Vector2(64, 65)
@@ -19,6 +23,7 @@ size = Vector2(64, 65)
 
 [node name="maker_ship" type="Node2D"]
 script = ExtResource("1_ecua4")
+master_template = ExtResource("2_sd0mv")
 
 [node name="sprite" type="Sprite2D" parent="."]
 modulate = Color(0.28627452, 0.9411765, 0.9411765, 1)
@@ -26,7 +31,7 @@ scale = Vector2(0.5, 0.5)
 texture = ExtResource("3_hclxu")
 
 [node name="selectable" type="Area2D" parent="."]
-script = ExtResource("3_6aq4t")
+script = ExtResource("4_3uykk")
 display_data = Dictionary[StringName, Variant]({
 &"inventory": NodePath("../inventory"),
 &"name": "fabricator ship"
@@ -77,4 +82,26 @@ metadata/_custom_type_script = "uid://bb7h6rlhbmne"
 [node name="Marker2D" type="Marker2D" parent="."]
 position = Vector2(49, 0)
 
+[node name="selected_ui" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 0
+offset_left = -0.17315674
+offset_top = 0.36709595
+offset_right = 39.826843
+offset_bottom = 40.367096
+script = ExtResource("8_au60n")
+
+[node name="inventory" parent="selected_ui" instance=ExtResource("8_6fc0x")]
+layout_mode = 0
+offset_top = -58.0
+offset_bottom = -18.0
+
+[node name="maker_menu" parent="selected_ui" node_paths=PackedStringArray("networked_obj") instance=ExtResource("10_sd0mv")]
+layout_mode = 0
+offset_top = 39.0
+offset_bottom = 39.0
+networked_obj = NodePath("../../networked_object")
+
 [connection signal="command_given" from="selectable" to="." method="_on_selectable_command_given"]
+[connection signal="on_deselected" from="selectable" to="selected_ui" method="deselected"]
+[connection signal="on_selected" from="selectable" to="selected_ui" method="selected"]

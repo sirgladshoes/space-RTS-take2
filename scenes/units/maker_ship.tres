@@ -1,0 +1,10 @@
+[gd_resource type="Resource" script_class="unit_creation_data" load_steps=2 format=3 uid="uid://be5wsy1rbt1oy"]
+
+[ext_resource type="Script" uid="uid://cpvuv23vahmj4" path="res://scripts/units/unit_creation_data.gd" id="1_qcepa"]
+
+[resource]
+script = ExtResource("1_qcepa")
+cost = Dictionary[int, int]({
+0: 100
+})
+metadata/_custom_type_script = "uid://cpvuv23vahmj4"

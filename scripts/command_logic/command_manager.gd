@@ -72,6 +72,8 @@ func select_units(from: Vector2, to: Vector2):
 	
 	select_origin = null
 	
+	for unit in selected_units:
+		unit.deselected()
 	selected_units = []
 	if result:
 		for item in result:
@@ -134,6 +136,3 @@ func give_command(from: Vector2, to: Vector2, units: Array, commander_team:int):
 	
 	for item in units:
 		item.give_command(command, args)
-
-func give_ui_command(unit: selectable, command: int, args: Array):
-	pass

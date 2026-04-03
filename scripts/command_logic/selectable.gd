@@ -9,6 +9,7 @@ enum teams {
 @export var display_data: Dictionary[StringName, Variant] = {"name":"default name"}
 
 signal on_selected()
+signal on_deselected()
 signal command_given(command: int, args: Array)
 
 func _ready() -> void:
@@ -18,6 +19,9 @@ func _ready() -> void:
 
 func selected():
 	on_selected.emit()
+
+func deselected():
+	on_deselected.emit()
 
 func give_command(command: int, args: Array):
 	command_given.emit(command, args)

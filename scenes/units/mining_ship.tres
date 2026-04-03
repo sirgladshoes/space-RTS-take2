@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="unit_creation_data" load_steps=3 format=3 uid="uid://do7rm3i6dr7h0"]
+
+[ext_resource type="PackedScene" uid="uid://blyhemo55akcw" path="res://scenes/units/mining_ship.tscn" id="1_mie7h"]
+[ext_resource type="Script" uid="uid://cpvuv23vahmj4" path="res://scripts/units/unit_creation_data.gd" id="2_do82w"]
+
+[resource]
+script = ExtResource("2_do82w")
+scene = ExtResource("1_mie7h")
+cost = Dictionary[int, int]({
+0: 100,
+1: 200
+})
+metadata/_custom_type_script = "uid://cpvuv23vahmj4"

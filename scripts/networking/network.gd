@@ -29,6 +29,7 @@ signal add_object_to_network(id: int)
 #host
 
 signal recieved_client_command(from: Vector2, to: Vector2, units: Array[int])
+signal make_unit(template_indx: int, maker_id: int)
 #client
 signal assigned_team(team: int)
 
@@ -226,3 +227,7 @@ func recv_client_command(data: PackedByteArray) -> void:
 	var sender = multiplayer.get_remote_sender_id()
 	
 	recieved_client_command.emit(from, to, units, sender)
+
+@rpc("any_peer", "reliable", "call_local")
+func recv_make_unit(template_indx: int, maker_id: int):
+	make_unit.emit(template_indx, maker_id)

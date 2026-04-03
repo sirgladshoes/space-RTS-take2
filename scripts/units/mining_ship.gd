@@ -17,7 +17,6 @@ func _ready() -> void:
 	sm.switch_state("idle")
 
 func _physics_process(delta: float) -> void:
-	$Label.text = sm.current_state
 	match sm.current_state:
 		"travel":
 			global_position = global_position.move_toward(target_position, move_speed*delta)

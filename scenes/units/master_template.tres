@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="master_unit_template" load_steps=5 format=3 uid="uid://b2jjvm0ale64q"]
+
+[ext_resource type="Script" uid="uid://cpvuv23vahmj4" path="res://scripts/units/unit_creation_data.gd" id="1_0gd2b"]
+[ext_resource type="Resource" uid="uid://do7rm3i6dr7h0" path="res://scenes/units/mining_ship.tres" id="2_jvgn5"]
+[ext_resource type="Script" uid="uid://bdxx2127ekccd" path="res://scripts/units/master_unit_template.gd" id="2_ltlp6"]
+[ext_resource type="Resource" uid="uid://be5wsy1rbt1oy" path="res://scenes/units/maker_ship.tres" id="3_jvgn5"]
+
+[resource]
+script = ExtResource("2_ltlp6")
+data = Array[ExtResource("1_0gd2b")]([ExtResource("2_jvgn5"), ExtResource("3_jvgn5")])
+metadata/_custom_type_script = "uid://bdxx2127ekccd"
