@@ -1,5 +1,4 @@
 goals for tommorow:
-conneect all unit fabrication functions, current implementation is located in maker menu using direct rpc
 
 NETWORKING REWORK NOTES:
 

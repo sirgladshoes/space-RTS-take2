@@ -50,7 +50,8 @@ layout_mode = 0
 offset_left = 21.0
 offset_right = 78.0
 offset_bottom = 23.0
-text = "12345"
+text = "0
+"
 
 [node name="1" type="Control" parent="ScrollContainer/VBoxContainer/mining_ship"]
 anchors_preset = 0
@@ -72,7 +73,8 @@ layout_mode = 0
 offset_left = 21.0
 offset_right = 78.0
 offset_bottom = 23.0
-text = "12345"
+text = "0
+"
 
 [node name="2" type="Control" parent="ScrollContainer/VBoxContainer/mining_ship"]
 anchors_preset = 0
@@ -94,13 +96,13 @@ layout_mode = 0
 offset_left = 21.0
 offset_right = 78.0
 offset_bottom = 23.0
-text = "12345"
+text = "0"
 
-[node name="mining_ship2" type="Control" parent="ScrollContainer/VBoxContainer"]
+[node name="temp" type="Control" parent="ScrollContainer/VBoxContainer"]
 custom_minimum_size = Vector2(0, 70)
 layout_mode = 2
 
-[node name="TextureButton" type="TextureButton" parent="ScrollContainer/VBoxContainer/mining_ship2"]
+[node name="TextureButton" type="TextureButton" parent="ScrollContainer/VBoxContainer/temp"]
 layout_mode = 0
 offset_right = 40.0
 offset_bottom = 40.0
@@ -108,13 +110,13 @@ texture_normal = ExtResource("1_pl0bw")
 ignore_texture_size = true
 stretch_mode = 4
 
-[node name="0" type="Control" parent="ScrollContainer/VBoxContainer/mining_ship2"]
+[node name="0" type="Control" parent="ScrollContainer/VBoxContainer/temp"]
 anchors_preset = 0
 offset_left = 41.0
 offset_right = 108.0
 offset_bottom = 21.0
 
-[node name="TextureRect" type="TextureRect" parent="ScrollContainer/VBoxContainer/mining_ship2/0"]
+[node name="TextureRect" type="TextureRect" parent="ScrollContainer/VBoxContainer/temp/0"]
 layout_mode = 0
 offset_right = 21.0
 offset_bottom = 21.0
@@ -122,21 +124,22 @@ texture = ExtResource("1_pl0bw")
 expand_mode = 1
 stretch_mode = 4
 
-[node name="Label" type="Label" parent="ScrollContainer/VBoxContainer/mining_ship2/0"]
+[node name="Label" type="Label" parent="ScrollContainer/VBoxContainer/temp/0"]
 layout_mode = 0
 offset_left = 21.0
 offset_right = 78.0
 offset_bottom = 23.0
-text = "12345"
+text = "0
+"
 
-[node name="1" type="Control" parent="ScrollContainer/VBoxContainer/mining_ship2"]
+[node name="1" type="Control" parent="ScrollContainer/VBoxContainer/temp"]
 anchors_preset = 0
 offset_left = 41.0
 offset_top = 22.0
 offset_right = 108.0
 offset_bottom = 43.0
 
-[node name="TextureRect" type="TextureRect" parent="ScrollContainer/VBoxContainer/mining_ship2/1"]
+[node name="TextureRect" type="TextureRect" parent="ScrollContainer/VBoxContainer/temp/1"]
 layout_mode = 0
 offset_right = 21.0
 offset_bottom = 21.0
@@ -144,21 +147,22 @@ texture = ExtResource("1_pl0bw")
 expand_mode = 1
 stretch_mode = 4
 
-[node name="Label" type="Label" parent="ScrollContainer/VBoxContainer/mining_ship2/1"]
+[node name="Label" type="Label" parent="ScrollContainer/VBoxContainer/temp/1"]
 layout_mode = 0
 offset_left = 21.0
 offset_right = 78.0
 offset_bottom = 23.0
-text = "12345"
+text = "0
+"
 
-[node name="2" type="Control" parent="ScrollContainer/VBoxContainer/mining_ship2"]
+[node name="2" type="Control" parent="ScrollContainer/VBoxContainer/temp"]
 anchors_preset = 0
 offset_left = 41.0
 offset_top = 44.0
 offset_right = 108.0
 offset_bottom = 65.0
 
-[node name="TextureRect" type="TextureRect" parent="ScrollContainer/VBoxContainer/mining_ship2/2"]
+[node name="TextureRect" type="TextureRect" parent="ScrollContainer/VBoxContainer/temp/2"]
 layout_mode = 0
 offset_right = 21.0
 offset_bottom = 21.0
@@ -166,12 +170,11 @@ texture = ExtResource("1_pl0bw")
 expand_mode = 1
 stretch_mode = 4
 
-[node name="Label" type="Label" parent="ScrollContainer/VBoxContainer/mining_ship2/2"]
+[node name="Label" type="Label" parent="ScrollContainer/VBoxContainer/temp/2"]
 layout_mode = 0
 offset_left = 21.0
 offset_right = 78.0
 offset_bottom = 23.0
-text = "12345"
+text = "0"
 
 [connection signal="pressed" from="ScrollContainer/VBoxContainer/mining_ship/TextureButton" to="." method="_on_texture_button_pressed"]
-[connection signal="pressed" from="ScrollContainer/VBoxContainer/mining_ship2/TextureButton" to="." method="_on_texture_button_pressed2"]

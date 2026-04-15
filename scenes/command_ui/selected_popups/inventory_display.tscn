@@ -31,6 +31,7 @@ offset_top = 33.632904
 offset_right = 24.173157
 offset_bottom = 56.632904
 text = "12345"
+horizontal_alignment = 1
 
 [node name="1" type="Control" parent="."]
 anchors_preset = 0
@@ -53,6 +54,7 @@ offset_top = 33.632904
 offset_right = 24.173157
 offset_bottom = 56.632904
 text = "12345"
+horizontal_alignment = 1
 
 [node name="2" type="Control" parent="."]
 anchors_preset = 0
@@ -77,3 +79,4 @@ offset_top = 33.632904
 offset_right = 24.173157
 offset_bottom = 56.632904
 text = "12345"
+horizontal_alignment = 1

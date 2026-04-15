@@ -2,7 +2,8 @@ class_name inventory extends Node
 
 enum resource_types{
 	TEMP,
-	TEMP2
+	TEMP2,
+	TEMP3
 }
 
 var my_inventory: Dictionary[String, int]

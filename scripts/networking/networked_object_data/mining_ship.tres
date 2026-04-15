@@ -1,4 +1,4 @@
-[gd_resource type="Resource" script_class="networked_object_data" load_steps=8 format=3 uid="uid://d1bly1gx57jfy"]
+[gd_resource type="Resource" script_class="networked_object_data" load_steps=9 format=3 uid="uid://d1bly1gx57jfy"]
 
 [ext_resource type="Script" uid="uid://5ymvd21fld5t" path="res://scripts/networking/networked_object_data.gd" id="1_cfpk5"]
 [ext_resource type="Script" uid="uid://n3gda14hxidi" path="res://scripts/networking/networked_variable.gd" id="2_epnx6"]
@@ -39,8 +39,15 @@ property = "my_inventory:1"
 data_type = 1
 metadata/_custom_type_script = "uid://n3gda14hxidi"
 
+[sub_resource type="Resource" id="Resource_ygmdq"]
+script = ExtResource("2_epnx6")
+propery_path = NodePath("../inventory")
+property = "my_inventory:2"
+data_type = 1
+metadata/_custom_type_script = "uid://n3gda14hxidi"
+
 [resource]
 script = ExtResource("1_cfpk5")
-synced_vars = Array[ExtResource("2_epnx6")]([SubResource("Resource_6lvt2"), SubResource("Resource_mlkc2"), SubResource("Resource_cp6er"), SubResource("Resource_cfpk5"), SubResource("Resource_epnx6")])
+synced_vars = Array[ExtResource("2_epnx6")]([SubResource("Resource_6lvt2"), SubResource("Resource_mlkc2"), SubResource("Resource_cp6er"), SubResource("Resource_cfpk5"), SubResource("Resource_epnx6"), SubResource("Resource_ygmdq")])
 object_scene_path = "res://scenes/units/mining_ship.tscn"
 metadata/_custom_type_script = "uid://5ymvd21fld5t"
