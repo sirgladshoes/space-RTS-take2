@@ -68,7 +68,7 @@ text = "join
 "
 
 [node name="mining_ship" parent="." instance=ExtResource("8_tipki")]
-position = Vector2(552, 419)
+position = Vector2(684, 355)
 
 [node name="mother" parent="." instance=ExtResource("7_o6xl0")]
 position = Vector2(79, 356)

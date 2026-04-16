@@ -72,5 +72,6 @@ func _on_state_machine_state_switched(current: String, previous: String) -> void
 		$mining_laser.active = false
 
 
-func _on_mining_laser_hit_target(target: Node) -> void:
+func _on_mining_laser_hit_object(object: Node) -> void:
+	print(object)
 	my_inventory.add_resource(inventory.resource_types.TEMP, 1)

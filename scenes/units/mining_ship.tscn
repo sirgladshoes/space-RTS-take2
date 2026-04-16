@@ -84,13 +84,8 @@ offset_top = -58.0
 offset_bottom = -18.0
 
 [node name="mining_laser" parent="." instance=ExtResource("11_q7sdo")]
-visible = false
-enabled = false
-target_position = Vector2(500, 0)
-collision_mask = 2
-color = Color(0, 1.0281335, 1.3945211, 1)
-mask = 2
-max_length = 500
+collide_with_areas = true
+hit_interval = 0.5
 
 [node name="damage_reciever" type="Area2D" parent="."]
 script = ExtResource("11_ygnxs")
@@ -104,5 +99,5 @@ shape = SubResource("RectangleShape2D_q7sdo")
 [connection signal="on_selected" from="selectable" to="selected_ui" method="selected"]
 [connection signal="destroy_object" from="networked_object" to="." method="queue_free"]
 [connection signal="state_switched" from="state_machine" to="." method="_on_state_machine_state_switched"]
-[connection signal="hit_target" from="mining_laser" to="." method="_on_mining_laser_hit_target"]
+[connection signal="hit_object" from="mining_laser" to="." method="_on_mining_laser_hit_object"]
 [connection signal="on_death" from="damage_reciever" to="." method="queue_free"]

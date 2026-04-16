@@ -67,8 +67,8 @@ metadata/_custom_type_script = "uid://iqtkbiyfhpt2"
 [node name="selected_ui" type="Control" parent="." node_paths=PackedStringArray("my_inventory")]
 layout_mode = 3
 anchors_preset = 0
-offset_left = 259.0
-offset_right = 299.0
+offset_left = 237.0
+offset_right = 277.0
 offset_bottom = 40.0
 script = ExtResource("7_683hq")
 my_inventory = NodePath("../inventory")
@@ -94,7 +94,7 @@ networked_obj = NodePath("../../networked_object")
 master_template = ExtResource("2_r5smi")
 
 [node name="spawn_point" type="Marker2D" parent="."]
-position = Vector2(83, 0)
+position = Vector2(112, 0)
 
 [connection signal="on_deselected" from="selectable" to="selected_ui" method="deselected"]
 [connection signal="on_selected" from="selectable" to="selected_ui" method="selected"]
