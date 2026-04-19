@@ -1,5 +1,6 @@
-[gd_scene load_steps=9 format=3 uid="uid://cxew7m7a508m0"]
+[gd_scene load_steps=10 format=3 uid="uid://cxew7m7a508m0"]
 
+[ext_resource type="Script" uid="uid://dwomhwq62g33n" path="res://scripts/game.gd" id="1_3ij4o"]
 [ext_resource type="Script" uid="uid://bxfrmf651q2qn" path="res://scripts/camera_2d.gd" id="1_eol46"]
 [ext_resource type="Script" uid="uid://drk72iaypq6j3" path="res://scripts/command_logic/command_manager.gd" id="2_hxf35"]
 [ext_resource type="Script" uid="uid://5lponkkbtih4" path="res://scripts/networking/host.gd" id="3_t62rd"]
@@ -15,6 +16,7 @@ glow_blend_mode = 1
 glow_hdr_scale = 0.0
 
 [node name="main" type="Node2D"]
+script = ExtResource("1_3ij4o")
 
 [node name="Camera2D" type="Camera2D" parent="."]
 zoom = Vector2(0.1, 0.1)
@@ -38,6 +40,7 @@ script = ExtResource("4_u40i8")
 command_giver = NodePath("../command_manager")
 
 [node name="Control" type="Control" parent="."]
+visible = false
 layout_mode = 3
 anchors_preset = 0
 offset_left = -1600.0

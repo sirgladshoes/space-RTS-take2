@@ -2,13 +2,24 @@ extends Control
 
 var lobby_state = {"u": [], "t1": [], "t2": []}
 
+var loaded_players = 0
+
 func _ready() -> void:
+	Network.set_accept_connections(true)
 	Network.recieved_client_nickname.connect(recieved_nickname)
 	Network.recieved_lobby_state.connect(recieved_lobby_state)
 	Network.reasign_team.connect(reassign_team)
+	Network.load_game.connect(load_game)
+	Network.client_loaded.connect(client_loaded)
+	Network.host_disconnected_.connect(host_disconnected)
 	for id in Network.nicknames:
 		lobby_state["u"].append(id)
 		$unasigned.add_item(Network.nicknames[id])
+	if Network.is_hosting:
+		send_state()
+
+func host_disconnected():
+	SceneManager.load_menu()
 
 func recieved_nickname(client: int, nickname: String):
 	lobby_state["u"].append(client)
@@ -17,7 +28,6 @@ func recieved_nickname(client: int, nickname: String):
 	send_state()
 
 func recieved_lobby_state(state: Dictionary):
-	print(state)
 	$unasigned.clear()
 	for nickname in state["u"]:
 		$unasigned.add_item(nickname)
@@ -68,6 +78,26 @@ func reassign_team(id, team):
 	else:
 		$start_game.disabled = false
 
+func load_game():
+	var teams = {}
+	for player in lobby_state["t1"]:
+		teams[player] = 0
+	for player in lobby_state["t2"]:
+		teams[player] = 1
+	SceneManager.load_game(teams)
+
+func client_loaded(id: int):
+	var team
+	if lobby_state["t1"].has(id):
+		team = 0
+	else:
+		team = 1
+	Network.assign_team(id, team)
+	loaded_players+=1
+	
+	if loaded_players == lobby_state["t1"].size() + lobby_state["t2"].size() - 1:
+		load_game()
+
 func _on_join_team_1_pressed() -> void:
 	if Network.is_hosting:
 		reassign_team(1, "t1")
@@ -80,3 +110,8 @@ func _on_join_team_2_pressed() -> void:
 		reassign_team(1, "t2")
 	else:
 		Network.send_reasign_team("t2")
+
+
+func _on_start_game_pressed() -> void:
+	Network.set_accept_connections(false)
+	Network.send_load_game()

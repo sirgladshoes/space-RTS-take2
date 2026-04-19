@@ -26,11 +26,14 @@ func make_unit(template_indx: int) -> void:
 func _process(delta: float) -> void:
 	$selected_ui.rotation = -rotation
 	$team.frame = 2+$selectable.team
+	if Input.is_action_just_pressed("ui_accept") and team == 0:
+		_on_damage_reciever_on_death()
 
 func _on_timer_timeout() -> void:
 	$inventory.add_resource(inventory.resource_types.TEMP, 1)
 
 
 func _on_damage_reciever_on_death() -> void:
+	$damage_reciever.on_death.disconnect(_on_damage_reciever_on_death)
 	destroyed.emit(team)
 	queue_free()

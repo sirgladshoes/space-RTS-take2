@@ -18,7 +18,6 @@ func _ready() -> void:
 	
 	Network.recieved_client_command.connect(give_client_command)
 	Network.make_unit.connect(make_unit)
-	Network.client_connected_.connect(client_connected)
 
 func send_world_state():
 	#temperary
@@ -27,9 +26,6 @@ func send_world_state():
 	
 	Network.send_world_state()
 
-func client_connected(id: int):
-	Network.assign_team(id, selectable.teams.RED)
-	teams[id] = selectable.teams.RED
 
 func give_client_command(from, to, unit_ids, sender):
 	var units = []
@@ -38,7 +34,7 @@ func give_client_command(from, to, unit_ids, sender):
 			continue
 		var networked_obj = Network.networked_objects[unit_id]
 		var unit = networked_obj.get_related_node("selectable")
-		if unit.team != teams[sender]:
+		if unit.team != teams[int(sender)]:
 			print("potential cheater")
 			continue
 		units.append(unit)
@@ -52,6 +48,9 @@ func game_over(losing_team: int):
 		print("team 2 wins")
 	elif losing_team == 1:
 		print("team 1 wins")
+	
+	Network.send_load_lobby()
+	SceneManager.load_lobby()
 
 #remove later
 func _on_join_pressed() -> void:

@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=3 uid="uid://ddl2grxo3kgvt"]
 
-[ext_resource type="Script" uid="uid://blf8u7h08fs43" path="res://scenes/major/lobby.gd" id="1_ohhs4"]
+[ext_resource type="Script" uid="uid://blf8u7h08fs43" path="res://scripts/lobby.gd" id="1_ohhs4"]
 
 [node name="lobby" type="Control"]
 layout_mode = 3
@@ -78,3 +78,4 @@ text = "start game"
 
 [connection signal="pressed" from="join team1" to="." method="_on_join_team_1_pressed"]
 [connection signal="pressed" from="join team2" to="." method="_on_join_team_2_pressed"]
+[connection signal="pressed" from="start_game" to="." method="_on_start_game_pressed"]
