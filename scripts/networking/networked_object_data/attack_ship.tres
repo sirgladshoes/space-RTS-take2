@@ -1,0 +1,47 @@
+[gd_resource type="Resource" script_class="networked_object_data" load_steps=8 format=3 uid="uid://cm2hooryk0aom"]
+
+[ext_resource type="Script" uid="uid://5ymvd21fld5t" path="res://scripts/networking/networked_object_data.gd" id="1_euuu1"]
+[ext_resource type="Script" uid="uid://n3gda14hxidi" path="res://scripts/networking/networked_variable.gd" id="2_70gsi"]
+
+[sub_resource type="Resource" id="Resource_euuu1"]
+script = ExtResource("2_70gsi")
+propery_path = NodePath("../selectable")
+property = "team"
+metadata/_custom_type_script = "uid://n3gda14hxidi"
+
+[sub_resource type="Resource" id="Resource_70gsi"]
+script = ExtResource("2_70gsi")
+propery_path = NodePath("..")
+property = "global_position:x"
+data_type = 1
+is_interpolated = true
+metadata/_custom_type_script = "uid://n3gda14hxidi"
+
+[sub_resource type="Resource" id="Resource_xweka"]
+script = ExtResource("2_70gsi")
+propery_path = NodePath("..")
+property = "global_position:y"
+data_type = 1
+is_interpolated = true
+metadata/_custom_type_script = "uid://n3gda14hxidi"
+
+[sub_resource type="Resource" id="Resource_umxr5"]
+script = ExtResource("2_70gsi")
+propery_path = NodePath("..")
+property = "global_rotation"
+data_type = 4
+is_interpolated = true
+angle_interpolation = true
+metadata/_custom_type_script = "uid://n3gda14hxidi"
+
+[sub_resource type="Resource" id="Resource_ymcgn"]
+script = ExtResource("2_70gsi")
+propery_path = NodePath("../laser")
+property = "active"
+metadata/_custom_type_script = "uid://n3gda14hxidi"
+
+[resource]
+script = ExtResource("1_euuu1")
+synced_vars = Array[ExtResource("2_70gsi")]([SubResource("Resource_euuu1"), SubResource("Resource_70gsi"), SubResource("Resource_xweka"), SubResource("Resource_umxr5"), SubResource("Resource_ymcgn")])
+object_scene_path = "res://scenes/units/attack_ship.tscn"
+metadata/_custom_type_script = "uid://5ymvd21fld5t"

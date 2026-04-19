@@ -1,0 +1,31 @@
+[gd_scene load_steps=4 format=3 uid="uid://dc0u76w8u6qbw"]
+
+[ext_resource type="Script" uid="uid://brfun26b481sm" path="res://scripts/turret.gd" id="1_el7wl"]
+[ext_resource type="PackedScene" uid="uid://vji4pyi5p5q6" path="res://scenes/laser.tscn" id="1_x3mc5"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_x3mc5"]
+radius = 100.0
+
+[node name="turret" type="Node2D"]
+script = ExtResource("1_el7wl")
+range = 400
+
+[node name="laser" parent="." instance=ExtResource("1_x3mc5")]
+enabled = true
+target_position = Vector2(100, 0)
+collision_mask = 2
+color = Color(1.353, 0.43977994, 0.466117, 1)
+mask = 4
+active = true
+
+[node name="Area2D" type="Area2D" parent="."]
+collision_layer = 0
+collision_mask = 2
+monitorable = false
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+shape = SubResource("CircleShape2D_x3mc5")
+
+[connection signal="hit_object" from="laser" to="." method="_on_laser_hit_object"]
+[connection signal="area_entered" from="Area2D" to="." method="_on_area_2d_area_entered"]
+[connection signal="area_exited" from="Area2D" to="." method="_on_area_2d_area_exited"]

@@ -16,6 +16,9 @@ func _ready() -> void:
 	my_selectable.team = team
 	sm.switch_state("idle")
 
+func _process(delta: float) -> void:
+	$team.frame = 2+$selectable.team
+
 func _physics_process(delta: float) -> void:
 	match sm.current_state:
 		"travel":
@@ -73,5 +76,4 @@ func _on_state_machine_state_switched(current: String, previous: String) -> void
 
 
 func _on_mining_laser_hit_object(object: Node) -> void:
-	print(object)
 	my_inventory.add_resource(inventory.resource_types.TEMP, 1)

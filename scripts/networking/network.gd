@@ -28,10 +28,15 @@ signal add_object_to_network(id: int)
 #implementation specific
 #host
 
+var nicknames = {}
+signal recieved_client_nickname(nickname: String)
+signal reasign_team(id: int, team: String)
+
 signal recieved_client_command(from: Vector2, to: Vector2, units: Array[int])
 signal make_unit(template_indx: int, maker_id: int)
 #client
 signal assigned_team(team: int)
+signal recieved_lobby_state(state: Dictionary)
 
 
 func _ready() -> void:
@@ -102,6 +107,9 @@ func send_world_state() -> void:
 func assign_team(client_id: int, team: int) -> void:
 	recv_team_assignment.rpc_id(client_id, team)
 
+func send_lobby_state(state: Dictionary) -> void:
+	recv_lobby_state.rpc(state)
+
 #client methods
 func get_time_secs() -> float:
 	return float(Time.get_ticks_msec() - time.client_sync_time + time.host_sync_time)/1000
@@ -134,6 +142,11 @@ func send_client_command(from: Vector2, to: Vector2, units: Array) -> void:
 	
 	recv_client_command.rpc_id(1, byte_buffer.data_array)
 
+func send_nickname(nickname: String) -> void:
+	recv_client_nickname.rpc_id(1, nickname)
+
+func send_reasign_team(team: String) -> void:
+	recv_reasign_team.rpc_id(1, team)
 
 #signals
 func client_connected(id: int) -> void:
@@ -198,6 +211,10 @@ func recv_host_clocksync(host_time: int, client_start_time: int) -> void:
 func recv_team_assignment(team: int) -> void:
 	assigned_team.emit(team)
 
+@rpc("reliable")
+func recv_lobby_state(state: Dictionary) -> void:
+	recieved_lobby_state.emit(state)
+
 #server rpcs
 @rpc("any_peer", "reliable")
 func recv_client_clocksync(client_time: int) -> void:
@@ -205,6 +222,11 @@ func recv_client_clocksync(client_time: int) -> void:
 	recv_host_clocksync.rpc_id(id, Time.get_ticks_msec(), client_time)
 
 #implementation specific server rpcs
+@rpc("any_peer", "reliable")
+func recv_client_nickname(nickname: String) -> void:
+	nicknames[multiplayer.get_remote_sender_id()] = nickname
+	recieved_client_nickname.emit(multiplayer.get_remote_sender_id(), nickname)
+
 @rpc("any_peer", "reliable")
 func recv_client_command(data: PackedByteArray) -> void:
 	if !multiplayer.is_server():
@@ -231,3 +253,7 @@ func recv_client_command(data: PackedByteArray) -> void:
 @rpc("any_peer", "reliable", "call_local")
 func recv_make_unit(template_indx: int, maker_id: int):
 	make_unit.emit(template_indx, maker_id)
+
+@rpc("any_peer", "reliable")
+func recv_reasign_team(team: String):
+	reasign_team.emit(multiplayer.get_remote_sender_id(), team)

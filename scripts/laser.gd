@@ -12,11 +12,16 @@ var hit_obj: Node = null
 
 signal hit_object(object: Node)
 
+func _ready() -> void:
+	#I hate ts but we gotta do it
+	active = !active
+	active = !active
+	collision_mask = mask
+
 func _physics_process(_delta: float) -> void:
 	$Timer.wait_time = hit_interval
 	$Line2D.default_color = color
 	target_position.x = max_length
-	collision_mask = mask
 	
 	force_raycast_update()
 	var length = target_position.x
@@ -47,4 +52,5 @@ func set_active(value: bool):
 
 
 func _on_timer_timeout() -> void:
-	hit_object.emit(hit_obj)
+	if hit_obj:
+		hit_object.emit(hit_obj)

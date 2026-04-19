@@ -47,10 +47,15 @@ func give_client_command(from, to, unit_ids, sender):
 func make_unit(template_indx: int, maker_id: int):
 	Network.networked_objects[maker_id].owner.make_unit(template_indx)
 
+func game_over(losing_team: int):
+	if losing_team == 0:
+		print("team 2 wins")
+	elif losing_team == 1:
+		print("team 1 wins")
+
 #remove later
 func _on_join_pressed() -> void:
 	queue_free()
-
 
 func _on_host_pressed() -> void:
 	Network.start_hosting(Network.PORT, 2)

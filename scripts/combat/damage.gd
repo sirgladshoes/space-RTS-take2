@@ -8,7 +8,7 @@ signal on_health_changed(value)
 signal on_death()
 
 func _ready() -> void:
-	collision_layer =  3
+	collision_layer = 4
 	collision_mask = 0
 
 func take_damage(amount: int) -> void:

@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" uid="uid://bovpo7seytbqv" path="res://scripts/units/mining_ship.gd" id="1_vo50n"]
 [ext_resource type="Script" uid="uid://bd24p5rucivqh" path="res://scripts/command_logic/selectable.gd" id="2_f46tj"]
-[ext_resource type="Texture2D" uid="uid://c4h08cmpl6ahr" path="res://icon.svg" id="3_ckyon"]
+[ext_resource type="Texture2D" uid="uid://tjvv0rdhytf1" path="res://art/mining_ship.png" id="2_q7sdo"]
 [ext_resource type="Script" uid="uid://iqtkbiyfhpt2" path="res://scripts/networking/networked_object.gd" id="4_x55ac"]
 [ext_resource type="Resource" uid="uid://d1bly1gx57jfy" path="res://scripts/networking/networked_object_data/mining_ship.tres" id="5_832wd"]
 [ext_resource type="Script" uid="uid://b8bdy4fqgimix" path="res://scripts/state_machine.gd" id="6_5wrer"]
@@ -14,26 +14,37 @@
 [ext_resource type="Script" uid="uid://d38d3yvigawyg" path="res://scripts/combat/damage.gd" id="11_ygnxs"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_x55ac"]
-size = Vector2(64, 64)
+size = Vector2(16, 16)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_jbimc"]
-size = Vector2(64, 64)
+size = Vector2(16, 16)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_q7sdo"]
-size = Vector2(64, 64)
+size = Vector2(16, 16)
 
 [node name="mining_ship" type="Node2D"]
 script = ExtResource("1_vo50n")
+target_range = 100
 
-[node name="Icon" type="Sprite2D" parent="."]
-scale = Vector2(0.5, 0.5)
-texture = ExtResource("3_ckyon")
+[node name="sprite" type="Sprite2D" parent="."]
+texture = ExtResource("2_q7sdo")
+hframes = 4
+
+[node name="team" type="Sprite2D" parent="."]
+texture = ExtResource("2_q7sdo")
+hframes = 4
+frame = 2
+
+[node name="outline" type="Sprite2D" parent="."]
+visible = false
+texture = ExtResource("2_q7sdo")
+hframes = 4
+frame = 1
 
 [node name="selectable" type="Area2D" parent="."]
 script = ExtResource("2_f46tj")
 display_data = Dictionary[StringName, Variant]({
 &"inventory": NodePath("../inventory"),
-&"maker_flag": PackedStringArray("mining ship"),
 &"name": "mining ship"
 })
 metadata/_custom_type_script = "uid://bd24p5rucivqh"
@@ -41,7 +52,7 @@ metadata/_custom_type_script = "uid://bd24p5rucivqh"
 [node name="CollisionShape2D" type="CollisionShape2D" parent="selectable"]
 shape = SubResource("RectangleShape2D_x55ac")
 
-[node name="command_context" type="Area2D" parent="." node_paths=PackedStringArray("connected_nodes")]
+[node name="attackable" type="Area2D" parent="." node_paths=PackedStringArray("connected_nodes")]
 script = ExtResource("7_3g0ik")
 context = 1
 connected_nodes = {
@@ -49,7 +60,7 @@ connected_nodes = {
 }
 metadata/_custom_type_script = "uid://doikskm31bjhj"
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="command_context"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="attackable"]
 shape = SubResource("RectangleShape2D_jbimc")
 
 [node name="networked_object" type="Node" parent="."]
@@ -80,11 +91,11 @@ my_inventory = NodePath("../inventory")
 
 [node name="inventory" parent="selected_ui" instance=ExtResource("9_iivr2")]
 layout_mode = 0
-offset_top = -58.0
-offset_bottom = -18.0
+offset_top = -19.0
+offset_bottom = 21.0
 
 [node name="mining_laser" parent="." instance=ExtResource("11_q7sdo")]
-collide_with_areas = true
+collision_mask = 2
 hit_interval = 0.5
 
 [node name="damage_reciever" type="Area2D" parent="."]
@@ -96,7 +107,9 @@ shape = SubResource("RectangleShape2D_q7sdo")
 
 [connection signal="command_given" from="selectable" to="." method="command_given"]
 [connection signal="on_deselected" from="selectable" to="selected_ui" method="deselected"]
+[connection signal="on_deselected" from="selectable" to="outline" method="set_visible" binds= [false]]
 [connection signal="on_selected" from="selectable" to="selected_ui" method="selected"]
+[connection signal="on_selected" from="selectable" to="outline" method="set_visible" binds= [true]]
 [connection signal="destroy_object" from="networked_object" to="." method="queue_free"]
 [connection signal="state_switched" from="state_machine" to="." method="_on_state_machine_state_switched"]
 [connection signal="hit_object" from="mining_laser" to="." method="_on_mining_laser_hit_object"]

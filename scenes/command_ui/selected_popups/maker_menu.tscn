@@ -1,7 +1,29 @@
-[gd_scene load_steps=3 format=3 uid="uid://cts1brmfcvlac"]
+[gd_scene load_steps=10 format=3 uid="uid://cts1brmfcvlac"]
 
-[ext_resource type="Texture2D" uid="uid://c4h08cmpl6ahr" path="res://icon.svg" id="1_pl0bw"]
 [ext_resource type="Script" uid="uid://b53dr6ypyw4ch" path="res://scenes/command_ui/selected_popups/maker_menu.gd" id="1_uv0ak"]
+[ext_resource type="Texture2D" uid="uid://tjvv0rdhytf1" path="res://art/mining_ship.png" id="2_wh17h"]
+[ext_resource type="Texture2D" uid="uid://cxqa38md7tk1q" path="res://art/materials.png" id="3_hh2h3"]
+[ext_resource type="Texture2D" uid="uid://cg4f3ntuwyojq" path="res://art/attack_ship.png" id="4_hh2h3"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_khfv8"]
+atlas = ExtResource("2_wh17h")
+region = Rect2(0, 0, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_sbh5g"]
+atlas = ExtResource("3_hh2h3")
+region = Rect2(0, 0, 16, 0)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_wh17h"]
+atlas = ExtResource("3_hh2h3")
+region = Rect2(16, 0, 16, 0)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_hh2h3"]
+atlas = ExtResource("3_hh2h3")
+region = Rect2(32, 0, 16, 0)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_xw0tg"]
+atlas = ExtResource("4_hh2h3")
+region = Rect2(0, 0, 16, 16)
 
 [node name="maker_menu" type="Control"]
 layout_mode = 3
@@ -27,7 +49,7 @@ layout_mode = 2
 layout_mode = 0
 offset_right = 40.0
 offset_bottom = 40.0
-texture_normal = ExtResource("1_pl0bw")
+texture_normal = SubResource("AtlasTexture_khfv8")
 ignore_texture_size = true
 stretch_mode = 4
 
@@ -41,15 +63,15 @@ offset_bottom = 21.0
 layout_mode = 0
 offset_right = 21.0
 offset_bottom = 21.0
-texture = ExtResource("1_pl0bw")
+texture = SubResource("AtlasTexture_sbh5g")
 expand_mode = 1
 stretch_mode = 4
 
 [node name="Label" type="Label" parent="ScrollContainer/VBoxContainer/mining_ship/0"]
 layout_mode = 0
-offset_left = 21.0
-offset_right = 78.0
-offset_bottom = 23.0
+offset_left = 22.0
+offset_right = 79.0
+offset_bottom = 49.0
 text = "0
 "
 
@@ -64,15 +86,15 @@ offset_bottom = 43.0
 layout_mode = 0
 offset_right = 21.0
 offset_bottom = 21.0
-texture = ExtResource("1_pl0bw")
+texture = SubResource("AtlasTexture_wh17h")
 expand_mode = 1
 stretch_mode = 4
 
 [node name="Label" type="Label" parent="ScrollContainer/VBoxContainer/mining_ship/1"]
 layout_mode = 0
-offset_left = 21.0
-offset_right = 78.0
-offset_bottom = 23.0
+offset_left = 22.0
+offset_right = 79.0
+offset_bottom = 49.0
 text = "0
 "
 
@@ -87,94 +109,95 @@ offset_bottom = 65.0
 layout_mode = 0
 offset_right = 21.0
 offset_bottom = 21.0
-texture = ExtResource("1_pl0bw")
+texture = SubResource("AtlasTexture_hh2h3")
 expand_mode = 1
 stretch_mode = 4
 
 [node name="Label" type="Label" parent="ScrollContainer/VBoxContainer/mining_ship/2"]
 layout_mode = 0
-offset_left = 21.0
-offset_right = 78.0
+offset_left = 22.0
+offset_right = 79.0
 offset_bottom = 23.0
 text = "0"
 
-[node name="temp" type="Control" parent="ScrollContainer/VBoxContainer"]
+[node name="attack_ship" type="Control" parent="ScrollContainer/VBoxContainer"]
 custom_minimum_size = Vector2(0, 70)
 layout_mode = 2
 
-[node name="TextureButton" type="TextureButton" parent="ScrollContainer/VBoxContainer/temp"]
+[node name="TextureButton" type="TextureButton" parent="ScrollContainer/VBoxContainer/attack_ship"]
 layout_mode = 0
 offset_right = 40.0
 offset_bottom = 40.0
-texture_normal = ExtResource("1_pl0bw")
+texture_normal = SubResource("AtlasTexture_xw0tg")
 ignore_texture_size = true
 stretch_mode = 4
 
-[node name="0" type="Control" parent="ScrollContainer/VBoxContainer/temp"]
+[node name="0" type="Control" parent="ScrollContainer/VBoxContainer/attack_ship"]
 anchors_preset = 0
 offset_left = 41.0
 offset_right = 108.0
 offset_bottom = 21.0
 
-[node name="TextureRect" type="TextureRect" parent="ScrollContainer/VBoxContainer/temp/0"]
+[node name="TextureRect" type="TextureRect" parent="ScrollContainer/VBoxContainer/attack_ship/0"]
 layout_mode = 0
 offset_right = 21.0
 offset_bottom = 21.0
-texture = ExtResource("1_pl0bw")
+texture = SubResource("AtlasTexture_sbh5g")
 expand_mode = 1
 stretch_mode = 4
 
-[node name="Label" type="Label" parent="ScrollContainer/VBoxContainer/temp/0"]
+[node name="Label" type="Label" parent="ScrollContainer/VBoxContainer/attack_ship/0"]
 layout_mode = 0
-offset_left = 21.0
-offset_right = 78.0
-offset_bottom = 23.0
+offset_left = 22.0
+offset_right = 79.0
+offset_bottom = 49.0
 text = "0
 "
 
-[node name="1" type="Control" parent="ScrollContainer/VBoxContainer/temp"]
+[node name="1" type="Control" parent="ScrollContainer/VBoxContainer/attack_ship"]
 anchors_preset = 0
 offset_left = 41.0
 offset_top = 22.0
 offset_right = 108.0
 offset_bottom = 43.0
 
-[node name="TextureRect" type="TextureRect" parent="ScrollContainer/VBoxContainer/temp/1"]
+[node name="TextureRect" type="TextureRect" parent="ScrollContainer/VBoxContainer/attack_ship/1"]
 layout_mode = 0
 offset_right = 21.0
 offset_bottom = 21.0
-texture = ExtResource("1_pl0bw")
+texture = SubResource("AtlasTexture_wh17h")
 expand_mode = 1
 stretch_mode = 4
 
-[node name="Label" type="Label" parent="ScrollContainer/VBoxContainer/temp/1"]
+[node name="Label" type="Label" parent="ScrollContainer/VBoxContainer/attack_ship/1"]
 layout_mode = 0
-offset_left = 21.0
-offset_right = 78.0
-offset_bottom = 23.0
+offset_left = 22.0
+offset_right = 79.0
+offset_bottom = 49.0
 text = "0
 "
 
-[node name="2" type="Control" parent="ScrollContainer/VBoxContainer/temp"]
+[node name="2" type="Control" parent="ScrollContainer/VBoxContainer/attack_ship"]
 anchors_preset = 0
 offset_left = 41.0
 offset_top = 44.0
 offset_right = 108.0
 offset_bottom = 65.0
 
-[node name="TextureRect" type="TextureRect" parent="ScrollContainer/VBoxContainer/temp/2"]
+[node name="TextureRect" type="TextureRect" parent="ScrollContainer/VBoxContainer/attack_ship/2"]
 layout_mode = 0
 offset_right = 21.0
 offset_bottom = 21.0
-texture = ExtResource("1_pl0bw")
+texture = SubResource("AtlasTexture_hh2h3")
 expand_mode = 1
 stretch_mode = 4
 
-[node name="Label" type="Label" parent="ScrollContainer/VBoxContainer/temp/2"]
+[node name="Label" type="Label" parent="ScrollContainer/VBoxContainer/attack_ship/2"]
 layout_mode = 0
-offset_left = 21.0
-offset_right = 78.0
+offset_left = 22.0
+offset_right = 79.0
 offset_bottom = 23.0
 text = "0"
 
 [connection signal="pressed" from="ScrollContainer/VBoxContainer/mining_ship/TextureButton" to="." method="_on_texture_button_pressed"]
+[connection signal="pressed" from="ScrollContainer/VBoxContainer/attack_ship/TextureButton" to="." method="_on_attack_ship_texture_button_pressed"]

@@ -1,0 +1,20 @@
+[gd_scene load_steps=4 format=3 uid="uid://by2k0wbgriv6s"]
+
+[ext_resource type="Texture2D" uid="uid://dqd5byi11mvl5" path="res://art/asteriod.png" id="1_ayvcd"]
+[ext_resource type="Script" uid="uid://doikskm31bjhj" path="res://scripts/command_logic/command_context.gd" id="2_hayal"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_hayal"]
+radius = 64.195015
+
+[node name="asteriod" type="Node2D"]
+
+[node name="sprite" type="Sprite2D" parent="."]
+texture = ExtResource("1_ayvcd")
+
+[node name="command_context" type="Area2D" parent="."]
+script = ExtResource("2_hayal")
+context = 2
+metadata/_custom_type_script = "uid://doikskm31bjhj"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="command_context"]
+shape = SubResource("CircleShape2D_hayal")

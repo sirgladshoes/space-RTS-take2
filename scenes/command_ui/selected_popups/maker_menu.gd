@@ -18,3 +18,7 @@ func make_unit(indx: int) -> void:
 #mining_ship
 func _on_texture_button_pressed() -> void:
 	make_unit(0)
+
+
+func _on_attack_ship_texture_button_pressed() -> void:
+	make_unit(1)

@@ -73,6 +73,8 @@ func select_units(from: Vector2, to: Vector2):
 	select_origin = null
 	
 	for unit in selected_units:
+		if !is_instance_valid(unit):
+			continue
 		unit.deselected()
 	selected_units = []
 	if result:
@@ -134,5 +136,8 @@ func give_command(from: Vector2, to: Vector2, units: Array, commander_team:int):
 				if object.context == commands.TRANSFER_INVENTORY:
 					args=[object]
 	
-	for item in units:
-		item.give_command(command, args)
+	for unit in units:
+		if !is_instance_valid(unit):
+			selected_units.erase(unit)
+			continue
+		unit.give_command(command, args)
