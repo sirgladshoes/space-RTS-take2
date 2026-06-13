@@ -1,19 +1,24 @@
+@tool
 extends Node2D
 
 var targets = []
 var current_target: Node
-var team
+@export var team: selectable.teams
 
-@export var range: int = 200
+@export var max_range: int = 200
 
 func _ready() -> void:
-	team = owner.get_node("selectable").team
-	$laser.max_length = range
-	$Area2D/CollisionShape2D.shape.radius = range
+	$laser.max_length = max_range
+	$Area2D/CollisionShape2D.shape.radius = max_range
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta: float) -> void:
-	team = owner.get_node("selectable").team
+func _physics_process(delta: float) -> void:
+	$laser.max_length = max_range
+	$Area2D/CollisionShape2D.shape.radius = max_range
+	if owner and owner.has_node("selectable"):
+		team = owner.get_node("selectable").team
+	$team.frame = team+1
+	
 	decide_target()
 	if current_target:
 		$laser.active = true

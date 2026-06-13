@@ -44,9 +44,9 @@ signal load_game()
 func _ready() -> void:
 	#add all networked object resources to networking_data
 	var networked_res_path = "res://scripts/networking/networked_object_data/"
-	var files = DirAccess.get_files_at(networked_res_path)
-	for file in files:
-		networking_data.append(load(networked_res_path + file))
+	networking_data.append(load(networked_res_path + "attack_ship.tres"))
+	networking_data.append(load(networked_res_path + "mining_ship.tres"))
+	networking_data.append(load(networked_res_path + "mother.tres"))
 
 
 func connect_to_host(ip: String, port: int) -> void:

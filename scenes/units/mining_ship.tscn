@@ -95,7 +95,7 @@ offset_top = -19.0
 offset_bottom = 21.0
 
 [node name="mining_laser" parent="." instance=ExtResource("11_q7sdo")]
-collision_mask = 2
+z_index = -10
 hit_interval = 0.5
 
 [node name="damage_reciever" type="Area2D" parent="."]

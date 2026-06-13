@@ -13,6 +13,7 @@ offset_left = 164.0
 offset_top = 106.0
 offset_right = 201.0
 offset_bottom = 137.0
+disabled = true
 text = "join
 "
 
@@ -22,6 +23,7 @@ offset_left = 112.0
 offset_top = 106.0
 offset_right = 155.0
 offset_bottom = 137.0
+disabled = true
 text = "host"
 
 [node name="ip" type="TextEdit" parent="."]
@@ -39,7 +41,7 @@ offset_left = 89.0
 offset_top = 72.0
 offset_right = 225.0
 offset_bottom = 102.0
-text = "h"
+text = "nick"
 placeholder_text = "enter nickname"
 
 [connection signal="pressed" from="join" to="." method="_on_join_pressed"]

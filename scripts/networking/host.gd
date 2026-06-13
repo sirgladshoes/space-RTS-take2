@@ -16,8 +16,14 @@ func _ready() -> void:
 	timer.timeout.connect(send_world_state)
 	add_child(timer)
 	
+	Network.client_connected_.connect(client_connected)
 	Network.recieved_client_command.connect(give_client_command)
 	Network.make_unit.connect(make_unit)
+
+#temp
+func client_connected(id):
+	Network.assign_team(id, 1)
+	teams[id] = 1
 
 func send_world_state():
 	#temperary

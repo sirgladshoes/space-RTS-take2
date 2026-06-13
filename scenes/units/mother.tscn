@@ -129,15 +129,13 @@ position = Vector2(56, 0)
 
 [node name="turret" parent="." instance=ExtResource("12_rcew8")]
 position = Vector2(0, -54)
-range = 300
 
 [node name="turret2" parent="." instance=ExtResource("12_rcew8")]
 position = Vector2(0, 54)
-range = 300
 
 [node name="damage_reciever" type="Area2D" parent="."]
 script = ExtResource("13_u4bia")
-health = 30
+health = 500
 metadata/_custom_type_script = "uid://d38d3yvigawyg"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="damage_reciever"]
