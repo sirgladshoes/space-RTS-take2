@@ -1,0 +1,9 @@
+[gd_resource type="Resource" script_class="networked_object_data" load_steps=3 format=3 uid="uid://cdmvhknfvd41i"]
+
+[ext_resource type="Script" uid="uid://5ymvd21fld5t" path="res://scripts/networking/networked_object_data.gd" id="1_fj61u"]
+[ext_resource type="Script" uid="uid://n3gda14hxidi" path="res://scripts/networking/networked_variable.gd" id="2_tiwxt"]
+
+[resource]
+script = ExtResource("1_fj61u")
+object_scene_path = "res://scenes/units/big_turret.tscn"
+metadata/_custom_type_script = "uid://5ymvd21fld5t"

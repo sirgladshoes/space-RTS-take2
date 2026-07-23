@@ -7,7 +7,7 @@
 [ext_resource type="Script" uid="uid://bwaownusaip5p" path="res://scripts/networking/client.gd" id="4_u40i8"]
 [ext_resource type="PackedScene" uid="uid://d1jxu045tta8h" path="res://scenes/units/mother.tscn" id="5_78nbp"]
 [ext_resource type="PackedScene" uid="uid://by2k0wbgriv6s" path="res://scenes/asteriod.tscn" id="6_6f68c"]
-[ext_resource type="PackedScene" uid="uid://drrdt05angdmw" path="res://scenes/big_turret.tscn" id="8_3ij4o"]
+[ext_resource type="PackedScene" uid="uid://drrdt05angdmw" path="res://scenes/units/big_turret.tscn" id="8_3ij4o"]
 
 [sub_resource type="Environment" id="Environment_tipki"]
 background_mode = 3
@@ -107,21 +107,27 @@ rotation = 3.1415927
 
 [node name="big_turret" parent="rteam_turrets" instance=ExtResource("8_3ij4o")]
 position = Vector2(-909, -500)
+team = 1
 
 [node name="big_turret2" parent="rteam_turrets" instance=ExtResource("8_3ij4o")]
 position = Vector2(-909, -703)
+team = 1
 
 [node name="big_turret3" parent="rteam_turrets" instance=ExtResource("8_3ij4o")]
 position = Vector2(-789, -172)
+team = 1
 
 [node name="big_turret4" parent="rteam_turrets" instance=ExtResource("8_3ij4o")]
 position = Vector2(-789, 172)
+team = 1
 
 [node name="big_turret5" parent="rteam_turrets" instance=ExtResource("8_3ij4o")]
 position = Vector2(-909, 500)
+team = 1
 
 [node name="big_turret6" parent="rteam_turrets" instance=ExtResource("8_3ij4o")]
 position = Vector2(-909, 703)
+team = 1
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = SubResource("Environment_tipki")

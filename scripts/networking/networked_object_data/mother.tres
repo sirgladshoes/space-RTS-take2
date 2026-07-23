@@ -1,4 +1,4 @@
-[gd_resource type="Resource" script_class="networked_object_data" load_steps=6 format=3 uid="uid://dd3remt8c5xaw"]
+[gd_resource type="Resource" script_class="networked_object_data" load_steps=7 format=3 uid="uid://dd3remt8c5xaw"]
 
 [ext_resource type="Script" uid="uid://5ymvd21fld5t" path="res://scripts/networking/networked_object_data.gd" id="1_srfa7"]
 [ext_resource type="Script" uid="uid://n3gda14hxidi" path="res://scripts/networking/networked_variable.gd" id="2_4v10a"]
@@ -24,8 +24,15 @@ property = "my_inventory:2"
 data_type = 1
 metadata/_custom_type_script = "uid://n3gda14hxidi"
 
+[sub_resource type="Resource" id="Resource_paosj"]
+script = ExtResource("2_4v10a")
+propery_path = NodePath("..")
+property = "position:x"
+data_type = 1
+metadata/_custom_type_script = "uid://n3gda14hxidi"
+
 [resource]
 script = ExtResource("1_srfa7")
-synced_vars = Array[ExtResource("2_4v10a")]([SubResource("Resource_srfa7"), SubResource("Resource_4v10a"), SubResource("Resource_p7d1s")])
+synced_vars = Array[ExtResource("2_4v10a")]([SubResource("Resource_srfa7"), SubResource("Resource_4v10a"), SubResource("Resource_p7d1s"), SubResource("Resource_paosj")])
 object_scene_path = "res://scenes/units/mother.tscn"
 metadata/_custom_type_script = "uid://5ymvd21fld5t"
