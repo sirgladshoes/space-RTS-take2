@@ -1,0 +1,99 @@
+[gd_scene load_steps=14 format=3 uid="uid://ov4eimiypfcf"]
+
+[ext_resource type="Script" uid="uid://dp05eiwj4e50l" path="res://scripts/units/turret_unit.gd" id="1_q2nhm"]
+[ext_resource type="Script" uid="uid://iqtkbiyfhpt2" path="res://scripts/networking/networked_object.gd" id="2_d5bgx"]
+[ext_resource type="Resource" uid="uid://cdmvhknfvd41i" path="res://scripts/networking/networked_object_data/turret_unit.tres" id="3_l4tnw"]
+[ext_resource type="PackedScene" uid="uid://dc0u76w8u6qbw" path="res://scenes/turret.tscn" id="4_5y7l5"]
+[ext_resource type="Texture2D" uid="uid://s2uvo8dxcocv" path="res://art/turret.png" id="5_q2nhm"]
+[ext_resource type="Script" uid="uid://bd24p5rucivqh" path="res://scripts/command_logic/selectable.gd" id="6_vtwr0"]
+[ext_resource type="Script" uid="uid://doikskm31bjhj" path="res://scripts/command_logic/command_context.gd" id="7_m327g"]
+[ext_resource type="Script" uid="uid://d38d3yvigawyg" path="res://scripts/combat/damage.gd" id="8_vku46"]
+[ext_resource type="Texture2D" uid="uid://di2qqq3wll8e8" path="res://art/square.png" id="9_qsk30"]
+[ext_resource type="Script" uid="uid://cf1xqovnibd0k" path="res://scripts/healthbar.gd" id="10_uclw3"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_q2nhm"]
+resource_local_to_scene = true
+radius = 125.0
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_0lhfc"]
+radius = 8.0
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_fnusl"]
+radius = 7.0
+
+[node name="turret_unit" type="Node2D"]
+script = ExtResource("1_q2nhm")
+
+[node name="networked_object" type="Node" parent="."]
+script = ExtResource("2_d5bgx")
+networking_data = ExtResource("3_l4tnw")
+metadata/_custom_type_script = "uid://iqtkbiyfhpt2"
+
+[node name="turret" parent="." instance=ExtResource("4_5y7l5")]
+max_range = 125
+
+[node name="laser" parent="turret" index="2"]
+max_length = 125
+
+[node name="CollisionShape2D" parent="turret/Area2D" index="0"]
+shape = SubResource("CircleShape2D_q2nhm")
+
+[node name="sprite" type="Sprite2D" parent="."]
+z_index = 5
+texture = ExtResource("5_q2nhm")
+hframes = 3
+
+[node name="team" type="Sprite2D" parent="."]
+z_index = 6
+texture = ExtResource("5_q2nhm")
+hframes = 3
+frame = 1
+
+[node name="selectable" type="Area2D" parent="."]
+script = ExtResource("6_vtwr0")
+metadata/_custom_type_script = "uid://bd24p5rucivqh"
+
+[node name="attackable" type="Area2D" parent="." node_paths=PackedStringArray("connected_nodes")]
+script = ExtResource("7_m327g")
+context = 1
+connected_nodes = {
+&"selectable": NodePath("../selectable")
+}
+metadata/_custom_type_script = "uid://doikskm31bjhj"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="attackable"]
+shape = SubResource("CircleShape2D_0lhfc")
+
+[node name="damage_reciever" type="Area2D" parent="."]
+script = ExtResource("8_vku46")
+health = 8
+metadata/_custom_type_script = "uid://d38d3yvigawyg"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="damage_reciever"]
+shape = SubResource("CircleShape2D_fnusl")
+
+[node name="ui" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="healthbar" type="TextureProgressBar" parent="ui" node_paths=PackedStringArray("damage")]
+layout_mode = 0
+offset_left = -18.0
+offset_top = -23.0
+offset_right = 18.0
+offset_bottom = -18.0
+nine_patch_stretch = true
+texture_under = ExtResource("9_qsk30")
+texture_progress = ExtResource("9_qsk30")
+tint_under = Color(0.2159017, 0.21590173, 0.2159017, 1)
+tint_progress = Color(0.34117648, 0.79607844, 0.34117648, 1)
+script = ExtResource("10_uclw3")
+damage = NodePath("../../damage_reciever")
+metadata/_custom_type_script = "uid://cf1xqovnibd0k"
+
+[connection signal="destroy_object" from="networked_object" to="." method="queue_free"]
+[connection signal="on_death" from="damage_reciever" to="." method="queue_free"]
+
+[editable path="turret"]

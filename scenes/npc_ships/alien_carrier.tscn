@@ -1,0 +1,98 @@
+[gd_scene load_steps=15 format=3 uid="uid://c5nv1n5o3hvnm"]
+
+[ext_resource type="Texture2D" uid="uid://caus0vysd6ebk" path="res://art/alien_battleship.png" id="1_3et0l"]
+[ext_resource type="Script" uid="uid://6vxh8vcdj3g0" path="res://scripts/units/alien_carrier.gd" id="1_pekgk"]
+[ext_resource type="PackedScene" uid="uid://doy116nib8gb5" path="res://scenes/alien_ore.tscn" id="2_q0t70"]
+[ext_resource type="Script" uid="uid://d38d3yvigawyg" path="res://scripts/combat/damage.gd" id="2_y26bv"]
+[ext_resource type="Script" uid="uid://iqtkbiyfhpt2" path="res://scripts/networking/networked_object.gd" id="3_3et0l"]
+[ext_resource type="Script" uid="uid://b8bdy4fqgimix" path="res://scripts/state_machine.gd" id="4_pekgk"]
+[ext_resource type="Resource" uid="uid://4yih40so3v8p" path="res://scripts/networking/networked_object_data/alien_carrier.tres" id="4_y26bv"]
+[ext_resource type="PackedScene" uid="uid://dc0u76w8u6qbw" path="res://scenes/turret.tscn" id="6_pekgk"]
+[ext_resource type="Script" uid="uid://bd24p5rucivqh" path="res://scripts/command_logic/selectable.gd" id="9_jbq47"]
+[ext_resource type="Script" uid="uid://doikskm31bjhj" path="res://scripts/command_logic/command_context.gd" id="10_rsa4f"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_q0t70"]
+size = Vector2(16, 16)
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_3et0l"]
+resource_local_to_scene = true
+radius = 100.0
+
+[sub_resource type="NavigationPolygon" id="NavigationPolygon_pekgk"]
+vertices = PackedVector2Array(168.64063, 150.0625, -142.17969, 151.9375, -147.79688, -140, 158.35156, -140)
+polygons = Array[PackedInt32Array]([PackedInt32Array(0, 1, 2, 3)])
+outlines = Array[PackedVector2Array]([PackedVector2Array(-158, -150, 168, -150, 179, 160, -152, 162)])
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_jbq47"]
+size = Vector2(64, 52)
+
+[node name="alien_carrier" type="Node2D"]
+script = ExtResource("1_pekgk")
+alien_ore_scene = ExtResource("2_q0t70")
+
+[node name="sprite" type="Sprite2D" parent="."]
+texture = ExtResource("1_3et0l")
+
+[node name="damage_reciever" type="Area2D" parent="."]
+script = ExtResource("2_y26bv")
+tag = "E"
+health = 15
+metadata/_custom_type_script = "uid://d38d3yvigawyg"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="damage_reciever"]
+shape = SubResource("RectangleShape2D_q0t70")
+
+[node name="networked_object" type="Node" parent="."]
+script = ExtResource("3_3et0l")
+networking_data = ExtResource("4_y26bv")
+metadata/_custom_type_script = "uid://iqtkbiyfhpt2"
+
+[node name="state_machine" type="Node" parent="."]
+script = ExtResource("4_pekgk")
+metadata/_custom_type_script = "uid://b8bdy4fqgimix"
+
+[node name="turret" parent="." instance=ExtResource("6_pekgk")]
+position = Vector2(-2, 0)
+team = 2
+max_range = 100
+
+[node name="team" parent="turret" index="1"]
+visible = false
+
+[node name="laser" parent="turret" index="2"]
+color = Color(0, 1.045, 0.514, 1)
+max_length = 100
+hit_interval = 0.3
+
+[node name="CollisionShape2D" parent="turret/Area2D" index="0"]
+shape = SubResource("CircleShape2D_3et0l")
+
+[node name="NavigationRegion2D" type="NavigationRegion2D" parent="."]
+navigation_polygon = SubResource("NavigationPolygon_pekgk")
+navigation_layers = 2
+
+[node name="wait_timer" type="Timer" parent="."]
+one_shot = true
+
+[node name="selectable" type="Area2D" parent="."]
+script = ExtResource("9_jbq47")
+team = 2
+metadata/_custom_type_script = "uid://bd24p5rucivqh"
+
+[node name="attackable" type="Area2D" parent="." node_paths=PackedStringArray("connected_nodes")]
+script = ExtResource("10_rsa4f")
+context = 1
+connected_nodes = {
+&"selectable": NodePath("../selectable")
+}
+metadata/_custom_type_script = "uid://doikskm31bjhj"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="attackable"]
+shape = SubResource("RectangleShape2D_jbq47")
+
+[connection signal="on_death" from="damage_reciever" to="." method="_on_damage_reciever_on_death"]
+[connection signal="destroy_object" from="networked_object" to="." method="queue_free"]
+[connection signal="state_switched" from="state_machine" to="." method="_on_state_machine_state_switched"]
+[connection signal="timeout" from="wait_timer" to="." method="_on_wait_timer_timeout"]
+
+[editable path="turret"]

@@ -24,7 +24,8 @@ func make_unit(template_indx: int) -> void:
 	node.get_node("selectable").team = $selectable.team
 
 func _process(delta: float) -> void:
-	$selected_ui.rotation = -rotation
+	$ui.rotation = -rotation
+	
 	$team.frame = 2+$selectable.team
 	if Input.is_action_just_pressed("ui_accept") and team == 0:
 		_on_damage_reciever_on_death()

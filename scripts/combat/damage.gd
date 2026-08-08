@@ -16,3 +16,9 @@ func take_damage(amount: int) -> void:
 	if health<=0:
 		on_death.emit()
 	on_health_changed.emit(health)
+
+func set_health(health_: int) -> void:
+	health=health_
+	if health<=0:
+		on_death.emit()
+	on_health_changed.emit(health)

@@ -39,14 +39,20 @@ func state_transitions(current: String):
 			if global_position.distance_to(target_position) <= 10:
 				return "idle"
 		"travel_mine":
+			if !target_object:
+				return "idle"
 			var target_pos = target_object.global_position
 			if global_position.distance_to(target_pos) <= target_range:
 				return "mine"
 		"mine":
+			if !target_object:
+				return "idle"
 			var target_pos = target_object.global_position
 			if global_position.distance_to(target_pos) > target_range:
 				return "travel_mine"
 		"travel_transfer":
+			if !target_object:
+				return "idle"
 			var target_pos = target_object.global_position
 			if global_position.distance_to(target_pos) <= target_range:
 				return "idle"
@@ -76,4 +82,4 @@ func _on_state_machine_state_switched(current: String, previous: String) -> void
 
 
 func _on_mining_laser_hit_object(object: Node) -> void:
-	my_inventory.add_resource(inventory.resource_types.TEMP, 1)
+	my_inventory.add_resource(object.get_meta("res_type"), 1)

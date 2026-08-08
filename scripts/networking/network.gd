@@ -44,6 +44,10 @@ signal load_game()
 func _ready() -> void:
 	#add all networked object resources to networking_data
 	var networked_res_path = "res://scripts/networking/networked_object_data/"
+	networking_data.append(load(networked_res_path + "alien_carrier.tres"))
+	networking_data.append(load(networked_res_path + "alien_fighter.tres"))
+	networking_data.append(load(networked_res_path + "alien_ore.tres"))
+	networking_data.append(load(networked_res_path + "turret_unit.tres"))
 	networking_data.append(load(networked_res_path + "big_turret.tres"))
 	networking_data.append(load(networked_res_path + "attack_ship.tres"))
 	networking_data.append(load(networked_res_path + "mining_ship.tres"))

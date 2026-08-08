@@ -17,7 +17,8 @@ func _physics_process(delta: float) -> void:
 	$Area2D/CollisionShape2D.shape.radius = max_range
 	if owner and owner.has_node("selectable"):
 		team = owner.get_node("selectable").team
-	$team.frame = team+1
+	if $team.hframes*$team.vframes > team+1:
+		$team.frame = team+1
 	
 	decide_target()
 	if current_target:

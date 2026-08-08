@@ -1,13 +1,15 @@
-[gd_scene load_steps=11 format=3 uid="uid://drrdt05angdmw"]
+[gd_scene load_steps=13 format=3 uid="uid://drrdt05angdmw"]
 
 [ext_resource type="PackedScene" uid="uid://dc0u76w8u6qbw" path="res://scenes/turret.tscn" id="1_2j02a"]
-[ext_resource type="Script" uid="uid://dp05eiwj4e50l" path="res://scripts/big_turret.gd" id="1_fanql"]
+[ext_resource type="Script" uid="uid://dp05eiwj4e50l" path="res://scripts/units/turret_unit.gd" id="1_fanql"]
 [ext_resource type="Script" uid="uid://iqtkbiyfhpt2" path="res://scripts/networking/networked_object.gd" id="2_568ma"]
 [ext_resource type="Texture2D" uid="uid://bjjlc0dh4c62h" path="res://art/bigturret.png" id="2_fanql"]
-[ext_resource type="Resource" uid="uid://cdmvhknfvd41i" path="res://scripts/networking/networked_object_data/big_turret.tres" id="3_w5jly"]
+[ext_resource type="Resource" uid="uid://4nlpp5q7rsl8" path="res://scripts/networking/networked_object_data/big_turret.tres" id="3_w5jly"]
 [ext_resource type="Script" uid="uid://bd24p5rucivqh" path="res://scripts/command_logic/selectable.gd" id="4_0lhfc"]
 [ext_resource type="Script" uid="uid://d38d3yvigawyg" path="res://scripts/combat/damage.gd" id="4_ejopi"]
 [ext_resource type="Script" uid="uid://doikskm31bjhj" path="res://scripts/command_logic/command_context.gd" id="4_fnusl"]
+[ext_resource type="Texture2D" uid="uid://di2qqq3wll8e8" path="res://art/square.png" id="9_eqtm6"]
+[ext_resource type="Script" uid="uid://cf1xqovnibd0k" path="res://scripts/healthbar.gd" id="10_axwt2"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_0lhfc"]
 radius = 16.03122
@@ -53,10 +55,32 @@ shape = SubResource("CircleShape2D_0lhfc")
 
 [node name="damage_reciever" type="Area2D" parent="."]
 script = ExtResource("4_ejopi")
+health = 15
 metadata/_custom_type_script = "uid://d38d3yvigawyg"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="damage_reciever"]
 shape = SubResource("CircleShape2D_fnusl")
+
+[node name="ui" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="healthbar" type="TextureProgressBar" parent="ui" node_paths=PackedStringArray("damage")]
+layout_mode = 0
+offset_left = -28.0
+offset_top = -26.0
+offset_right = 28.0
+offset_bottom = -21.0
+nine_patch_stretch = true
+texture_under = ExtResource("9_eqtm6")
+texture_progress = ExtResource("9_eqtm6")
+tint_under = Color(0.2159017, 0.21590173, 0.2159017, 1)
+tint_progress = Color(0.34117648, 0.79607844, 0.34117648, 1)
+script = ExtResource("10_axwt2")
+damage = NodePath("../../damage_reciever")
+metadata/_custom_type_script = "uid://cf1xqovnibd0k"
 
 [connection signal="destroy_object" from="networked_object" to="." method="queue_free"]
 [connection signal="on_death" from="damage_reciever" to="." method="queue_free"]

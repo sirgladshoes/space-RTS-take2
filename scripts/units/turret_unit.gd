@@ -8,6 +8,7 @@ extends Node2D
 func _process(delta: float) -> void:
 	global_rotation = $turret.global_rotation
 	$turret.rotation = 0
+	$ui.rotation = -global_rotation
 	$turret.team = team
 	$selectable.team = team
 	$team.frame = team+1

@@ -1,0 +1,89 @@
+[gd_scene load_steps=13 format=3 uid="uid://cpp8dk6fol8c8"]
+
+[ext_resource type="Script" uid="uid://biqtda7wnxgtl" path="res://scripts/units/alien_fighter.gd" id="1_cnki5"]
+[ext_resource type="Texture2D" uid="uid://4uyrtn23cpf" path="res://art/alien_fighter.png" id="1_n8dug"]
+[ext_resource type="Script" uid="uid://d38d3yvigawyg" path="res://scripts/combat/damage.gd" id="2_pjagc"]
+[ext_resource type="Script" uid="uid://iqtkbiyfhpt2" path="res://scripts/networking/networked_object.gd" id="3_xyxbt"]
+[ext_resource type="Resource" uid="uid://cpru3j0x0akwo" path="res://scripts/networking/networked_object_data/alien_fighter.tres" id="4_4lbhf"]
+[ext_resource type="Script" uid="uid://b8bdy4fqgimix" path="res://scripts/state_machine.gd" id="6_dy00w"]
+[ext_resource type="Script" uid="uid://bd24p5rucivqh" path="res://scripts/command_logic/selectable.gd" id="7_na5ml"]
+[ext_resource type="Script" uid="uid://doikskm31bjhj" path="res://scripts/command_logic/command_context.gd" id="7_ydbl6"]
+[ext_resource type="PackedScene" uid="uid://vji4pyi5p5q6" path="res://scenes/laser.tscn" id="9_jtq0d"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_xyxbt"]
+size = Vector2(16, 16)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_na5ml"]
+size = Vector2(16, 16)
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_na5ml"]
+radius = 150.0
+
+[node name="alien_fighter" type="Node2D"]
+script = ExtResource("1_cnki5")
+
+[node name="sprite" type="Sprite2D" parent="."]
+texture = ExtResource("1_n8dug")
+
+[node name="damage_reciever" type="Area2D" parent="."]
+script = ExtResource("2_pjagc")
+tag = "E"
+metadata/_custom_type_script = "uid://d38d3yvigawyg"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="damage_reciever"]
+shape = SubResource("RectangleShape2D_xyxbt")
+
+[node name="networked_object" type="Node" parent="."]
+script = ExtResource("3_xyxbt")
+networking_data = ExtResource("4_4lbhf")
+metadata/_custom_type_script = "uid://iqtkbiyfhpt2"
+
+[node name="state_machine" type="Node" parent="."]
+script = ExtResource("6_dy00w")
+metadata/_custom_type_script = "uid://b8bdy4fqgimix"
+
+[node name="NavigationAgent2D" type="NavigationAgent2D" parent="."]
+navigation_layers = 2
+avoidance_enabled = true
+
+[node name="selectable" type="Area2D" parent="."]
+script = ExtResource("7_na5ml")
+team = 2
+metadata/_custom_type_script = "uid://bd24p5rucivqh"
+
+[node name="command_context" type="Area2D" parent="." node_paths=PackedStringArray("connected_nodes")]
+script = ExtResource("7_ydbl6")
+context = 1
+connected_nodes = {
+&"selectable": NodePath("../selectable")
+}
+metadata/_custom_type_script = "uid://doikskm31bjhj"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="command_context"]
+shape = SubResource("RectangleShape2D_na5ml")
+
+[node name="target_detector" type="Area2D" parent="."]
+collision_layer = 0
+collision_mask = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="target_detector"]
+shape = SubResource("CircleShape2D_na5ml")
+
+[node name="laser" parent="." instance=ExtResource("9_jtq0d")]
+color = Color(0, 1.0445855, 0.5143089, 1)
+mask = 4
+max_length = 75
+
+[node name="Timer" parent="laser" index="1"]
+wait_time = 0.15
+
+[connection signal="on_death" from="damage_reciever" to="." method="_on_damage_reciever_on_death"]
+[connection signal="destroy_object" from="networked_object" to="." method="queue_free"]
+[connection signal="destroy_object" from="networked_object" to="." method="_on_networked_object_destroy_object"]
+[connection signal="state_switched" from="state_machine" to="." method="_on_state_machine_state_switched"]
+[connection signal="velocity_computed" from="NavigationAgent2D" to="." method="_on_navigation_agent_2d_velocity_computed"]
+[connection signal="area_entered" from="target_detector" to="." method="_on_target_detector_area_entered"]
+[connection signal="area_exited" from="target_detector" to="." method="_on_target_detector_area_exited"]
+[connection signal="hit_object" from="laser" to="." method="_on_laser_hit_object"]
+
+[editable path="laser"]

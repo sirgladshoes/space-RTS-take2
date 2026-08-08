@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=3 uid="uid://cxew7m7a508m0"]
+[gd_scene load_steps=12 format=3 uid="uid://cxew7m7a508m0"]
 
 [ext_resource type="Script" uid="uid://dwomhwq62g33n" path="res://scripts/game.gd" id="1_3ij4o"]
 [ext_resource type="Script" uid="uid://bxfrmf651q2qn" path="res://scripts/camera_2d.gd" id="1_eol46"]
@@ -8,6 +8,8 @@
 [ext_resource type="PackedScene" uid="uid://d1jxu045tta8h" path="res://scenes/units/mother.tscn" id="5_78nbp"]
 [ext_resource type="PackedScene" uid="uid://by2k0wbgriv6s" path="res://scenes/asteriod.tscn" id="6_6f68c"]
 [ext_resource type="PackedScene" uid="uid://drrdt05angdmw" path="res://scenes/units/big_turret.tscn" id="8_3ij4o"]
+[ext_resource type="PackedScene" uid="uid://c5nv1n5o3hvnm" path="res://scenes/npc_ships/alien_carrier.tscn" id="9_5pp0m"]
+[ext_resource type="PackedScene" uid="uid://cpp8dk6fol8c8" path="res://scenes/npc_ships/alien_fighter.tscn" id="10_xd4ds"]
 
 [sub_resource type="Environment" id="Environment_tipki"]
 background_mode = 3
@@ -70,16 +72,18 @@ position = Vector2(1500, 0)
 rotation = 3.1415927
 team = 1
 
-[node name="asteriod" parent="." instance=ExtResource("6_6f68c")]
+[node name="asteroids" type="Node2D" parent="."]
+
+[node name="asteriod" parent="asteroids" instance=ExtResource("6_6f68c")]
 position = Vector2(-1000, -500)
 
-[node name="asteriod2" parent="." instance=ExtResource("6_6f68c")]
+[node name="asteriod2" parent="asteroids" instance=ExtResource("6_6f68c")]
 position = Vector2(1000, 500)
 
-[node name="asteriod3" parent="." instance=ExtResource("6_6f68c")]
+[node name="asteriod3" parent="asteroids" instance=ExtResource("6_6f68c")]
 position = Vector2(-1000, 500)
 
-[node name="asteriod4" parent="." instance=ExtResource("6_6f68c")]
+[node name="asteriod4" parent="asteroids" instance=ExtResource("6_6f68c")]
 position = Vector2(1000, -500)
 
 [node name="bteam_turrets" type="Node2D" parent="."]
@@ -131,6 +135,30 @@ team = 1
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = SubResource("Environment_tipki")
+
+[node name="alien_carrier" parent="." instance=ExtResource("9_5pp0m")]
+position = Vector2(0, -500)
+
+[node name="alien_fighter" parent="." instance=ExtResource("10_xd4ds")]
+position = Vector2(-84, -388)
+
+[node name="alien_fighter2" parent="." instance=ExtResource("10_xd4ds")]
+position = Vector2(103, -378)
+
+[node name="alien_fighter5" parent="." instance=ExtResource("10_xd4ds")]
+position = Vector2(-115, 650)
+
+[node name="alien_fighter6" parent="." instance=ExtResource("10_xd4ds")]
+position = Vector2(95, 627)
+
+[node name="alien_fighter3" parent="." instance=ExtResource("10_xd4ds")]
+position = Vector2(124, -573)
+
+[node name="alien_fighter4" parent="." instance=ExtResource("10_xd4ds")]
+position = Vector2(-94, -589)
+
+[node name="alien_carrier2" parent="." instance=ExtResource("9_5pp0m")]
+position = Vector2(0, 500)
 
 [connection signal="pressed" from="Control/host" to="game_host" method="_on_host_pressed"]
 [connection signal="pressed" from="Control/host" to="game_client" method="_on_host_pressed"]

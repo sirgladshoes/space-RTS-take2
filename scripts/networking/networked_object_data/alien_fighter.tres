@@ -1,0 +1,41 @@
+[gd_resource type="Resource" script_class="networked_object_data" load_steps=7 format=3 uid="uid://cpru3j0x0akwo"]
+
+[ext_resource type="Script" uid="uid://5ymvd21fld5t" path="res://scripts/networking/networked_object_data.gd" id="1_jy1bq"]
+[ext_resource type="Script" uid="uid://n3gda14hxidi" path="res://scripts/networking/networked_variable.gd" id="2_mq7h5"]
+
+[sub_resource type="Resource" id="Resource_jy1bq"]
+script = ExtResource("2_mq7h5")
+propery_path = NodePath("..")
+property = "global_position:x"
+data_type = 1
+is_interpolated = true
+metadata/_custom_type_script = "uid://n3gda14hxidi"
+
+[sub_resource type="Resource" id="Resource_mq7h5"]
+script = ExtResource("2_mq7h5")
+propery_path = NodePath("..")
+property = "global_position:y"
+data_type = 1
+is_interpolated = true
+metadata/_custom_type_script = "uid://n3gda14hxidi"
+
+[sub_resource type="Resource" id="Resource_jbqnx"]
+script = ExtResource("2_mq7h5")
+propery_path = NodePath("..")
+property = "global_rotation"
+data_type = 4
+is_interpolated = true
+angle_interpolation = true
+metadata/_custom_type_script = "uid://n3gda14hxidi"
+
+[sub_resource type="Resource" id="Resource_476d8"]
+script = ExtResource("2_mq7h5")
+propery_path = NodePath("../laser")
+property = "active"
+metadata/_custom_type_script = "uid://n3gda14hxidi"
+
+[resource]
+script = ExtResource("1_jy1bq")
+synced_vars = Array[ExtResource("2_mq7h5")]([SubResource("Resource_jy1bq"), SubResource("Resource_mq7h5"), SubResource("Resource_jbqnx"), SubResource("Resource_476d8")])
+object_scene_path = "res://scenes/npc_ships/alien_fighter.tscn"
+metadata/_custom_type_script = "uid://5ymvd21fld5t"

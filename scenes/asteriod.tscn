@@ -15,6 +15,7 @@ texture = ExtResource("1_ayvcd")
 script = ExtResource("2_hayal")
 context = 2
 metadata/_custom_type_script = "uid://doikskm31bjhj"
+metadata/res_type = 2
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="command_context"]
 shape = SubResource("CircleShape2D_hayal")

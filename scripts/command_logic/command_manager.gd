@@ -72,17 +72,20 @@ func select_units(from: Vector2, to: Vector2):
 	
 	select_origin = null
 	
-	for unit in selected_units:
-		if !is_instance_valid(unit):
-			continue
-		unit.deselected()
-	selected_units = []
+	if !Input.is_action_pressed("add_selection"):
+		for unit in selected_units:
+			if !is_instance_valid(unit):
+				continue
+			unit.deselected()
+		selected_units = []
 	if result:
 		for item in result:
 			var unit = item.collider
 			if unit is selectable and unit.team == team:
 				selected_units.append(unit)
 				unit.selected()
+				if (from-to).length() < 2:
+					break
 	units_selected.emit(selected_units)
 
 func focus_unit(unit: selectable):
@@ -138,6 +141,7 @@ func give_command(from: Vector2, to: Vector2, units: Array, commander_team:int):
 	
 	for unit in units:
 		if !is_instance_valid(unit):
-			selected_units.erase(unit)
 			continue
 		unit.give_command(command, args)
+	
+	units = units.filter(func(u): return is_instance_valid(u))

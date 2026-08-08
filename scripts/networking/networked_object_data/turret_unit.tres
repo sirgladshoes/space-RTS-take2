@@ -1,0 +1,47 @@
+[gd_resource type="Resource" script_class="networked_object_data" load_steps=8 format=3 uid="uid://cdmvhknfvd41i"]
+
+[ext_resource type="Script" uid="uid://5ymvd21fld5t" path="res://scripts/networking/networked_object_data.gd" id="1_ghcce"]
+[ext_resource type="Script" uid="uid://n3gda14hxidi" path="res://scripts/networking/networked_variable.gd" id="2_yaigg"]
+
+[sub_resource type="Resource" id="Resource_fj61u"]
+script = ExtResource("2_yaigg")
+propery_path = NodePath("..")
+property = "global_rotation"
+data_type = 4
+is_interpolated = true
+angle_interpolation = true
+metadata/_custom_type_script = "uid://n3gda14hxidi"
+
+[sub_resource type="Resource" id="Resource_tiwxt"]
+script = ExtResource("2_yaigg")
+propery_path = NodePath("..")
+property = "global_position:x"
+data_type = 1
+metadata/_custom_type_script = "uid://n3gda14hxidi"
+
+[sub_resource type="Resource" id="Resource_kfy1o"]
+script = ExtResource("2_yaigg")
+propery_path = NodePath("..")
+property = "global_position:y"
+data_type = 1
+metadata/_custom_type_script = "uid://n3gda14hxidi"
+
+[sub_resource type="Resource" id="Resource_uh5o7"]
+script = ExtResource("2_yaigg")
+propery_path = NodePath("../damage_reciever")
+property = "health"
+setter = "set_health"
+data_type = 1
+metadata/_custom_type_script = "uid://n3gda14hxidi"
+
+[sub_resource type="Resource" id="Resource_ghcce"]
+script = ExtResource("2_yaigg")
+propery_path = NodePath("..")
+property = "team"
+metadata/_custom_type_script = "uid://n3gda14hxidi"
+
+[resource]
+script = ExtResource("1_ghcce")
+synced_vars = Array[ExtResource("2_yaigg")]([SubResource("Resource_fj61u"), SubResource("Resource_tiwxt"), SubResource("Resource_kfy1o"), SubResource("Resource_uh5o7"), SubResource("Resource_ghcce")])
+object_scene_path = "res://scenes/units/turret_unit.tscn"
+metadata/_custom_type_script = "uid://5ymvd21fld5t"

@@ -1,0 +1,57 @@
+[gd_scene load_steps=9 format=3 uid="uid://doy116nib8gb5"]
+
+[ext_resource type="Script" uid="uid://doikskm31bjhj" path="res://scripts/command_logic/command_context.gd" id="1_j8q2m"]
+[ext_resource type="Texture2D" uid="uid://qnxfvf1xmtpi" path="res://art/ore.png" id="1_orsdq"]
+[ext_resource type="Script" uid="uid://d38d3yvigawyg" path="res://scripts/combat/damage.gd" id="2_0pu3s"]
+[ext_resource type="Script" uid="uid://cf1xqovnibd0k" path="res://scripts/healthbar.gd" id="3_sje4m"]
+[ext_resource type="Texture2D" uid="uid://di2qqq3wll8e8" path="res://art/square.png" id="4_yxrtm"]
+[ext_resource type="Script" uid="uid://iqtkbiyfhpt2" path="res://scripts/networking/networked_object.gd" id="6_yhnw5"]
+[ext_resource type="Resource" uid="uid://bikavhwqvp82h" path="res://scripts/networking/networked_object_data/alien_ore.tres" id="7_pbepo"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_j8q2m"]
+radius = 8.0
+
+[node name="alien_ore" type="Node2D"]
+
+[node name="sprite" type="Sprite2D" parent="."]
+texture = ExtResource("1_orsdq")
+
+[node name="command_context" type="Area2D" parent="."]
+script = ExtResource("1_j8q2m")
+context = 2
+metadata/_custom_type_script = "uid://doikskm31bjhj"
+metadata/res_type = 1
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="command_context"]
+shape = SubResource("CircleShape2D_j8q2m")
+
+[node name="damage_reciever" type="Area2D" parent="."]
+script = ExtResource("2_0pu3s")
+health = 60
+metadata/_custom_type_script = "uid://d38d3yvigawyg"
+
+[node name="Timer" type="Timer" parent="."]
+autostart = true
+
+[node name="healthbar" type="TextureProgressBar" parent="." node_paths=PackedStringArray("damage")]
+offset_left = -40.0
+offset_top = 10.0
+offset_right = 40.0
+offset_bottom = 16.0
+nine_patch_stretch = true
+texture_under = ExtResource("4_yxrtm")
+texture_progress = ExtResource("4_yxrtm")
+tint_under = Color(0.21568628, 0.21568628, 0.21568628, 1)
+tint_progress = Color(0.38039216, 1, 1, 1)
+script = ExtResource("3_sje4m")
+damage = NodePath("../damage_reciever")
+metadata/_custom_type_script = "uid://cf1xqovnibd0k"
+
+[node name="networked_object" type="Node" parent="."]
+script = ExtResource("6_yhnw5")
+networking_data = ExtResource("7_pbepo")
+metadata/_custom_type_script = "uid://iqtkbiyfhpt2"
+
+[connection signal="on_death" from="damage_reciever" to="." method="queue_free"]
+[connection signal="timeout" from="Timer" to="damage_reciever" method="take_damage" binds= [1]]
+[connection signal="destroy_object" from="networked_object" to="." method="queue_free"]

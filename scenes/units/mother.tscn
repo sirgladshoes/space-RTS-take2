@@ -1,4 +1,4 @@
-[gd_scene load_steps=18 format=3 uid="uid://d1jxu045tta8h"]
+[gd_scene load_steps=20 format=3 uid="uid://d1jxu045tta8h"]
 
 [ext_resource type="Script" uid="uid://cbe88tif2wj8l" path="res://scripts/units/mother.gd" id="1_yni06"]
 [ext_resource type="Script" uid="uid://bd24p5rucivqh" path="res://scripts/command_logic/selectable.gd" id="2_3qucw"]
@@ -11,8 +11,10 @@
 [ext_resource type="Script" uid="uid://cdmr00xlptfhd" path="res://scripts/UI/selected_ui.gd" id="7_683hq"]
 [ext_resource type="PackedScene" uid="uid://crkwtc436uiav" path="res://scenes/command_ui/selected_popups/inventory_display.tscn" id="8_hnx2a"]
 [ext_resource type="PackedScene" uid="uid://cts1brmfcvlac" path="res://scenes/command_ui/selected_popups/maker_menu.tscn" id="9_so8sc"]
+[ext_resource type="Texture2D" uid="uid://di2qqq3wll8e8" path="res://art/square.png" id="12_q643p"]
 [ext_resource type="PackedScene" uid="uid://dc0u76w8u6qbw" path="res://scenes/turret.tscn" id="12_rcew8"]
 [ext_resource type="Script" uid="uid://d38d3yvigawyg" path="res://scripts/combat/damage.gd" id="13_u4bia"]
+[ext_resource type="Script" uid="uid://cf1xqovnibd0k" path="res://scripts/healthbar.gd" id="13_wm0a1"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_r5smi"]
 size = Vector2(112, 256)
@@ -124,6 +126,27 @@ offset_bottom = -11.0
 networked_obj = NodePath("../../networked_object")
 master_template = ExtResource("2_r5smi")
 
+[node name="ui" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="healthbar" type="TextureProgressBar" parent="ui" node_paths=PackedStringArray("damage")]
+layout_mode = 0
+offset_left = -78.0
+offset_top = -154.0
+offset_right = 79.0
+offset_bottom = -146.0
+nine_patch_stretch = true
+texture_under = ExtResource("12_q643p")
+texture_progress = ExtResource("12_q643p")
+tint_under = Color(0.21568628, 0.21568628, 0.21568628, 1)
+tint_progress = Color(0.34117648, 0.79607844, 0.34117648, 1)
+script = ExtResource("13_wm0a1")
+damage = NodePath("../../damage_reciever")
+metadata/_custom_type_script = "uid://cf1xqovnibd0k"
+
 [node name="spawn_point" type="Marker2D" parent="."]
 position = Vector2(56, 0)
 
@@ -135,7 +158,7 @@ position = Vector2(0, 54)
 
 [node name="damage_reciever" type="Area2D" parent="."]
 script = ExtResource("13_u4bia")
-health = 500
+health = 150
 metadata/_custom_type_script = "uid://d38d3yvigawyg"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="damage_reciever"]

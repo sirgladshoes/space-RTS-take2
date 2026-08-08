@@ -2,7 +2,8 @@ class_name selectable extends Area2D
 
 enum teams {
 	BLUE,
-	RED
+	RED,
+	ALIEN
 }
 
 @export var team: teams = teams.BLUE
