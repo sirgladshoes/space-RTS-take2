@@ -10,15 +10,16 @@ config_version=5
 
 [application]
 
-config/name="space RTS take 2"
-run/main_scene="uid://cxew7m7a508m0"
+config/name="Space RTS"
+run/main_scene="uid://0cdbfqwpk0f8"
 config/features=PackedStringArray("4.5", "Forward Plus")
-config/icon="res://icon.svg"
+config/icon="uid://ckbjhjuk5omas"
 
 [autoload]
 
 Network="*res://scripts/networking/network.gd"
 SceneManager="*res://scripts/SceneManager.gd"
+MusicManager="*res://scripts/MusicManager.gd"
 
 [display]
 

@@ -1,0 +1,9 @@
+[gd_resource type="Resource" script_class="networked_object_data" load_steps=3 format=3 uid="uid://3ifujwdcleg"]
+
+[ext_resource type="Script" uid="uid://5ymvd21fld5t" path="res://scripts/networking/networked_object_data.gd" id="1_fljeg"]
+[ext_resource type="Script" uid="uid://n3gda14hxidi" path="res://scripts/networking/networked_variable.gd" id="2_38cc8"]
+
+[resource]
+script = ExtResource("1_fljeg")
+object_scene_path = "res://scenes/asteroid_event.tscn"
+metadata/_custom_type_script = "uid://5ymvd21fld5t"

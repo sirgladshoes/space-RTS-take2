@@ -61,6 +61,7 @@ func _on_state_machine_state_switched(current: String, previous: String) -> void
 
 func _on_laser_hit_object(object: Node) -> void:
 	object.take_damage(1)
+	$AudioStreamPlayer2D.play()
 
 
 func _on_navigation_agent_2d_velocity_computed(safe_velocity: Vector2) -> void:

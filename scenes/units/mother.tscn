@@ -1,4 +1,4 @@
-[gd_scene load_steps=20 format=3 uid="uid://d1jxu045tta8h"]
+[gd_scene load_steps=21 format=3 uid="uid://d1jxu045tta8h"]
 
 [ext_resource type="Script" uid="uid://cbe88tif2wj8l" path="res://scripts/units/mother.gd" id="1_yni06"]
 [ext_resource type="Script" uid="uid://bd24p5rucivqh" path="res://scripts/command_logic/selectable.gd" id="2_3qucw"]
@@ -14,7 +14,8 @@
 [ext_resource type="Texture2D" uid="uid://di2qqq3wll8e8" path="res://art/square.png" id="12_q643p"]
 [ext_resource type="PackedScene" uid="uid://dc0u76w8u6qbw" path="res://scenes/turret.tscn" id="12_rcew8"]
 [ext_resource type="Script" uid="uid://d38d3yvigawyg" path="res://scripts/combat/damage.gd" id="13_u4bia"]
-[ext_resource type="Script" uid="uid://cf1xqovnibd0k" path="res://scripts/healthbar.gd" id="13_wm0a1"]
+[ext_resource type="Script" uid="uid://cf1xqovnibd0k" path="res://scripts/components/healthbar.gd" id="13_wm0a1"]
+[ext_resource type="AudioStream" uid="uid://cvnrih5rdb2sh" path="res://sfx/select.wav" id="16_wm0a1"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_r5smi"]
 size = Vector2(112, 256)
@@ -119,12 +120,13 @@ offset_top = -38.0
 offset_bottom = 2.0
 scale = Vector2(2, 2)
 
-[node name="maker_menu" parent="selected_ui" node_paths=PackedStringArray("networked_obj") instance=ExtResource("9_so8sc")]
+[node name="maker_menu" parent="selected_ui" node_paths=PackedStringArray("networked_obj", "linked_inventory") instance=ExtResource("9_so8sc")]
 layout_mode = 0
 offset_top = -11.0
 offset_bottom = -11.0
 networked_obj = NodePath("../../networked_object")
 master_template = ExtResource("2_r5smi")
+linked_inventory = NodePath("../../inventory")
 
 [node name="ui" type="Control" parent="."]
 layout_mode = 3
@@ -165,10 +167,15 @@ metadata/_custom_type_script = "uid://d38d3yvigawyg"
 position = Vector2(-0.5, 0)
 shape = SubResource("RectangleShape2D_q7mrj")
 
+[node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("16_wm0a1")
+bus = &"sfx"
+
 [connection signal="on_deselected" from="selectable" to="selected_ui" method="deselected"]
 [connection signal="on_deselected" from="selectable" to="outline" method="set_visible" binds= [false]]
 [connection signal="on_selected" from="selectable" to="selected_ui" method="selected"]
 [connection signal="on_selected" from="selectable" to="outline" method="set_visible" binds= [true]]
+[connection signal="on_selected" from="selectable" to="AudioStreamPlayer2D" method="set_playing" binds= [true]]
 [connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]
 [connection signal="destroy_object" from="networked_object" to="." method="queue_free"]
 [connection signal="on_death" from="damage_reciever" to="." method="_on_damage_reciever_on_death"]

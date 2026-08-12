@@ -39,11 +39,15 @@ signal make_unit(template_indx: int, maker_id: int)
 signal assigned_team(team: int)
 signal recieved_lobby_state(state: Dictionary)
 signal load_game()
+signal win_screen(winner)
 
+var upnp: UPNP
 
 func _ready() -> void:
-	#add all networked object resources to networking_data
+	#add all networked object resources to networking_data cuz DirAccess breaks on export
 	var networked_res_path = "res://scripts/networking/networked_object_data/"
+	networking_data.append(load(networked_res_path + "asteroid_event.tres"))
+	networking_data.append(load(networked_res_path + "turret_ship.tres"))
 	networking_data.append(load(networked_res_path + "alien_carrier.tres"))
 	networking_data.append(load(networked_res_path + "alien_fighter.tres"))
 	networking_data.append(load(networked_res_path + "alien_ore.tres"))
@@ -78,6 +82,14 @@ func set_accept_connections(value: bool):
 	peer.set_refuse_new_connections(!value)
 
 func destroy_connection() -> void:
+	if is_hosting:
+		multiplayer.peer_connected.disconnect(client_connected)
+		multiplayer.peer_disconnected.disconnect(client_disconnected)
+	else:
+		multiplayer.connected_to_server.disconnect(connected_to_host)
+		multiplayer.connection_failed.disconnect(connect_to_host_failed)
+		multiplayer.server_disconnected.disconnect(host_disconnected)
+	
 	var peer = OfflineMultiplayerPeer.new()
 	multiplayer.set_multiplayer_peer(peer)
 	is_hosting = false
@@ -98,6 +110,23 @@ func add_networked_object(object: networked_object) -> void:
 
 func remove_networked_object(object_id: int) -> void:
 	networked_objects.erase(object_id)
+
+#upnp port forwarding
+func open_port(port: int) -> bool:
+	upnp = UPNP.new()
+	var result1 = upnp.discover()
+	var result2 = upnp.add_port_mapping(port)
+	
+	return (result1 == 0 and result2 == 0)
+
+func close_port(port:int) -> void:
+	if upnp:
+		upnp.delete_port_mapping(port)
+
+func _notification(what: int) -> void:
+	if what == NOTIFICATION_WM_CLOSE_REQUEST:
+		close_port(PORT)
+		get_tree().quit()
 
 #server methods
 func send_world_state() -> void:
@@ -123,6 +152,9 @@ func send_lobby_state(state: Dictionary) -> void:
 
 func send_load_game():
 	recv_load_game.rpc()
+
+func send_win_screen(winner):
+	recv_win_screen.rpc(winner)
 
 func send_load_lobby():
 	recv_load_lobby.rpc()
@@ -215,7 +247,7 @@ func recv_world_state(data: PackedByteArray) -> void:
 		else:
 			skip_object_data(networking_data[object_data_indx], byte_buffer)
 	
-	for object_id in networked_objects:
+	for object_id in networked_objects.keys():
 		if !recieved_objects.has(object_id):
 			networked_objects[object_id].destroy()
 
@@ -242,6 +274,10 @@ func recv_make_unit(template_indx: int, maker_id: int):
 @rpc("reliable")
 func recv_load_game():
 	load_game.emit()
+
+@rpc("reliable")
+func recv_win_screen(winner):
+	win_screen.emit(winner)
 
 @rpc("reliable")
 func recv_load_lobby():

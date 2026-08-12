@@ -5,7 +5,7 @@
 [ext_resource type="PackedScene" uid="uid://doy116nib8gb5" path="res://scenes/alien_ore.tscn" id="2_q0t70"]
 [ext_resource type="Script" uid="uid://d38d3yvigawyg" path="res://scripts/combat/damage.gd" id="2_y26bv"]
 [ext_resource type="Script" uid="uid://iqtkbiyfhpt2" path="res://scripts/networking/networked_object.gd" id="3_3et0l"]
-[ext_resource type="Script" uid="uid://b8bdy4fqgimix" path="res://scripts/state_machine.gd" id="4_pekgk"]
+[ext_resource type="Script" uid="uid://b8bdy4fqgimix" path="res://scripts/components/state_machine.gd" id="4_pekgk"]
 [ext_resource type="Resource" uid="uid://4yih40so3v8p" path="res://scripts/networking/networked_object_data/alien_carrier.tres" id="4_y26bv"]
 [ext_resource type="PackedScene" uid="uid://dc0u76w8u6qbw" path="res://scenes/turret.tscn" id="6_pekgk"]
 [ext_resource type="Script" uid="uid://bd24p5rucivqh" path="res://scripts/command_logic/selectable.gd" id="9_jbq47"]

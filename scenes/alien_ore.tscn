@@ -3,7 +3,7 @@
 [ext_resource type="Script" uid="uid://doikskm31bjhj" path="res://scripts/command_logic/command_context.gd" id="1_j8q2m"]
 [ext_resource type="Texture2D" uid="uid://qnxfvf1xmtpi" path="res://art/ore.png" id="1_orsdq"]
 [ext_resource type="Script" uid="uid://d38d3yvigawyg" path="res://scripts/combat/damage.gd" id="2_0pu3s"]
-[ext_resource type="Script" uid="uid://cf1xqovnibd0k" path="res://scripts/healthbar.gd" id="3_sje4m"]
+[ext_resource type="Script" uid="uid://cf1xqovnibd0k" path="res://scripts/components/healthbar.gd" id="3_sje4m"]
 [ext_resource type="Texture2D" uid="uid://di2qqq3wll8e8" path="res://art/square.png" id="4_yxrtm"]
 [ext_resource type="Script" uid="uid://iqtkbiyfhpt2" path="res://scripts/networking/networked_object.gd" id="6_yhnw5"]
 [ext_resource type="Resource" uid="uid://bikavhwqvp82h" path="res://scripts/networking/networked_object_data/alien_ore.tres" id="7_pbepo"]

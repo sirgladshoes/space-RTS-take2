@@ -1,14 +1,15 @@
-[gd_scene load_steps=13 format=3 uid="uid://cpp8dk6fol8c8"]
+[gd_scene load_steps=14 format=3 uid="uid://cpp8dk6fol8c8"]
 
 [ext_resource type="Script" uid="uid://biqtda7wnxgtl" path="res://scripts/units/alien_fighter.gd" id="1_cnki5"]
 [ext_resource type="Texture2D" uid="uid://4uyrtn23cpf" path="res://art/alien_fighter.png" id="1_n8dug"]
 [ext_resource type="Script" uid="uid://d38d3yvigawyg" path="res://scripts/combat/damage.gd" id="2_pjagc"]
 [ext_resource type="Script" uid="uid://iqtkbiyfhpt2" path="res://scripts/networking/networked_object.gd" id="3_xyxbt"]
 [ext_resource type="Resource" uid="uid://cpru3j0x0akwo" path="res://scripts/networking/networked_object_data/alien_fighter.tres" id="4_4lbhf"]
-[ext_resource type="Script" uid="uid://b8bdy4fqgimix" path="res://scripts/state_machine.gd" id="6_dy00w"]
+[ext_resource type="Script" uid="uid://b8bdy4fqgimix" path="res://scripts/components/state_machine.gd" id="6_dy00w"]
 [ext_resource type="Script" uid="uid://bd24p5rucivqh" path="res://scripts/command_logic/selectable.gd" id="7_na5ml"]
 [ext_resource type="Script" uid="uid://doikskm31bjhj" path="res://scripts/command_logic/command_context.gd" id="7_ydbl6"]
 [ext_resource type="PackedScene" uid="uid://vji4pyi5p5q6" path="res://scenes/laser.tscn" id="9_jtq0d"]
+[ext_resource type="AudioStream" uid="uid://diksunyo5msvo" path="res://sfx/hit.wav" id="10_pqqoe"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_xyxbt"]
 size = Vector2(16, 16)
@@ -70,12 +71,18 @@ collision_mask = 2
 shape = SubResource("CircleShape2D_na5ml")
 
 [node name="laser" parent="." instance=ExtResource("9_jtq0d")]
+collision_mask = 4
 color = Color(0, 1.0445855, 0.5143089, 1)
 mask = 4
 max_length = 75
 
 [node name="Timer" parent="laser" index="1"]
 wait_time = 0.15
+
+[node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("10_pqqoe")
+max_distance = 1000.0
+bus = &"world"
 
 [connection signal="on_death" from="damage_reciever" to="." method="_on_damage_reciever_on_death"]
 [connection signal="destroy_object" from="networked_object" to="." method="queue_free"]

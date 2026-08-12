@@ -1,0 +1,35 @@
+[gd_resource type="Resource" script_class="networked_object_data" load_steps=6 format=3 uid="uid://6tb87003i25d"]
+
+[ext_resource type="Script" uid="uid://5ymvd21fld5t" path="res://scripts/networking/networked_object_data.gd" id="1_7kcx0"]
+[ext_resource type="Script" uid="uid://n3gda14hxidi" path="res://scripts/networking/networked_variable.gd" id="2_6pq64"]
+
+[sub_resource type="Resource" id="Resource_7kcx0"]
+script = ExtResource("2_6pq64")
+propery_path = NodePath("..")
+property = "global_position:x"
+data_type = 1
+is_interpolated = true
+metadata/_custom_type_script = "uid://n3gda14hxidi"
+
+[sub_resource type="Resource" id="Resource_6pq64"]
+script = ExtResource("2_6pq64")
+propery_path = NodePath("..")
+property = "global_position:y"
+data_type = 1
+is_interpolated = true
+metadata/_custom_type_script = "uid://n3gda14hxidi"
+
+[sub_resource type="Resource" id="Resource_qkj0p"]
+script = ExtResource("2_6pq64")
+propery_path = NodePath("..")
+property = "global_rotation"
+data_type = 4
+is_interpolated = true
+angle_interpolation = true
+metadata/_custom_type_script = "uid://n3gda14hxidi"
+
+[resource]
+script = ExtResource("1_7kcx0")
+synced_vars = Array[ExtResource("2_6pq64")]([SubResource("Resource_7kcx0"), SubResource("Resource_6pq64"), SubResource("Resource_qkj0p")])
+object_scene_path = "res://scenes/units/turret_ship.tscn"
+metadata/_custom_type_script = "uid://5ymvd21fld5t"

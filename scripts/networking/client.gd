@@ -4,16 +4,20 @@ extends Node2D
 @export var command_giver: command_manager
 
 func _ready() -> void:
-	#temperary
+	Network.host_disconnected_.connect(host_disconnected)
 	command_giver.command_given_raw.connect(send_command)
 	Network.create_object.connect(create_networked_object)
 	Network.assigned_team.connect(assigned_team)
 
+func host_disconnected():
+	MusicManager.end_shuffle()
+	Network.destroy_connection()
+	SceneManager.load_menu()
 
 func send_command(from: Vector2, to:Vector2, units:Array) -> void:
 	var object_ids = []
 	for item in units:
-		if !item.has_meta("networked_object"):
+		if !is_instance_valid(item) or !item.has_meta("networked_object"):
 			continue
 		
 		var networked_obj = item.get_meta("networked_object")

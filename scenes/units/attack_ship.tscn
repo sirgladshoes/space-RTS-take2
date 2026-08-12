@@ -1,4 +1,4 @@
-[gd_scene load_steps=13 format=3 uid="uid://dey24hqt0fbnr"]
+[gd_scene load_steps=14 format=3 uid="uid://dey24hqt0fbnr"]
 
 [ext_resource type="Script" uid="uid://fi7afcmbxnk4" path="res://scripts/units/attack_ship.gd" id="1_peo0x"]
 [ext_resource type="Texture2D" uid="uid://cg4f3ntuwyojq" path="res://art/attack_ship.png" id="2_4f0w8"]
@@ -6,9 +6,10 @@
 [ext_resource type="Script" uid="uid://doikskm31bjhj" path="res://scripts/command_logic/command_context.gd" id="3_o6e48"]
 [ext_resource type="Script" uid="uid://iqtkbiyfhpt2" path="res://scripts/networking/networked_object.gd" id="4_nteba"]
 [ext_resource type="Resource" uid="uid://cm2hooryk0aom" path="res://scripts/networking/networked_object_data/attack_ship.tres" id="5_r0djo"]
-[ext_resource type="Script" uid="uid://b8bdy4fqgimix" path="res://scripts/state_machine.gd" id="6_k3w4p"]
+[ext_resource type="Script" uid="uid://b8bdy4fqgimix" path="res://scripts/components/state_machine.gd" id="6_k3w4p"]
 [ext_resource type="Script" uid="uid://d38d3yvigawyg" path="res://scripts/combat/damage.gd" id="8_fvlrr"]
 [ext_resource type="PackedScene" uid="uid://vji4pyi5p5q6" path="res://scenes/laser.tscn" id="9_4f0w8"]
+[ext_resource type="AudioStream" uid="uid://diksunyo5msvo" path="res://sfx/hit.wav" id="10_efu3b"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_o6e48"]
 size = Vector2(16, 16)
@@ -79,6 +80,11 @@ metadata/_custom_type_script = "uid://d38d3yvigawyg"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="damage_reciever"]
 shape = SubResource("RectangleShape2D_4f0w8")
+
+[node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("10_efu3b")
+max_distance = 1000.0
+bus = &"world"
 
 [connection signal="command_given" from="selectable" to="." method="command_given"]
 [connection signal="on_deselected" from="selectable" to="outline" method="set_visible" binds= [false]]

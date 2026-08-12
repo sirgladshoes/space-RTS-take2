@@ -7,6 +7,6 @@
 script = ExtResource("1_sv0u0")
 scene = ExtResource("1_px1uy")
 cost = Dictionary[int, int]({
-0: 0
+0: 60
 })
 metadata/_custom_type_script = "uid://cpvuv23vahmj4"

@@ -1,0 +1,66 @@
+[gd_resource type="Theme" load_steps=19 format=3 uid="uid://c5etcehfpblb3"]
+
+[ext_resource type="Texture2D" uid="uid://dmb26h7sew0es" path="res://art/ui.png" id="1_amlv4"]
+[ext_resource type="FontFile" uid="uid://dd54fy7jwsytp" path="res://m5x7.ttf" id="2_i7eh4"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_i7eh4"]
+bg_color = Color(0, 0, 0, 0.7058824)
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_78ylj"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_amlv4"]
+bg_color = Color(1, 1, 1, 0.19607843)
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_amlv4"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_aggjg"]
+bg_color = Color(1, 1, 1, 0.84705883)
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_37gq2"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_8iapp"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_i7eh4"]
+atlas = ExtResource("1_amlv4")
+region = Rect2(0, 64, 16, 16)
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_i7eh4"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_aggjg"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_i66g5"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_nft0o"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_nkfox"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_0xefo"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_pfqjd"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_lyb8g"]
+
+[resource]
+default_font = ExtResource("2_i7eh4")
+default_font_size = 16
+Button/styles/disabled = SubResource("StyleBoxFlat_i7eh4")
+Button/styles/focus = SubResource("StyleBoxEmpty_78ylj")
+Button/styles/hover = SubResource("StyleBoxFlat_amlv4")
+Button/styles/normal = SubResource("StyleBoxEmpty_amlv4")
+Button/styles/pressed = SubResource("StyleBoxFlat_aggjg")
+CheckBox/styles/focus = SubResource("StyleBoxEmpty_37gq2")
+CheckBox/styles/hover = SubResource("StyleBoxEmpty_8iapp")
+HSlider/icons/grabber = SubResource("AtlasTexture_i7eh4")
+HSlider/icons/grabber_disabled = SubResource("AtlasTexture_i7eh4")
+HSlider/icons/grabber_highlight = SubResource("AtlasTexture_i7eh4")
+ItemList/styles/cursor = SubResource("StyleBoxEmpty_i7eh4")
+ItemList/styles/cursor_unfocused = SubResource("StyleBoxEmpty_aggjg")
+ItemList/styles/focus = SubResource("StyleBoxEmpty_i66g5")
+ItemList/styles/hovered = SubResource("StyleBoxEmpty_nft0o")
+ItemList/styles/hovered_selected_focus = SubResource("StyleBoxEmpty_nkfox")
+ItemList/styles/panel = SubResource("StyleBoxEmpty_0xefo")
+ItemList/styles/selected = SubResource("StyleBoxEmpty_pfqjd")
+ItemList/styles/selected_focus = SubResource("StyleBoxEmpty_lyb8g")
+VSlider/icons/grabber = SubResource("AtlasTexture_i7eh4")
+VSlider/icons/grabber_disabled = SubResource("AtlasTexture_i7eh4")
+VSlider/icons/grabber_highlight = SubResource("AtlasTexture_i7eh4")

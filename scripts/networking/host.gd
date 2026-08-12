@@ -17,6 +17,7 @@ func _ready() -> void:
 	add_child(timer)
 	
 	Network.client_connected_.connect(client_connected)
+	Network.client_disconnected_.connect(client_disconnected)
 	Network.recieved_client_command.connect(give_client_command)
 	Network.make_unit.connect(make_unit)
 
@@ -24,6 +25,10 @@ func _ready() -> void:
 func client_connected(id):
 	Network.assign_team(id, 1)
 	teams[id] = 1
+
+func client_disconnected(client: int) -> void:
+	teams.erase(client)
+	Network.nicknames.erase(client)
 
 func send_world_state():
 	#temperary
@@ -51,9 +56,14 @@ func make_unit(template_indx: int, maker_id: int):
 
 func game_over(losing_team: int):
 	if losing_team == 0:
-		print("team 2 wins")
+		Network.send_win_screen(2)
+		$"..".win_screen(2)
 	elif losing_team == 1:
-		print("team 1 wins")
+		Network.send_win_screen(1)
+		$"..".win_screen(1)
+	
+	
+	await get_tree().create_timer(2).timeout
 	
 	Network.send_load_lobby()
 	SceneManager.load_lobby()

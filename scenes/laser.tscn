@@ -1,6 +1,6 @@
 [gd_scene load_steps=3 format=3 uid="uid://vji4pyi5p5q6"]
 
-[ext_resource type="Script" uid="uid://mnq1ke1lo3ff" path="res://scripts/laser.gd" id="1_xmihv"]
+[ext_resource type="Script" uid="uid://mnq1ke1lo3ff" path="res://scripts/components/laser.gd" id="1_xmihv"]
 
 [sub_resource type="Curve" id="Curve_a7dhc"]
 _data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(1, 0.7388809), 0.0, 0.0, 0, 0]

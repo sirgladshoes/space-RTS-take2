@@ -9,7 +9,7 @@
 [ext_resource type="Script" uid="uid://d38d3yvigawyg" path="res://scripts/combat/damage.gd" id="4_ejopi"]
 [ext_resource type="Script" uid="uid://doikskm31bjhj" path="res://scripts/command_logic/command_context.gd" id="4_fnusl"]
 [ext_resource type="Texture2D" uid="uid://di2qqq3wll8e8" path="res://art/square.png" id="9_eqtm6"]
-[ext_resource type="Script" uid="uid://cf1xqovnibd0k" path="res://scripts/healthbar.gd" id="10_axwt2"]
+[ext_resource type="Script" uid="uid://cf1xqovnibd0k" path="res://scripts/components/healthbar.gd" id="10_axwt2"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_0lhfc"]
 radius = 16.03122

@@ -5,7 +5,7 @@
 [ext_resource type="Texture2D" uid="uid://tjvv0rdhytf1" path="res://art/mining_ship.png" id="2_q7sdo"]
 [ext_resource type="Script" uid="uid://iqtkbiyfhpt2" path="res://scripts/networking/networked_object.gd" id="4_x55ac"]
 [ext_resource type="Resource" uid="uid://d1bly1gx57jfy" path="res://scripts/networking/networked_object_data/mining_ship.tres" id="5_832wd"]
-[ext_resource type="Script" uid="uid://b8bdy4fqgimix" path="res://scripts/state_machine.gd" id="6_5wrer"]
+[ext_resource type="Script" uid="uid://b8bdy4fqgimix" path="res://scripts/components/state_machine.gd" id="6_5wrer"]
 [ext_resource type="Script" uid="uid://doikskm31bjhj" path="res://scripts/command_logic/command_context.gd" id="7_3g0ik"]
 [ext_resource type="Script" uid="uid://bb7h6rlhbmne" path="res://scripts/inventory/inventory.gd" id="8_jbimc"]
 [ext_resource type="Script" uid="uid://cdmr00xlptfhd" path="res://scripts/UI/selected_ui.gd" id="9_1ea0i"]

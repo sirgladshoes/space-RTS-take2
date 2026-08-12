@@ -1,13 +1,14 @@
-[gd_scene load_steps=6 format=3 uid="uid://crkwtc436uiav"]
+[gd_scene load_steps=7 format=3 uid="uid://crkwtc436uiav"]
 
 [ext_resource type="Texture2D" uid="uid://cxqa38md7tk1q" path="res://art/materials.png" id="1_8mcog"]
+[ext_resource type="Theme" uid="uid://c5etcehfpblb3" path="res://new_theme.tres" id="1_litxq"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_litxq"]
 atlas = ExtResource("1_8mcog")
 region = Rect2(0, 0, 16, 0)
 
 [sub_resource type="LabelSettings" id="LabelSettings_vtuyh"]
-font_size = 5
+font_size = 10
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_8mcog"]
 atlas = ExtResource("1_8mcog")
@@ -22,6 +23,7 @@ layout_mode = 3
 anchors_preset = 0
 offset_right = 40.0
 offset_bottom = 40.0
+theme = ExtResource("1_litxq")
 
 [node name="0" type="Control" parent="."]
 anchors_preset = 0
@@ -42,10 +44,10 @@ stretch_mode = 4
 
 [node name="count" type="Label" parent="0"]
 layout_mode = 0
-offset_left = -8.0
+offset_left = -10.0
 offset_top = 34.0
-offset_right = 8.0
-offset_bottom = 42.0
+offset_right = 9.0
+offset_bottom = 43.0
 text = "12345"
 label_settings = SubResource("LabelSettings_vtuyh")
 horizontal_alignment = 1
@@ -67,10 +69,10 @@ stretch_mode = 4
 
 [node name="count" type="Label" parent="1"]
 layout_mode = 0
-offset_left = -8.0
+offset_left = -9.0
 offset_top = 34.0
-offset_right = 8.0
-offset_bottom = 42.0
+offset_right = 10.0
+offset_bottom = 43.0
 text = "12345"
 label_settings = SubResource("LabelSettings_vtuyh")
 horizontal_alignment = 1
@@ -94,10 +96,10 @@ stretch_mode = 4
 
 [node name="count" type="Label" parent="2"]
 layout_mode = 0
-offset_left = -8.0
+offset_left = -9.0
 offset_top = 34.0
-offset_right = 8.0
-offset_bottom = 42.0
+offset_right = 10.0
+offset_bottom = 43.0
 text = "12345"
 label_settings = SubResource("LabelSettings_vtuyh")
 horizontal_alignment = 1

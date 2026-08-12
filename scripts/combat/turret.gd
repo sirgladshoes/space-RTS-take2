@@ -51,3 +51,4 @@ func decide_target():
 
 func _on_laser_hit_object(object: Node) -> void:
 	object.take_damage(1)
+	$AudioStreamPlayer2D.play()

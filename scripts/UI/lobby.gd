@@ -1,20 +1,25 @@
 extends Control
 
-var lobby_state = {"u": [], "t1": [], "t2": []}
+var client_states = {}
 
 var loaded_players = 0
 
+@onready var lists = {"u": $unasigned, "t1":$team1, "t2": $team2}
+
 func _ready() -> void:
+	MusicManager.play_track("lobby")
+	
 	Network.set_accept_connections(true)
 	Network.recieved_client_nickname.connect(recieved_nickname)
 	Network.recieved_lobby_state.connect(recieved_lobby_state)
 	Network.reasign_team.connect(reassign_team)
 	Network.load_game.connect(load_game)
+	Network.client_disconnected_.connect(client_disconnected)
 	Network.client_loaded.connect(client_loaded)
 	Network.host_disconnected_.connect(host_disconnected)
-	for id in Network.nicknames:
-		lobby_state["u"].append(id)
-		$unasigned.add_item(Network.nicknames[id])
+	for client in Network.nicknames:
+		client_states[client] = "u"
+		lists["u"].add_item(Network.nicknames[client])
 	if Network.is_hosting:
 		send_state()
 
@@ -22,21 +27,32 @@ func host_disconnected():
 	SceneManager.load_menu()
 
 func recieved_nickname(client: int, nickname: String):
-	lobby_state["u"].append(client)
-	$unasigned.add_item(nickname)
+	Network.nicknames[client] = nickname
+	client_states[client] = "u"
+	lists["u"].add_item(nickname)
 	$start_game.disabled = true
 	send_state()
 
+func client_disconnected(client: int):
+	if !client_states.has(client):
+		return
+	
+	var team = client_states[client]
+	var indx = get_text_index(lists[team], Network.nicknames[client])
+	lists[team].remove_item(indx)
+	
+	client_states.erase(client)
+	
+	if !lists["u"].item_count and client_states.size() > 1:
+		$start_game.disabled = false
+	else:
+		$start_game.disabled = true
+
 func recieved_lobby_state(state: Dictionary):
-	$unasigned.clear()
-	for nickname in state["u"]:
-		$unasigned.add_item(nickname)
-	$team1.clear()
-	for nickname in state["t1"]:
-		$team1.add_item(nickname)
-	$team2.clear()
-	for nickname in state["t2"]:
-		$team2.add_item(nickname)
+	for team in state:
+		lists[team].clear()
+		for nickname in state[team]:
+			lists[team].add_item(nickname)
 
 func send_state():
 	var state = {"u":[], "t1":[], "t2":[]}
@@ -57,48 +73,48 @@ func get_text_index(list, text) -> int:
 			return i
 	return -1
 
-func reassign_team(id, team):
-	var lists = {"u": $unasigned, "t1":$team1, "t2": $team2}
+func reassign_team(client, team):
+	var curr_team = client_states[client]
 	
-	for list in lists:
-		var indx = get_text_index(lists[list], Network.nicknames[id])
-		if indx > -1:
-			lobby_state[list].erase(id)
-			lists[list].remove_item(indx)
-			lobby_state[team].append(id)
-			lists[team].add_item(Network.nicknames[id])
+	var indx = get_text_index(lists[curr_team], Network.nicknames[client])
+	lists[curr_team].remove_item(indx)
+	lists[team].add_item(Network.nicknames[client])
+	
+	client_states[client] = team
 	
 	send_state()
 	
 	if !Network.is_hosting:
 		return
 	
-	if lobby_state["u"].size():
+	if lists["u"].item_count or client_states.size() <= 1:
 		$start_game.disabled = true
 	else:
 		$start_game.disabled = false
 
 func load_game():
 	var teams = {}
-	for player in lobby_state["t1"]:
-		teams[player] = 0
-	for player in lobby_state["t2"]:
-		teams[player] = 1
+	for player in client_states:
+		if client_states[player] == "t1":
+			teams[player] = 0
+		if client_states[player] == "t2":
+			teams[player] = 1
 	SceneManager.load_game(teams)
 
-func client_loaded(id: int):
+func client_loaded(client: int):
 	var team
-	if lobby_state["t1"].has(id):
+	if client_states[client] == "t1":
 		team = 0
 	else:
 		team = 1
-	Network.assign_team(id, team)
+	Network.assign_team(client, team)
 	loaded_players+=1
 	
-	if loaded_players == lobby_state["t1"].size() + lobby_state["t2"].size() - 1:
+	if loaded_players == client_states.size()-1:
 		load_game()
 
 func _on_join_team_1_pressed() -> void:
+	$AudioStreamPlayer.play()
 	if Network.is_hosting:
 		reassign_team(1, "t1")
 	else:
@@ -106,6 +122,7 @@ func _on_join_team_1_pressed() -> void:
 
 
 func _on_join_team_2_pressed() -> void:
+	$AudioStreamPlayer.play()
 	if Network.is_hosting:
 		reassign_team(1, "t2")
 	else:
@@ -113,5 +130,12 @@ func _on_join_team_2_pressed() -> void:
 
 
 func _on_start_game_pressed() -> void:
+	$AudioStreamPlayer.play()
 	Network.set_accept_connections(false)
 	Network.send_load_game()
+
+
+func _on_leave_pressed() -> void:
+	Network.nicknames = {}
+	Network.destroy_connection()
+	SceneManager.load_menu()

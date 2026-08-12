@@ -9,7 +9,7 @@
 [ext_resource type="Script" uid="uid://doikskm31bjhj" path="res://scripts/command_logic/command_context.gd" id="7_m327g"]
 [ext_resource type="Script" uid="uid://d38d3yvigawyg" path="res://scripts/combat/damage.gd" id="8_vku46"]
 [ext_resource type="Texture2D" uid="uid://di2qqq3wll8e8" path="res://art/square.png" id="9_qsk30"]
-[ext_resource type="Script" uid="uid://cf1xqovnibd0k" path="res://scripts/healthbar.gd" id="10_uclw3"]
+[ext_resource type="Script" uid="uid://cf1xqovnibd0k" path="res://scripts/components/healthbar.gd" id="10_uclw3"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_q2nhm"]
 resource_local_to_scene = true
