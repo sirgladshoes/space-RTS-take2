@@ -25,16 +25,19 @@ script = ExtResource("1_peo0x")
 target_range = 100
 
 [node name="sprite" type="Sprite2D" parent="."]
+z_index = 2
 texture = ExtResource("2_4f0w8")
 hframes = 4
 
 [node name="team" type="Sprite2D" parent="."]
+z_index = 2
 texture = ExtResource("2_4f0w8")
 hframes = 4
 frame = 2
 
 [node name="outline" type="Sprite2D" parent="."]
 visible = false
+z_index = 2
 texture = ExtResource("2_4f0w8")
 hframes = 4
 frame = 1
