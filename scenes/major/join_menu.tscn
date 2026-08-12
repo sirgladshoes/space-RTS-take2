@@ -136,7 +136,7 @@ offset_top = 81.0
 offset_right = 238.0
 offset_bottom = 105.0
 theme = ExtResource("2_18uqh")
-text = "UPNP auto port forward"
+text = "UPnP auto port forward"
 flat = true
 
 [connection signal="drag_ended" from="VSlider" to="." method="_on_h_slider_drag_ended"]
